@@ -10,22 +10,20 @@ import AppPageContainer from "@/components/AppPageContainer";
 import MenuItem from "./components/MenuItem";
 
 const Menu: React.SFC = () => (
-  <AppPageContainer title="Menu">
-    <InventoryProvider>
-      {({ isLoading, error, items }) => (
-        <React.Fragment>
-          {isLoading && <CircularProgress />}
-          {error && error.message}
-          {items && (
-            <List>
-              {items.map(item => (
-                <MenuItem item={item} />
-              ))}
-            </List>
-          )}
-        </React.Fragment>
-      )}
-    </InventoryProvider>
-  </AppPageContainer>
+  <InventoryProvider>
+    {({ isLoading, error, items }) => (
+      <AppPageContainer title="Menu">
+        {isLoading && <CircularProgress />}
+        {error && error.message}
+        {items && (
+          <List>
+            {items.map(item => (
+              <MenuItem item={item} />
+            ))}
+          </List>
+        )}
+      </AppPageContainer>
+    )}
+  </InventoryProvider>
 );
 export default Menu;

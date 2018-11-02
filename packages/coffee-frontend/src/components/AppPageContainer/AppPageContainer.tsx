@@ -13,12 +13,15 @@ export interface AppContainerProps {
 const styles = createStyles({
   root: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    width: "100%",
+    height: "100%"
   },
   content: {
     flexGrow: 1,
-    minWidth: 0,
-    width: "100%"
+    minHeight: 0,
+    width: "100%",
+    height: "100%"
   }
 });
 

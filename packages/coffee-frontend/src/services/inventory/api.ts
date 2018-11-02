@@ -11,10 +11,26 @@ export async function getInventory(): Promise<InventoryItem[]> {
   await testDelay();
   return [
     {
+      id: "coffee",
       name: "Coffee",
-      description: "Basic unspecified coffee"
+      description: "Basic unspecified coffee",
+      options: [
+        {
+          name: "Creamer",
+          type: "select",
+          required: true,
+          choices: ["None", "Hazelnut", "French Vanilla"],
+          default: "None"
+        },
+        {
+          name: "Expresso Shots",
+          type: "numeric",
+          default: 0
+        }
+      ]
     },
     {
+      id: "hot-chocolate",
       name: "Hot Chocolate"
     }
   ];

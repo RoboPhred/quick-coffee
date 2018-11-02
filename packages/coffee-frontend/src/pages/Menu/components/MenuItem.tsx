@@ -1,24 +1,19 @@
 import * as React from "react";
 
-import { withRouter, RouteComponentProps } from "react-router";
-
-import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+
 import { InventoryItem } from "@/services/inventory/types";
+
+import ListItemLink from "@/components/ListItemLink";
 
 export interface MenuItemProps {
   item: InventoryItem;
 }
 
-type Props = MenuItemProps & RouteComponentProps;
-const MenuItem: React.SFC<Props> = ({ item, history }) => (
-  <ListItem
-    key={item.name}
-    button
-    component="a"
-    href={history.createHref({ pathname: `/add-item/${item.name}` })}
-  >
+type Props = MenuItemProps;
+const MenuItem: React.SFC<Props> = ({ item }) => (
+  <ListItemLink key={item.name} button to={`/order-item/${item.id}`}>
     <ListItemText primary={item.name} secondary={item.description} />
-  </ListItem>
+  </ListItemLink>
 );
-export default withRouter(MenuItem);
+export default MenuItem;
