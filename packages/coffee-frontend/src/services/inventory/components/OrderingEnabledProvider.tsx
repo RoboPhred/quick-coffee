@@ -2,18 +2,21 @@ import * as React from "react";
 
 import { isOrderingEnabled } from "../api";
 
-export interface InventoryProviderRenderProps {
+export interface OrderingEnabledProviderRenderProps {
   isLoading: boolean;
   isOrderingEnabled: boolean | null;
 }
 
-export interface InventoryProviderProps {
-  children(props: InventoryProviderRenderProps): React.ReactChild;
+export interface OrderingEnabledProviderProps {
+  children(props: OrderingEnabledProviderRenderProps): React.ReactChild;
 }
 
-type Props = InventoryProviderProps;
-type State = InventoryProviderRenderProps;
-export default class InventoryProvider extends React.Component<Props, State> {
+type Props = OrderingEnabledProviderProps;
+type State = OrderingEnabledProviderRenderProps;
+export default class OrderingEnabledProvider extends React.Component<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
 
