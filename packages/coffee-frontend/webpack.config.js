@@ -99,7 +99,13 @@ module.exports = {
       new UglifyJsWebpackPlugin({
         sourceMap: true
       })
-  ].filter(truthy)
+  ].filter(truthy),
+
+  devServer: {
+    // Tell the dev server to return the entrypoint for any
+    //  sub-path, since we use url routes.
+    historyApiFallback: true
+  }
 };
 
 function truthy(x) {

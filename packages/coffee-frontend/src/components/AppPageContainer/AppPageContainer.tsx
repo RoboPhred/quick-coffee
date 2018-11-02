@@ -12,7 +12,8 @@ export interface AppContainerProps {
 
 const styles = createStyles({
   root: {
-    display: "flex"
+    display: "flex",
+    flexDirection: "column"
   },
   content: {
     flexGrow: 1,
