@@ -22,12 +22,13 @@ const styles = createStyles({
 
 type Props = OptionsFormProps & StyleProps<typeof styles>;
 
-const OptionsForm: React.SFC<Props> = ({ className, classes, options }) => {
-  const elements = options.map(option => (
-    <ListItem key={option.name}>
-      <OptionForm className={classes.optionForm} option={option} />
-    </ListItem>
-  ));
-  return <List className={className}>{elements}</List>;
-};
+const OptionsForm: React.SFC<Props> = ({ className, classes, options }) => (
+  <List className={className}>
+    {options.map(option => (
+      <ListItem key={option.name}>
+        <OptionForm className={classes.optionForm} option={option} />
+      </ListItem>
+    ))}
+  </List>
+);
 export default withStyles(styles)(OptionsForm);

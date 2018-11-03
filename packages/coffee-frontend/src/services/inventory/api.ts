@@ -26,12 +26,23 @@ export async function getInventory(): Promise<InventoryItem[]> {
           name: "Expresso Shots",
           type: "numeric",
           default: 0
+        },
+        {
+          name: "Large",
+          type: "boolean"
         }
       ]
     },
     {
       id: "hot-chocolate",
-      name: "Hot Chocolate"
+      name: "Hot Chocolate",
+      options: [
+        {
+          name: "Whipped Cream",
+          type: "boolean",
+          default: true
+        }
+      ]
     }
   ];
 }

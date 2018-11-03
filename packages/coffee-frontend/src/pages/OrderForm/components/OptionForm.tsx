@@ -2,26 +2,27 @@ import * as React from "react";
 
 import { ItemOption } from "@/services/inventory/types";
 
-import Typography from "@material-ui/core/Typography";
-
 import SelectionOption from "./SelectionOption";
+import BooleanOption from "./BooleanOption";
+import TextOption from "./TextOption";
+import NumericOption from "./NumericOption";
 
 export interface OptionFormProps {
   className?: string;
   option: ItemOption;
 }
 const OptionForm: React.SFC<OptionFormProps> = ({ className, option }) => {
-  let optionWidget: React.ReactNode | null = null;
   switch (option.type) {
     case "select":
-      optionWidget = <SelectionOption option={option} />;
+      return <SelectionOption className={className} option={option} />;
+    case "boolean":
+      return <BooleanOption className={className} option={option} />;
+    case "text":
+      return <TextOption className={className} option={option} />;
+    case "numeric":
+      return <NumericOption className={className} option={option} />;
+    default:
+      return null;
   }
-
-  return (
-    <div className={className}>
-      <Typography variant="body1">{option.name}</Typography>
-      {optionWidget}
-    </div>
-  );
 };
 export default OptionForm;

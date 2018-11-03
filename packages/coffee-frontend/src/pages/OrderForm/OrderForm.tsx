@@ -4,7 +4,7 @@ import { find } from "lodash-es";
 
 import { RouteComponentProps } from "react-router-dom";
 
-import { createStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -18,30 +18,32 @@ import AppPageContainer from "@/components/AppPageContainer";
 import ItemNotFound from "./components/ItemNotFound";
 import OptionsForm from "./components/OptionsForm";
 
-const styles = createStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    overflow: "scroll"
-  },
-  header: {
-    // Grid baseline is 8px
-    padding: "16px"
-  },
-  options: {
-    flexGrow: 1,
-    minHeight: 0,
-    width: "100%",
-    height: "100%"
-  },
-  action: {
-    float: "right"
-  }
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+      flexDirection: "column",
+      width: "100%",
+      height: "100%",
+      overflow: "auto"
+    },
+    header: {
+      padding: theme.spacing.unit * 2
+    },
+    options: {
+      flexGrow: 1,
+      minHeight: 0,
+      width: "100%",
+      height: "100%"
+    },
+    action: {
+      float: "right",
+      margin: theme.spacing.unit
+    }
+  });
 
-type Props = RouteComponentProps<{ item: string }> & StyleProps<typeof styles>;
+type Props = RouteComponentProps<{ item: string }> &
+  StyleProps<ReturnType<typeof styles>>;
 
 const OrderForm: React.SFC<Props> = ({ classes, match }) => (
   <InventoryProvider>
@@ -76,7 +78,11 @@ const OrderForm: React.SFC<Props> = ({ classes, match }) => (
               </React.Fragment>
             )}
             <div>
-              <Button className={classes.action} color="primary">
+              <Button
+                className={classes.action}
+                color="primary"
+                variant="contained"
+              >
                 Order
               </Button>
             </div>

@@ -27,7 +27,7 @@ export interface NumericItemOption extends ItemOptionBase {
 export interface TextItemOption extends ItemOptionBase {
   type: "text";
   default?: string;
-  hint?: string;
+  placeholder?: string;
 }
 
 export type ItemOption =
