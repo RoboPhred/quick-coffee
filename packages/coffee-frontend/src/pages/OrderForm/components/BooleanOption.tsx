@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
 
 import { BooleanItemOption } from "@/services/inventory/types";
 
@@ -13,10 +13,11 @@ export interface BooleanOptionProps {
 type Props = BooleanOptionProps;
 
 const BooleanOption: React.SFC<Props> = ({ className, option }) => (
-  <FormControlLabel
-    className={className}
-    control={<Checkbox defaultChecked={option.default} />}
-    label={option.name}
-  />
+  <div className={className}>
+    <Typography component="span" variant="body1">
+      {option.name}
+    </Typography>
+    <Checkbox defaultChecked={option.default} />
+  </div>
 );
 export default BooleanOption;

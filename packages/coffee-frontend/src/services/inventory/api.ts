@@ -18,7 +18,6 @@ export async function getInventory(): Promise<InventoryItem[]> {
         {
           name: "Creamer",
           type: "select",
-          required: true,
           choices: ["None", "Hazelnut", "French Vanilla"],
           default: "None"
         },
@@ -30,6 +29,10 @@ export async function getInventory(): Promise<InventoryItem[]> {
         {
           name: "Large",
           type: "boolean"
+        },
+        {
+          name: "Foobar",
+          type: "text"
         }
       ]
     },

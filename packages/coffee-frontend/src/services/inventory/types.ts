@@ -8,7 +8,6 @@ export interface InventoryItem {
 export interface ItemOptionBase {
   name: string;
   type: string;
-  required?: boolean;
   description?: string;
 }
 export interface SelectionItemOption extends ItemOptionBase {
