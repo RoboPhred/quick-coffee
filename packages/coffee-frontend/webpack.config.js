@@ -12,6 +12,11 @@ const PUBLIC_URL = "/";
 
 const isProd = process.env.NODE_ENV === "production";
 
+const COFFEE_ENDPOINT =
+  process.env.COFFEE_ENDPOINT || isProd
+    ? "http://coffee-endpoint-url-insert-here/graphql"
+    : "http://localhost:4000/graphql";
+
 module.exports = {
   mode: isProd ? "production" : "development",
 
@@ -86,7 +91,8 @@ module.exports = {
 
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        COFFEE_ENDPOINT: JSON.stringify(COFFEE_ENDPOINT)
       }
     }),
 

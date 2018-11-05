@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import ListItemText from "@material-ui/core/ListItemText";
+import { InventoryItem } from "coffee-types";
 
-import { InventoryItem } from "@/services/inventory/types";
+import ListItemText from "@material-ui/core/ListItemText";
 
 import ListItemLink from "@/components/ListItemLink";
 

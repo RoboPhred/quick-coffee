@@ -1,15 +1,15 @@
 import * as React from "react";
 
+import { IntegerItemOption } from "coffee-types";
+
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 
 import Button, { ButtonProps } from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import { NumericItemOption } from "@/services/inventory/types";
-
 export interface NumericOptionProps {
   className?: string;
-  option: NumericItemOption;
+  option: IntegerItemOption;
 }
 
 const styles = (theme: Theme) =>

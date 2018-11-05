@@ -1,11 +1,11 @@
 import * as React from "react";
 
+import { SelectionItemOption } from "coffee-types";
+
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
-
-import { SelectionItemOption } from "@/services/inventory/types";
 
 export interface SelectionOptionProps {
   className?: string;

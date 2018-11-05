@@ -1,9 +1,10 @@
 import * as React from "react";
 
+import { TextItemOption } from "coffee-types";
+
 import Typography from "@material-ui/core/Typography";
 import Input from "@material-ui/core/Input";
 
-import { TextItemOption } from "@/services/inventory/types";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 export interface TextOptionProps {

@@ -1,0 +1,19 @@
+{
+  "name": "coffee-types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "dts/index.d.ts",
+  "scripts": {
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "build": "tsc -p src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "William Matthews",
+  "license": "ISC",
+  "devDependencies": {
+    "rimraf": "^2.6.2",
+    "typescript": "^3.1.6"
+  }
+}

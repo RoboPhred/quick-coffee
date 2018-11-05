@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ItemOption } from "@/services/inventory/types";
+import { ItemOption } from "coffee-types";
 
 import SelectionOption from "./SelectionOption";
 import BooleanOption from "./BooleanOption";
@@ -19,7 +19,7 @@ const OptionForm: React.SFC<OptionFormProps> = ({ className, option }) => {
       return <BooleanOption className={className} option={option} />;
     case "text":
       return <TextOption className={className} option={option} />;
-    case "numeric":
+    case "integer":
       return <NumericOption className={className} option={option} />;
     default:
       return null;

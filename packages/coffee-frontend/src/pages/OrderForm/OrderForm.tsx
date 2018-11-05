@@ -11,11 +11,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
-import InventoryProvider from "@/services/inventory/components/InventoryProvider";
+import ItemProvider from "@/services/backend/components/ItemProvider";
 
 import AppPageContainer from "@/components/AppPageContainer";
 
-import ItemNotFound from "./components/ItemNotFound";
 import OptionsForm from "./components/OptionsForm";
 
 const styles = (theme: Theme) =>
@@ -46,16 +45,15 @@ type Props = RouteComponentProps<{ item: string }> &
   StyleProps<ReturnType<typeof styles>>;
 
 const OrderForm: React.SFC<Props> = ({ classes, match }) => (
-  <InventoryProvider>
-    {({ items }) => {
-      if (!items) {
+  <ItemProvider itemId={match.params.item}>
+    {({ isLoading, item, errorMessage }) => {
+      if (!item || isLoading) {
         // No data loaded yet.
         return <CircularProgress />;
       }
 
-      const item = find(items, x => x.id === match.params.item);
-      if (!item) {
-        return <ItemNotFound />;
+      if (errorMessage) {
+        return errorMessage;
       }
 
       return (
@@ -90,6 +88,6 @@ const OrderForm: React.SFC<Props> = ({ classes, match }) => (
         </AppPageContainer>
       );
     }}
-  </InventoryProvider>
+  </ItemProvider>
 );
 export default withStyles(styles)(OrderForm);

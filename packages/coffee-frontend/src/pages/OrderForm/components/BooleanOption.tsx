@@ -1,9 +1,9 @@
 import * as React from "react";
 
+import { BooleanItemOption } from "coffee-types";
+
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-
-import { BooleanItemOption } from "@/services/inventory/types";
 
 export interface BooleanOptionProps {
   className?: string;

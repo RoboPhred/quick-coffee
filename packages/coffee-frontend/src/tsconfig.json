@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "../lib",
+    "outDir": "../dist",
     "declaration": false,
     "sourceMap": true,
     "baseUrl": "../node_modules",

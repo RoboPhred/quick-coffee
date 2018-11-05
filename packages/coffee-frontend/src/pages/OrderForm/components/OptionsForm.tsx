@@ -1,11 +1,11 @@
 import * as React from "react";
 
+import { ItemOption } from "coffee-types";
+
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-
-import { ItemOption } from "@/services/inventory/types";
 
 import OptionForm from "./OptionForm";
 

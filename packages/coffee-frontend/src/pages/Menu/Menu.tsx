@@ -3,18 +3,18 @@ import * as React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
 
-import InventoryProvider from "@/services/inventory/components/InventoryProvider";
+import ItemListProvider from "@/services/backend/components/ItemListProvider";
 
 import AppPageContainer from "@/components/AppPageContainer";
 
 import MenuItem from "./components/MenuItem";
 
 const Menu: React.SFC = () => (
-  <InventoryProvider>
-    {({ isLoading, error, items }) => (
+  <ItemListProvider>
+    {({ isLoading, errorMessage, items }) => (
       <AppPageContainer title="Menu">
         {isLoading && <CircularProgress />}
-        {error && error.message}
+        {errorMessage}
         {items && (
           <List>
             {items.map(item => (
@@ -24,6 +24,6 @@ const Menu: React.SFC = () => (
         )}
       </AppPageContainer>
     )}
-  </InventoryProvider>
+  </ItemListProvider>
 );
 export default Menu;

@@ -2,7 +2,12 @@
   "name": "coffee-order",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "postinstall": "lerna bootstrap"
+  },
   "author": "William Matthews",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.4.3"
+  }
 }
