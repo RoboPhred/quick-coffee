@@ -35,7 +35,6 @@ const SelectionOption: React.SFC<Props> = ({
     <Select
       className={classes.select}
       native
-      defaultValue={option.default}
       value={value}
       onChange={e => onChange(e.target.value)}
     >

@@ -8,21 +8,27 @@ import AppLoading from "./pages/AppLoading";
 import Menu from "./pages/Menu";
 import PageNotFound from "./pages/PageNotFound";
 import OrderingDisabled from "./pages/OrderingDisabled";
-import OrderForm from "./pages/OrderForm";
+import OrderFormPage from "./pages/OrderFormPage";
 
 const Routes: React.SFC = () => (
   <OrderingEnabledProvider>
-    {({ isOrderingEnabled }) => (
-      <Switch>
-        {isOrderingEnabled === null && <Route component={AppLoading} />}
-        {/* If ordering is disabled, force the user into an ordering disabled page. */}
-        {isOrderingEnabled === false && <Route component={OrderingDisabled} />}
-        <Route path="/" exact component={Menu} />Y
-        <Route path="/order-item/:item" exact component={OrderForm} />
-        {/* Keep this component last.  It is a catch-all that displays the 404 page. */}
-        <Route component={PageNotFound} />
-      </Switch>
-    )}
+    {({ isOrderingEnabled }) => {
+      if (isOrderingEnabled === null) {
+        return <AppLoading />;
+      }
+      if (isOrderingEnabled === false) {
+        return <OrderingDisabled />;
+      }
+
+      return (
+        <Switch>
+          <Route path="/" exact component={Menu} />
+          <Route path="/order-item/:item" exact component={OrderFormPage} />
+          {/* Keep this component last.  It is a catch-all that displays the 404 page. */}
+          <Route component={PageNotFound} />
+        </Switch>
+      );
+    }}
   </OrderingEnabledProvider>
 );
 export default Routes;

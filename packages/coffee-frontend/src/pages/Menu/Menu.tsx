@@ -8,13 +8,14 @@ import ItemListProvider from "@/services/backend/components/ItemListProvider";
 import AppPageContainer from "@/components/AppPageContainer";
 
 import MenuItem from "./components/MenuItem";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 const Menu: React.SFC = () => (
   <ItemListProvider>
     {({ isLoading, errorMessage, items }) => (
       <AppPageContainer title="Menu">
         {isLoading && <CircularProgress />}
-        {errorMessage}
+        {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
         {items && (
           <List>
             {items.map(item => (
