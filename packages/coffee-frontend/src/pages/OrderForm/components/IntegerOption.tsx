@@ -7,7 +7,7 @@ import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 import Button, { ButtonProps } from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-export interface NumericOptionProps {
+export interface IntegerOptionProps {
   className?: string;
   option: IntegerItemOption;
 }
@@ -25,9 +25,9 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = NumericOptionProps & StyleProps<ReturnType<typeof styles>>;
+type Props = IntegerOptionProps & StyleProps<ReturnType<typeof styles>>;
 
-const NumericOption: React.SFC<Props> = ({ className, classes, option }) => (
+const IntegerOption: React.SFC<Props> = ({ className, classes, option }) => (
   <div className={className}>
     <Typography component="span" variant="body1">
       {option.name}
@@ -45,7 +45,7 @@ const NumericOption: React.SFC<Props> = ({ className, classes, option }) => (
     </div>
   </div>
 );
-export default withStyles(styles)(NumericOption);
+export default withStyles(styles)(IntegerOption);
 
 const NumericOptionButton: React.SFC<ButtonProps> = ({ ...props }) => (
   <Button variant="fab" color="secondary" mini {...props} />

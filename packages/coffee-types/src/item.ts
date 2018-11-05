@@ -1,27 +1,12 @@
-import { ItemOption, ItemOptionFragment } from "./item-option";
+import { ItemOption } from "./item-option";
 
-export interface InventoryItem {
+export interface ListInventoryItem {
   id: string;
   name: string;
   description?: string;
+}
+
+export interface InventoryItem extends ListInventoryItem {
   sizes?: string[];
   options?: ItemOption[];
 }
-export const InventoryItemSchema = `
-  type InventoryItem {
-    id: String!
-    name: String!
-    description: String
-    sizes: [String!]
-    options: [ItemOption!]
-  }
-  `;
-export const InventoryItemFragment = `
-  id
-  name
-  description
-  sizes
-  options {
-    ${ItemOptionFragment}
-  }
-`;

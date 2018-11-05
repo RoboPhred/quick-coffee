@@ -1,10 +1,7 @@
 import * as React from "react";
 
-import gql from "graphql-tag";
-
-import { InventoryItem, InventoryItemFragment } from "coffee-types";
-
-import client from "../client";
+import { InventoryItem } from "coffee-types";
+import { getItem } from "../api";
 
 export interface InventoryProviderRenderProps {
   isLoading: boolean;
@@ -59,13 +56,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
     this.setState({ isLoading: true });
 
     try {
-      const result = await client.query<{ item: InventoryItem }>({
-        query: gql`
-          item(id: "${this.props.itemId}") {
-            ${InventoryItemFragment}
-          }
-        `
-      });
+      const result = await getItem(this.props.itemId);
 
       if (this._unmounted) {
         return;
@@ -73,7 +64,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
 
       this.setState({
         isLoading: false,
-        item: result.data.item,
+        item: result,
         errorMessage: null
       });
     } catch {

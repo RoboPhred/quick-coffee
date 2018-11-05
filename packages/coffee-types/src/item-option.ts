@@ -31,24 +31,3 @@ export type ItemOption =
   | BooleanItemOption
   | IntegerItemOption
   | TextItemOption;
-
-export const ItemOptionSchema = `
-  union ItemOptionDefault = String | Boolean | Int
-  type ItemOption {
-    id: String!
-    name: String!
-    type: String!
-    description: String
-    choices: [String]
-    default: ItemOptionDefault
-    placeholder: String
-  }`;
-export const ItemOptionFragment = `
-  id
-  name
-  type
-  description
-  choices
-  default
-  placeholder
-`;

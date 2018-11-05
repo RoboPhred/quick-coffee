@@ -1,10 +1,7 @@
 import * as React from "react";
 
 import { autobind } from "core-decorators";
-
-import gql from "graphql-tag";
-
-import client from "../client";
+import { getIsOpen } from "../api";
 
 export interface OrderingEnabledProviderRenderProps {
   isLoading: boolean;
@@ -16,16 +13,7 @@ export interface OrderingEnabledProviderProps {
   children(props: OrderingEnabledProviderRenderProps): React.ReactChild;
 }
 
-const QUERY_OPEN = gql`
-  {
-    open
-  }
-`;
-type QueryOpenResult = {
-  open: boolean;
-};
-
-const POLLING_INTERVAL = 5000;
+const POLLING_INTERVAL = 10000;
 
 type Props = OrderingEnabledProviderProps;
 type State = OrderingEnabledProviderRenderProps;
@@ -79,10 +67,7 @@ export default class OrderingEnabledProvider extends React.Component<
     this.setState({ isLoading: true });
 
     try {
-      const result = await client.query<QueryOpenResult>({
-        query: QUERY_OPEN,
-        fetchPolicy: "no-cache"
-      });
+      const result = await getIsOpen();
 
       if (this._unmounted) {
         return;
@@ -90,7 +75,7 @@ export default class OrderingEnabledProvider extends React.Component<
 
       this.setState({
         isLoading: false,
-        isOrderingEnabled: result.data.open,
+        isOrderingEnabled: result,
         errorMessage: null
       });
     } catch {

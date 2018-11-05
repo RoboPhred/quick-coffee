@@ -5,7 +5,7 @@ import { ItemOption } from "coffee-types";
 import SelectionOption from "./SelectionOption";
 import BooleanOption from "./BooleanOption";
 import TextOption from "./TextOption";
-import NumericOption from "./NumericOption";
+import IntegerOption from "./IntegerOption";
 
 export interface OptionFormProps {
   className?: string;
@@ -20,7 +20,7 @@ const OptionForm: React.SFC<OptionFormProps> = ({ className, option }) => {
     case "text":
       return <TextOption className={className} option={option} />;
     case "integer":
-      return <NumericOption className={className} option={option} />;
+      return <IntegerOption className={className} option={option} />;
     default:
       return null;
   }

@@ -26,7 +26,9 @@ const SelectionOption: React.SFC<Props> = ({ className, classes, option }) => (
     <Typography variant="body1">{option.name}</Typography>
     <Select className={classes.select} native defaultValue={option.default}>
       {option.choices.map(choice => (
-        <option value={choice}>{choice}</option>
+        <option key={choice} value={choice}>
+          {choice}
+        </option>
       ))}
     </Select>
   </div>

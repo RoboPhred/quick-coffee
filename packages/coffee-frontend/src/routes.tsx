@@ -12,9 +12,9 @@ import OrderForm from "./pages/OrderForm";
 
 const Routes: React.SFC = () => (
   <OrderingEnabledProvider>
-    {({ isLoading, isOrderingEnabled }) => (
+    {({ isOrderingEnabled }) => (
       <Switch>
-        {isLoading && <Route component={AppLoading} />}
+        {isOrderingEnabled === null && <Route component={AppLoading} />}
         {/* If ordering is disabled, force the user into an ordering disabled page. */}
         {isOrderingEnabled === false && <Route component={OrderingDisabled} />}
         <Route path="/" exact component={Menu} />Y

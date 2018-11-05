@@ -1,10 +1,10 @@
 import { ItemOption } from "./item-option";
-export interface InventoryItem {
+export interface ListInventoryItem {
     id: string;
     name: string;
     description?: string;
+}
+export interface InventoryItem extends ListInventoryItem {
     sizes?: string[];
     options?: ItemOption[];
 }
-export declare const InventoryItemSchema = "\n  type InventoryItem {\n    id: String!\n    name: String!\n    description: String\n    sizes: [String!]\n    options: [ItemOption!]\n  }\n  ";
-export declare const InventoryItemFragment: string;

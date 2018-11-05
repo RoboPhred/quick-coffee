@@ -18,7 +18,7 @@ const Menu: React.SFC = () => (
         {items && (
           <List>
             {items.map(item => (
-              <MenuItem item={item} />
+              <MenuItem key={item.id} item={item} />
             ))}
           </List>
         )}

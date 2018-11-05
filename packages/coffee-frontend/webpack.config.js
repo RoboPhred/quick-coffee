@@ -14,8 +14,8 @@ const isProd = process.env.NODE_ENV === "production";
 
 const COFFEE_ENDPOINT =
   process.env.COFFEE_ENDPOINT || isProd
-    ? "http://coffee-endpoint-url-insert-here/graphql"
-    : "http://localhost:4000/graphql";
+    ? "http://coffee-endpoint-url-insert-here"
+    : "http://localhost:4000";
 
 module.exports = {
   mode: isProd ? "production" : "development",

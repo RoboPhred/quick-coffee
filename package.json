@@ -9,5 +9,6 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^3.4.3"
-  }
+  },
+  "dependencies": {}
 }
