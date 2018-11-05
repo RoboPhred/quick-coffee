@@ -8,16 +8,23 @@ import Typography from "@material-ui/core/Typography";
 export interface BooleanOptionProps {
   className?: string;
   option: BooleanItemOption;
+  value: boolean;
+  onChange(value: boolean): void;
 }
 
 type Props = BooleanOptionProps;
 
-const BooleanOption: React.SFC<Props> = ({ className, option }) => (
+const BooleanOption: React.SFC<Props> = ({
+  className,
+  option,
+  value,
+  onChange
+}) => (
   <div className={className}>
     <Typography component="span" variant="body1">
       {option.name}
     </Typography>
-    <Checkbox defaultChecked={option.default} />
+    <Checkbox checked={value} onChange={e => onChange(e.target.checked)} />
   </div>
 );
 export default BooleanOption;

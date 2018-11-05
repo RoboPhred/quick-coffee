@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { find } from "lodash-es";
-
 import { RouteComponentProps } from "react-router-dom";
 
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
@@ -16,6 +14,21 @@ import ItemProvider from "@/services/backend/components/ItemProvider";
 import AppPageContainer from "@/components/AppPageContainer";
 
 import OptionsForm from "./components/OptionsForm";
+import { autobind } from "core-decorators";
+import { ItemOption, InventoryItem } from "coffee-types";
+
+export type OrderFormProps = RouteComponentProps<{ item: string }>;
+
+interface DataProps {
+  isLoading: boolean;
+  item: InventoryItem | null;
+  errorMessage: string | null;
+}
+
+type Props = OrderFormProps & DataProps & StyleProps<ReturnType<typeof styles>>;
+interface State {
+  optionValues: Record<string, any>;
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,53 +54,117 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = RouteComponentProps<{ item: string }> &
-  StyleProps<ReturnType<typeof styles>>;
+class OrderForm extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-const OrderForm: React.SFC<Props> = ({ classes, match }) => (
-  <ItemProvider itemId={match.params.item}>
-    {({ isLoading, item, errorMessage }) => {
-      if (!item || isLoading) {
-        // No data loaded yet.
-        return <CircularProgress />;
-      }
+    const { item } = props;
+    this.state = {
+      optionValues:
+        item && item.options ? generateOptionDefaults(item.options) : {}
+    };
+  }
 
-      if (errorMessage) {
-        return errorMessage;
-      }
+  componentDidUpdate(oldProps: Props) {
+    if (oldProps.item !== this.props.item) {
+      const { item } = this.props;
+      this.setState({
+        optionValues:
+          item && item.options ? generateOptionDefaults(item.options) : {}
+      });
+    }
+  }
 
-      return (
-        <AppPageContainer title={`Order - ${item.name}`}>
-          <div className={classes.root}>
-            <div className={classes.header}>
-              <Typography variant="h6">{item.name}</Typography>
-              {item.description && (
-                <Typography variant="subtitle1">{item.description}</Typography>
-              )}
-            </div>
-            {item.options && (
-              <React.Fragment>
-                <Divider />
-                <OptionsForm
-                  className={classes.options}
-                  options={item.options}
-                />
-                <Divider />
-              </React.Fragment>
+  render() {
+    const { classes, item, isLoading, errorMessage } = this.props;
+    const { optionValues } = this.state;
+    if (!item || isLoading) {
+      // No data loaded yet.
+      return <CircularProgress />;
+    }
+
+    if (errorMessage) {
+      return errorMessage;
+    }
+
+    return (
+      <AppPageContainer title={`Order - ${item.name}`}>
+        <div className={classes.root}>
+          <div className={classes.header}>
+            <Typography variant="h6">{item.name}</Typography>
+            {item.description && (
+              <Typography variant="subtitle1">{item.description}</Typography>
             )}
-            <div>
-              <Button
-                className={classes.action}
-                color="primary"
-                variant="contained"
-              >
-                Order
-              </Button>
-            </div>
           </div>
-        </AppPageContainer>
-      );
-    }}
+          {item.options && (
+            <React.Fragment>
+              <Divider />
+              <OptionsForm
+                className={classes.options}
+                options={item.options}
+                values={optionValues}
+                onChange={this._onOptionsChanged}
+              />
+              <Divider />
+            </React.Fragment>
+          )}
+          <div>
+            <Button
+              className={classes.action}
+              color="primary"
+              variant="contained"
+            >
+              Order
+            </Button>
+          </div>
+        </div>
+      </AppPageContainer>
+    );
+  }
+
+  @autobind()
+  private _onOptionsChanged(values: { [option: string]: any }) {
+    this.setState({
+      optionValues: values
+    });
+  }
+}
+
+const OPTION_TYPE_DEFAULTS: Record<ItemOption["type"], any> = {
+  boolean: false,
+  integer: 0,
+  select: "",
+  text: ""
+};
+
+function generateOptionDefaults(options: ItemOption[]): Record<string, any> {
+  const defaults: Record<string, any> = {};
+  for (const option of options) {
+    if (option.default) {
+      defaults[option.id] = option.default;
+      continue;
+    }
+
+    if (OPTION_TYPE_DEFAULTS[option.type] !== undefined) {
+      defaults[option.id] = OPTION_TYPE_DEFAULTS[option.type];
+      continue;
+    }
+
+    defaults[option.id] = null;
+  }
+  return defaults;
+}
+
+// We need to have the item data available during lifecycle hooks in OrderForm,
+//  so wrap the component with another component to inject the provided props.
+type OrderFormDataWrapperProps = OrderFormProps &
+  StyleProps<ReturnType<typeof styles>>;
+const OrderFormDataLoader: React.SFC<OrderFormDataWrapperProps> = ({
+  match,
+  ...outerProps
+}) => (
+  <ItemProvider itemId={match.params.item}>
+    {itemProps => <OrderForm match={match} {...outerProps} {...itemProps} />}
   </ItemProvider>
 );
-export default withStyles(styles)(OrderForm);
+export default withStyles(styles)(OrderFormDataLoader);

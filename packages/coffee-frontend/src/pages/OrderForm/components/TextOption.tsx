@@ -10,6 +10,8 @@ import { createStyles, withStyles } from "@material-ui/core/styles";
 export interface TextOptionProps {
   className?: string;
   option: TextItemOption;
+  value: string;
+  onChange(value: string): void;
 }
 
 const styles = createStyles({
@@ -20,15 +22,22 @@ const styles = createStyles({
 
 type Props = TextOptionProps & StyleProps<typeof styles>;
 
-const TextOption: React.SFC<Props> = ({ className, classes, option }) => (
+const TextOption: React.SFC<Props> = ({
+  className,
+  classes,
+  option,
+  value,
+  onChange
+}) => (
   <div className={className}>
     <Typography component="span" variant="body1">
       {option.name}
     </Typography>
     <Input
       className={classes.input}
-      defaultValue={option.default}
+      value={value || ""}
       placeholder={option.placeholder}
+      onChange={e => onChange(e.target.value)}
     />
   </div>
 );

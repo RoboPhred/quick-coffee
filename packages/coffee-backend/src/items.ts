@@ -8,23 +8,28 @@ const items: InventoryItem[] = [
     sizes: ["Small", "Medium", "Large"],
     options: [
       {
+        id: "creamer",
         name: "Creamer",
         type: "select",
         choices: ["None", "Hazelnut", "French Vanilla"],
         default: "None"
       },
       {
+        id: "expresso-shots",
         name: "Expresso Shots",
         type: "integer",
         default: 0
       },
       {
+        id: "hot",
         name: "Hot",
         type: "boolean"
       },
       {
+        id: "foobar",
         name: "Foobar",
-        type: "text"
+        type: "text",
+        placeholder: "This is a placeholder"
       }
     ]
   },
@@ -33,6 +38,7 @@ const items: InventoryItem[] = [
     name: "Hot Chocolate",
     options: [
       {
+        id: "whipped-cream",
         name: "Whipped Cream",
         type: "boolean",
         default: true

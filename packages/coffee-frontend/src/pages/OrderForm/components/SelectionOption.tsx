@@ -10,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 export interface SelectionOptionProps {
   className?: string;
   option: SelectionItemOption;
+  value: string;
+  onChange(value: string): void;
 }
 
 const styles = createStyles({
@@ -20,11 +22,23 @@ const styles = createStyles({
 
 type Props = SelectionOptionProps & StyleProps<typeof styles>;
 
-const SelectionOption: React.SFC<Props> = ({ className, classes, option }) => (
+const SelectionOption: React.SFC<Props> = ({
+  className,
+  classes,
+  option,
+  value,
+  onChange
+}) => (
   // TODO: Toggle native based on if we are on a phone or not
   <div className={className}>
     <Typography variant="body1">{option.name}</Typography>
-    <Select className={classes.select} native defaultValue={option.default}>
+    <Select
+      className={classes.select}
+      native
+      defaultValue={option.default}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+    >
       {option.choices.map(choice => (
         <option key={choice} value={choice}>
           {choice}
