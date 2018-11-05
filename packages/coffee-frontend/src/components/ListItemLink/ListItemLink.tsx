@@ -14,6 +14,7 @@ const ListItemLink: React.SFC<Props> = ({
   children,
   history,
   to,
+  staticContext,
   ...props
 }) => (
   <ListItem

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
@@ -22,7 +22,8 @@ const Routes: React.SFC = () => (
 
       return (
         <Switch>
-          <Route path="/" exact component={Menu} />
+          <Redirect path="/" exact to="/menu" />
+          <Route path="/menu" exact component={Menu} />
           <Route path="/order-item/:item" exact component={OrderFormPage} />
           {/* Keep this component last.  It is a catch-all that displays the 404 page. */}
           <Route component={PageNotFound} />
