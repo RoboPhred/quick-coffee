@@ -1,18 +1,22 @@
 import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
-import cors from "@koa/cors";
 
 import openRouter from "./open";
 import itemsRouter from "./items";
+import ordersRouter from "./orders";
 
-const router = new Router();
-router.use(cors());
-router.use(bodyParser());
+const apiRouter = new Router();
+apiRouter.use(
+  bodyParser({
+    enableTypes: ["json"]
+  })
+);
 
-applyRouter(router, openRouter);
-applyRouter(router, itemsRouter);
+applyRouter(apiRouter, openRouter);
+applyRouter(apiRouter, itemsRouter);
+applyRouter(apiRouter, ordersRouter);
 
-export default router;
+export default apiRouter;
 
 function applyRouter(target: Router, router: Router) {
   target.use(router.routes());

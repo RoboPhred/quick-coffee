@@ -31,3 +31,5 @@ router.post("/", async (ctx, next) => {
   ctx.body = { order };
   next();
 });
+
+export default router;
