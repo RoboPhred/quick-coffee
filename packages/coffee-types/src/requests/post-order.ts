@@ -1,8 +1,10 @@
 import { OrderedItem } from "../types";
-import { Omit } from "../common";
 
 export interface PostOrderRequest {
-  order: Omit<OrderedItem, "id">;
+  order: {
+    itemId: string;
+    options: Record<string, number | string | boolean>;
+  };
 }
 export interface PostOrderResponse {
   order: OrderedItem;
