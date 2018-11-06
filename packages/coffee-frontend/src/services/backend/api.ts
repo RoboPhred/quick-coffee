@@ -1,4 +1,12 @@
-import { InventoryItem, ListInventoryItem } from "coffee-types";
+import {
+  InventoryItem,
+  ListInventoryItem,
+  OrderedItem,
+  PostOrderRequest,
+  PostOrderResponse,
+  GetOrdersResponse,
+  ListOrderedItem
+} from "coffee-types";
 
 export async function getIsOpen(): Promise<boolean> {
   const result = await apiFetch("GET", "/open");
@@ -19,6 +27,26 @@ export async function getItem(itemId: string): Promise<InventoryItem> {
   return result;
 }
 
+export async function addOrder(
+  request: PostOrderRequest
+): Promise<OrderedItem> {
+  if (!request || typeof request !== "object") {
+    throw new Error("Invalid order.");
+  }
+
+  const response: PostOrderResponse = await apiFetch(
+    "POST",
+    `/orders`,
+    request
+  );
+  return response.order;
+}
+
+export async function getOrders(): Promise<ListOrderedItem[]> {
+  const response: GetOrdersResponse = await apiFetch("GET", "/orders");
+  return response.orders;
+}
+
 async function apiFetch(
   method: string,
   path: string,
@@ -36,7 +64,7 @@ async function apiFetch(
     })
   };
   const response = await fetch(`${process.env.COFFEE_ENDPOINT}${path}`, init);
-  if (response.status !== 200) {
+  if (response.status < 200 || response.status > 299) {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
 

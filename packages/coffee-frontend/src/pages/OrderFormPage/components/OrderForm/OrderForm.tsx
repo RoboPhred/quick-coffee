@@ -1,17 +1,19 @@
 import * as React from "react";
 
+import { autobind } from "core-decorators";
+import { ItemOption, InventoryItem, OrderRequestItem } from "coffee-types";
+
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
-import OptionsForm from "./OptionsForm";
-import { autobind } from "core-decorators";
-import { ItemOption, InventoryItem } from "coffee-types";
+import OptionsForm from "./components/OptionsForm";
 
 interface OrderFormProps {
   item: InventoryItem;
+  onOrder(order: OrderRequestItem): void;
 }
 
 type Props = OrderFormProps & StyleProps<ReturnType<typeof styles>>;
@@ -93,6 +95,7 @@ class OrderForm extends React.Component<Props, State> {
             className={classes.action}
             color="primary"
             variant="contained"
+            onClick={this._onOrder}
           >
             Order
           </Button>
@@ -106,6 +109,19 @@ class OrderForm extends React.Component<Props, State> {
     this.setState({
       optionValues: values
     });
+  }
+
+  @autobind()
+  private _onOrder() {
+    const { item, onOrder } = this.props;
+    const { optionValues } = this.state;
+
+    const request: OrderRequestItem = {
+      itemId: item.id,
+      options: { ...optionValues }
+    };
+
+    onOrder(request);
   }
 }
 

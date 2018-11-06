@@ -1,21 +1,21 @@
 import * as React from "react";
 
-import { ListInventoryItem } from "coffee-types";
-import { getItems } from "../api";
+import { ListOrderedItem } from "coffee-types";
+import { getOrders } from "../api";
 
-export interface ItemListProviderRenderProps {
+export interface OrdersProviderRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
-  items: ListInventoryItem[] | null;
+  orders: ListOrderedItem[] | null;
 }
 
-export interface ItemListProviderProps {
-  children(props: ItemListProviderRenderProps): React.ReactChild;
+export interface OrdersProviderProps {
+  children(props: OrdersProviderRenderProps): React.ReactChild;
 }
 
-type Props = ItemListProviderProps;
-type State = ItemListProviderRenderProps;
-export default class ItemListProvider extends React.Component<Props, State> {
+type Props = OrdersProviderProps;
+type State = OrdersProviderRenderProps;
+export default class OrdersProvider extends React.Component<Props, State> {
   private _unmounted: boolean = false;
 
   constructor(props: Props) {
@@ -24,7 +24,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       errorMessage: null,
-      items: null
+      orders: null
     };
   }
 
@@ -37,16 +37,16 @@ export default class ItemListProvider extends React.Component<Props, State> {
   }
 
   render() {
-    const { errorMessage, items, isLoading } = this.state;
+    const { errorMessage, orders, isLoading } = this.state;
     const { children } = this.props;
-    return React.Children.only(children({ errorMessage, items, isLoading }));
+    return React.Children.only(children({ errorMessage, orders, isLoading }));
   }
 
   async fetchData() {
     this.setState({ isLoading: true });
 
     try {
-      const result = await getItems();
+      const result = await getOrders();
 
       if (this._unmounted) {
         return;
@@ -54,7 +54,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
 
       this.setState({
         isLoading: false,
-        items: result
+        orders: result
       });
     } catch {
       if (this._unmounted) {
@@ -63,7 +63,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
 
       this.setState({
         isLoading: false,
-        items: null,
+        orders: null,
         errorMessage: "An error occurred"
       });
     }
