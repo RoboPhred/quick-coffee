@@ -4,6 +4,10 @@ import OrdersProvider from "@/services/backend/components/OrdersProvider";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+
 import AppPageContainer from "@/components/AppPageContainer";
 
 const OrdersPage: React.SFC = () => (
@@ -11,7 +15,15 @@ const OrdersPage: React.SFC = () => (
     {({ isLoading, orders }) => (
       <AppPageContainer title="Orders">
         {isLoading && <CircularProgress />}
-        {orders && JSON.stringify(orders, null, 2)}
+        {orders && (
+          <List>
+            {orders.map(order => (
+              <ListItem key={order.id}>
+                <ListItemText>{order.itemName}</ListItemText>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </AppPageContainer>
     )}
   </OrdersProvider>

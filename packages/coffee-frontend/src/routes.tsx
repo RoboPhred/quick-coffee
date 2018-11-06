@@ -4,10 +4,10 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
-import AppLoading from "./pages/AppLoading";
-import Menu from "./pages/Menu";
+import AppLoadingPage from "./pages/AppLoadingPage";
+import MenuPage from "./pages/MenuPage";
 import PageNotFound from "./pages/PageNotFound";
-import OrderingDisabled from "./pages/OrderingDisabled";
+import OrderingDisabledPage from "./pages/OrderingDisabledPage";
 import OrderFormPage from "./pages/OrderFormPage";
 import OrdersPage from "./pages/OrdersPage";
 
@@ -15,16 +15,16 @@ const Routes: React.SFC = () => (
   <OrderingEnabledProvider>
     {({ isOrderingEnabled }) => {
       if (isOrderingEnabled === null) {
-        return <AppLoading />;
+        return <AppLoadingPage />;
       }
       if (isOrderingEnabled === false) {
-        return <OrderingDisabled />;
+        return <OrderingDisabledPage />;
       }
 
       return (
         <Switch>
           <Redirect path="/" exact to="/menu" />
-          <Route path="/menu" exact component={Menu} />
+          <Route path="/menu" exact component={MenuPage} />
           <Route path="/order-item/:item" exact component={OrderFormPage} />
           <Route path="/orders" exact component={OrdersPage} />
           {/* Keep this component last.  It is a catch-all that displays the 404 page. */}

@@ -10,7 +10,7 @@ import AppPageContainer from "@/components/AppPageContainer";
 import MenuItem from "./components/MenuItem";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
-const Menu: React.SFC = () => (
+const MenuPage: React.SFC = () => (
   <ItemListProvider>
     {({ isLoading, errorMessage, items }) => (
       <AppPageContainer title="Menu">
@@ -27,4 +27,4 @@ const Menu: React.SFC = () => (
     )}
   </ItemListProvider>
 );
-export default Menu;
+export default MenuPage;
