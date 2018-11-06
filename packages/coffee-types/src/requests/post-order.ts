@@ -1,9 +1,9 @@
 import { OrderedItem } from "../types";
 import { Omit } from "../common";
 
-export interface PutOrderRequest {
+export interface PostOrderRequest {
   order: Omit<OrderedItem, "id">;
 }
-export interface PutOrderResponse {
+export interface PostOrderResponse {
   order: OrderedItem;
 }
