@@ -1,5 +1,8 @@
-import Endpoint from "./endpoint/Endpoint";
+import Koa from "koa";
 
-const endpoint = new Endpoint();
-endpoint.start();
-console.log("Endpoint started");
+import endpointRouter from "./endpoint";
+
+const app = new Koa();
+app.use(endpointRouter.routes());
+app.use(endpointRouter.allowedMethods());
+app.listen(4000);
