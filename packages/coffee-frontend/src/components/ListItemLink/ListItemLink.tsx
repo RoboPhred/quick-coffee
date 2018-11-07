@@ -1,9 +1,10 @@
 import * as React from "react";
 
+import { autobind } from "core-decorators";
+
 import { withRouter, RouteComponentProps } from "react-router";
 
 import ListItem, { ListItemProps } from "@material-ui/core/ListItem";
-import { autobind } from "core-decorators";
 
 export interface MenuItemProps
   extends Omit<ListItemProps, "href" | "component"> {

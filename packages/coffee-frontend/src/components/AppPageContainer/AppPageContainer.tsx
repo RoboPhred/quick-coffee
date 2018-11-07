@@ -10,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 
+import AppBottomNavigation from "./components/BottomNavigation";
+
 export interface AppContainerProps {
   title?: string;
   subPage?: boolean;
@@ -68,6 +70,11 @@ const AppPageContainer: React.SFC<Props> = ({
       </Toolbar>
     </AppBar>
     <div className={classes.content}>{children}</div>
+    {!subPage && (
+      <div>
+        <AppBottomNavigation />
+      </div>
+    )}
   </div>
 );
 
