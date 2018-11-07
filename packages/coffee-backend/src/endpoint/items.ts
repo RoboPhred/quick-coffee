@@ -5,14 +5,13 @@ import { getItems, getItem } from "../data/items";
 
 const router = new Router({ prefix: "/items" });
 
-router.get("/", async (ctx, next) => {
+router.get("/", async ctx => {
   const items = await getItems();
   ctx.body = items;
   ctx.status = HttpStatusCodes.OK;
-  next();
 });
 
-router.get("/:itemId", async (ctx, next) => {
+router.get("/:itemId", async ctx => {
   const { itemId } = ctx.params;
   try {
     const item = await getItem(itemId);
@@ -23,6 +22,5 @@ router.get("/:itemId", async (ctx, next) => {
       ctx.status = HttpStatusCodes.NOT_FOUND;
     }
   }
-  next();
 });
 export default router;

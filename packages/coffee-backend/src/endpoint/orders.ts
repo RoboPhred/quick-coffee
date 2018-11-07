@@ -7,14 +7,13 @@ import { getOrders, addOrder } from "../data/orders";
 
 const router = new Router({ prefix: "/orders" });
 
-router.get("/", async (ctx, next) => {
+router.get("/", async ctx => {
   const orders = await getOrders();
   ctx.body = { orders };
   ctx.status = HttpStatusCodes.OK;
-  next();
 });
 
-router.post("/", async (ctx, next) => {
+router.post("/", async ctx => {
   const orderRequest: PostOrderRequest = ctx.request.body as any;
   if (
     !orderRequest ||
@@ -22,14 +21,12 @@ router.post("/", async (ctx, next) => {
     !orderRequest.order
   ) {
     ctx.status = HttpStatusCodes.BAD_REQUEST;
-    next();
     return;
   }
 
   const order = addOrder(orderRequest.order);
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { order };
-  next();
 });
 
 export default router;
