@@ -15,8 +15,8 @@ const items: InventoryItem[] = [
         default: "None"
       },
       {
-        id: "expresso-shots",
-        name: "Expresso Shots",
+        id: "espresso-shots",
+        name: "Espresso Shots",
         type: "integer",
         default: 0
       },
