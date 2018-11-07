@@ -1,11 +1,10 @@
 import {
   InventoryItem,
   ListInventoryItem,
-  OrderedItem,
   PostOrderRequest,
   PostOrderResponse,
   GetOrdersResponse,
-  ListOrderedItem
+  OrderedItem
 } from "coffee-types";
 
 export async function getIsOpen(): Promise<boolean> {
@@ -42,7 +41,7 @@ export async function addOrder(
   return response.order;
 }
 
-export async function getOrders(): Promise<ListOrderedItem[]> {
+export async function getOrders(): Promise<OrderedItem[]> {
   const response: GetOrdersResponse = await apiFetch("GET", "/orders");
   return response.orders;
 }

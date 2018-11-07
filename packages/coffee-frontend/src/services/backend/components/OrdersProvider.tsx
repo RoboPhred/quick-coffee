@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { ListOrderedItem } from "coffee-types";
+import { OrderedItem } from "coffee-types";
 import { getOrders } from "../api";
 
 export interface OrdersProviderRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
-  orders: ListOrderedItem[] | null;
+  orders: OrderedItem[] | null;
 }
 
 export interface OrdersProviderProps {
