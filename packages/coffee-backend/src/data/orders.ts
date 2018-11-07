@@ -10,7 +10,9 @@ export async function getOrders(): Promise<ListOrderedItem[]> {
   return orders.map(x => ({
     id: x.id,
     itemId: x.itemId,
-    itemName: x.itemName
+    itemName: x.itemName,
+    dateOrdered: x.dateOrdered,
+    status: x.status
   }));
 }
 
@@ -21,9 +23,12 @@ export async function addOrder(
 
   const orderItem: OrderedItem = {
     ...order,
+    id: uuidV4(),
+    dateOrdered: new Date().toISOString(),
     itemName: item.name,
-    id: uuidV4()
+    status: "pending"
   };
   orders.push(orderItem);
+
   return orderItem;
 }
