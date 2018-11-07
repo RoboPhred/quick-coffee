@@ -61,7 +61,8 @@ async function apiFetch(
     headers: new Headers({
       "Content-Type": "application/json",
       Accept: "application/json"
-    })
+    }),
+    cache: "no-cache"
   };
   const response = await fetch(`${process.env.COFFEE_ENDPOINT}${path}`, init);
   if (response.status < 200 || response.status > 299) {
