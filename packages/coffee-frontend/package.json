@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^3.3.2",
+    "@material-ui/icons": "^3.0.1",
     "coffee-types": "^1.0.0",
     "core-decorators": "^0.20.0",
     "es6-promise": "^4.2.5",

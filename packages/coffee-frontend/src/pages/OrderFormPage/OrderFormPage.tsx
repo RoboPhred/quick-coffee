@@ -39,7 +39,7 @@ class OrderFormPage extends React.Component<Props, State> {
     return (
       <ItemProvider itemId={match.params.item}>
         {props => (
-          <AppPageContainer title="Order">
+          <AppPageContainer title="Order" subPage>
             {this._renderContent(props)}
           </AppPageContainer>
         )}

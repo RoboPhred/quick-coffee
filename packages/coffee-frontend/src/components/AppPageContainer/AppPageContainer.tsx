@@ -1,13 +1,18 @@
 import * as React from "react";
 
+import { RouteComponentProps, withRouter } from "react-router";
+
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBack from "@material-ui/icons/ArrowBack";
 
 export interface AppContainerProps {
-  title: string;
+  title?: string;
+  subPage?: boolean;
 }
 
 const styles = createStyles({
@@ -17,6 +22,10 @@ const styles = createStyles({
     width: "100%",
     height: "100%"
   },
+  backButton: {
+    marginLeft: -12,
+    marginRight: 20
+  },
   content: {
     flexGrow: 1,
     minHeight: 0,
@@ -25,17 +34,36 @@ const styles = createStyles({
   }
 });
 
-type Props = AppContainerProps & StyleProps<typeof styles>;
+type Props = AppContainerProps &
+  StyleProps<typeof styles> &
+  RouteComponentProps;
 
 /**
  * Common container for top-level page components.
  */
-const AppPageContainer: React.SFC<Props> = ({ title, classes, children }) => (
+const AppPageContainer: React.SFC<Props> = ({
+  subPage,
+  title,
+  classes,
+  children,
+  history
+}) => (
   <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
+        {subPage && (
+          <IconButton
+            className={classes.backButton}
+            color="inherit"
+            aria-label="Back"
+            onClick={() => history.goBack()}
+          >
+            <ArrowBack />
+          </IconButton>
+        )}
         <Typography variant="h6" color="inherit">
-          {title}
+          Coffee
+          {title && ` - ${title}`}
         </Typography>
       </Toolbar>
     </AppBar>
@@ -43,4 +71,4 @@ const AppPageContainer: React.SFC<Props> = ({ title, classes, children }) => (
   </div>
 );
 
-export default withStyles(styles)(AppPageContainer);
+export default withStyles(styles)(withRouter(AppPageContainer));
