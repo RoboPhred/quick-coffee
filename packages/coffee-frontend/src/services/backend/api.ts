@@ -55,6 +55,7 @@ async function apiFetch(
   if (path[0] !== "/") {
     path = "/" + path;
   }
+
   const init: RequestInit = {
     method,
     body: body ? JSON.stringify(body) : undefined,
@@ -64,6 +65,7 @@ async function apiFetch(
     }),
     cache: "no-cache"
   };
+
   const response = await fetch(`${process.env.COFFEE_ENDPOINT}${path}`, init);
   if (response.status < 200 || response.status > 299) {
     throw new Error(`${response.status}: ${response.statusText}`);
