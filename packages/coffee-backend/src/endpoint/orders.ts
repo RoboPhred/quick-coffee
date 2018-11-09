@@ -24,7 +24,7 @@ router.post("/", async ctx => {
     return;
   }
 
-  const order = addOrder(orderRequest.order);
+  const order = await addOrder(orderRequest.order);
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { order };
 });

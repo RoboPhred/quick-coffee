@@ -4,6 +4,7 @@ import bodyParser from "koa-bodyparser";
 import openRouter from "./open";
 import itemsRouter from "./items";
 import ordersRouter from "./orders";
+import favoritesRouter from "./favorites";
 
 const apiRouter = new Router();
 apiRouter.use(
@@ -15,6 +16,7 @@ apiRouter.use(
 applyRouter(apiRouter, openRouter);
 applyRouter(apiRouter, itemsRouter);
 applyRouter(apiRouter, ordersRouter);
+applyRouter(apiRouter, favoritesRouter);
 
 export default apiRouter;
 
