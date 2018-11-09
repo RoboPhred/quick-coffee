@@ -1,13 +1,21 @@
 import * as React from "react";
 
 import { autobind } from "core-decorators";
-import { ItemOption, InventoryItem, OrderRequestItem } from "coffee-types";
+
+import {
+  ItemOption,
+  InventoryItem,
+  OrderRequestItem,
+  FavoriteRequestItem
+} from "coffee-types";
 
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
+
+import FavoriteButton from "@/components/FavoriteButton";
 
 import OptionsForm from "./components/OptionsForm";
 
@@ -35,13 +43,22 @@ const styles = (theme: Theme) =>
     },
     options: {
       flexGrow: 1,
+      flexShrink: 1,
       minHeight: 0,
       width: "100%",
       height: "100%"
     },
-    action: {
-      float: "right",
-      margin: theme.spacing.unit
+    actionBar: {
+      display: "flex",
+      flexDirection: "row",
+      flexGrow: 0,
+      flexShrink: 1,
+      justifyContent: "flex-end",
+      padding: theme.spacing.unit,
+      height: 9 * theme.spacing.unit
+    },
+    actionFavorite: {
+      marginRight: 2 * theme.spacing.unit
     }
   });
 
@@ -90,13 +107,14 @@ class OrderForm extends React.Component<Props, State> {
             <Divider />
           </React.Fragment>
         )}
-        <div>
-          <Button
-            className={classes.action}
-            color="primary"
-            variant="contained"
-            onClick={this._onOrder}
-          >
+        <div className={classes.actionBar}>
+          <FavoriteButton
+            order={{
+              itemId: item.id,
+              options: optionValues
+            }}
+          />
+          <Button color="primary" variant="contained" onClick={this._onOrder}>
             Order
           </Button>
         </div>

@@ -4,7 +4,12 @@ import {
   PostOrderRequest,
   PostOrderResponse,
   GetOrdersResponse,
-  OrderedItem
+  OrderedItem,
+  FavoriteRequestItem,
+  PostFavoriteRequest,
+  FavoriteItem,
+  PostFavoriteResponse,
+  GetFavoritesResponse
 } from "coffee-types";
 
 export async function getIsOpen(): Promise<boolean> {
@@ -44,6 +49,22 @@ export async function addOrder(
 export async function getOrders(): Promise<OrderedItem[]> {
   const response: GetOrdersResponse = await apiFetch("GET", "/orders");
   return response.orders;
+}
+
+export async function getFavorites(): Promise<FavoriteItem[]> {
+  const response: GetFavoritesResponse = await apiFetch("GET", "/favorites");
+  return response.favorites;
+}
+
+export async function addFavorite(
+  request: PostFavoriteRequest
+): Promise<FavoriteItem> {
+  const response: PostFavoriteResponse = await apiFetch(
+    "POST",
+    "/favorites",
+    request
+  );
+  return response.favorite;
 }
 
 async function apiFetch(
