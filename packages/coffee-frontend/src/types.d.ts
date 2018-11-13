@@ -4,3 +4,9 @@
 type StyleProps<T> = { classes: { [K in keyof T]: string } };
 
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
+
+declare const __webpack_public_path__: string;
+
+interface Window {
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
+}
