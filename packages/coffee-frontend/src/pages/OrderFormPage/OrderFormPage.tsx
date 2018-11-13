@@ -16,7 +16,8 @@ import ErrorDisplay from "@/components/ErrorDisplay";
 
 import OrderForm from "./components/OrderForm";
 import OrderingDisplay from "./components/OrderingDisplay";
-import { addOrder } from "@/services/backend/api";
+
+import { addOrder } from "@/services/orders/api";
 
 export type OrderFormProps = RouteComponentProps<{ item: string }>;
 type Props = OrderFormProps;

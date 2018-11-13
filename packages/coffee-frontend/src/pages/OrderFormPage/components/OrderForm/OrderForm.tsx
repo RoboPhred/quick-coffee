@@ -2,12 +2,7 @@ import * as React from "react";
 
 import { autobind } from "core-decorators";
 
-import {
-  ItemOption,
-  InventoryItem,
-  OrderRequestItem,
-  FavoriteRequestItem
-} from "coffee-types";
+import { ItemOption, InventoryItem, OrderRequestItem } from "coffee-types";
 
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 

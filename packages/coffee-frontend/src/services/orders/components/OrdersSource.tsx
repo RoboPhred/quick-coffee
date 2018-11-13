@@ -3,19 +3,19 @@ import * as React from "react";
 import { OrderedItem } from "coffee-types";
 import { getOrders } from "../api";
 
-export interface OrdersProviderRenderProps {
+export interface OrdersSourceRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
   orders: OrderedItem[] | null;
 }
 
-export interface OrdersProviderProps {
-  children(props: OrdersProviderRenderProps): React.ReactChild;
+export interface OrdersSourceProps {
+  children(props: OrdersSourceRenderProps): React.ReactChild;
 }
 
-type Props = OrdersProviderProps;
-type State = OrdersProviderRenderProps;
-export default class OrdersProvider extends React.Component<Props, State> {
+type Props = OrdersSourceProps;
+type State = OrdersSourceRenderProps;
+export default class OrdersSource extends React.Component<Props, State> {
   private _unmounted: boolean = false;
 
   constructor(props: Props) {
@@ -56,7 +56,7 @@ export default class OrdersProvider extends React.Component<Props, State> {
         isLoading: false,
         orders: result
       });
-    } catch {
+    } catch (e) {
       if (this._unmounted) {
         return;
       }
@@ -64,7 +64,7 @@ export default class OrdersProvider extends React.Component<Props, State> {
       this.setState({
         isLoading: false,
         orders: null,
-        errorMessage: "An error occurred"
+        errorMessage: e.message
       });
     }
   }

@@ -1,23 +1,5 @@
-import {
-  InventoryItem,
-  ListInventoryItem,
-  PostOrderRequest,
-  PostOrderResponse,
-  GetOrdersResponse,
-  OrderedItem,
-  PostFavoriteRequest,
-  FavoriteItem,
-  PostFavoriteResponse,
-  GetFavoritesResponse
-} from "coffee-types";
-
-export async function login(username: string): Promise<void> {
-  await apiFetch("POST", "/auth/login", {
-    username,
-    // Not used right now.
-    password: "-"
-  });
-}
+import { InventoryItem, ListInventoryItem } from "coffee-types";
+import { authFetch } from "../auth/api";
 
 export async function getIsOpen(): Promise<boolean> {
   const result = await apiFetch("GET", "/open");
@@ -38,46 +20,11 @@ export async function getItem(itemId: string): Promise<InventoryItem> {
   return result;
 }
 
-export async function addOrder(
-  request: PostOrderRequest
-): Promise<OrderedItem> {
-  if (!request || typeof request !== "object") {
-    throw new Error("Invalid order.");
-  }
-
-  const response: PostOrderResponse = await apiFetch(
-    "POST",
-    `/orders`,
-    request
-  );
-  return response.order;
-}
-
-export async function getOrders(): Promise<OrderedItem[]> {
-  const response: GetOrdersResponse = await apiFetch("GET", "/orders");
-  return response.orders;
-}
-
-export async function getFavorites(): Promise<FavoriteItem[]> {
-  const response: GetFavoritesResponse = await apiFetch("GET", "/favorites");
-  return response.favorites;
-}
-
-export async function addFavorite(
-  request: PostFavoriteRequest
-): Promise<FavoriteItem> {
-  const response: PostFavoriteResponse = await apiFetch(
-    "POST",
-    "/favorites",
-    request
-  );
-  return response.favorite;
-}
-
-async function apiFetch(
+export async function apiFetch(
   method: string,
   path: string,
-  body?: any
+  body?: any,
+  headers?: Record<string, string>
 ): Promise<any> {
   if (path[0] !== "/") {
     path = "/" + path;
@@ -86,16 +33,21 @@ async function apiFetch(
   const init: RequestInit = {
     method,
     body: body ? JSON.stringify(body) : undefined,
+    cache: "no-cache",
     headers: new Headers({
       "Content-Type": "application/json",
-      Accept: "application/json"
-    }),
-    cache: "no-cache"
+      Accept: "application/json",
+      ...headers
+    })
   };
 
   const response = await fetch(`${process.env.COFFEE_ENDPOINT}${path}`, init);
   if (response.status < 200 || response.status > 299) {
-    throw new Error(`${response.status}: ${response.statusText}`);
+    const error: ApiError = new Error(
+      `${response.status}: ${response.statusText}`
+    ) as any;
+    error.code = response.status;
+    throw error;
   }
 
   try {
@@ -103,4 +55,10 @@ async function apiFetch(
   } catch {
     throw new Error("Invalid response body.");
   }
+}
+
+// Would usually extend Error here, but cannot rely on object.setPrototypeOf to work.
+export interface ApiError {
+  code: number;
+  message: string;
 }

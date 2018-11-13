@@ -14,7 +14,7 @@ import Button from "@material-ui/core/Button";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-import { addFavorite } from "@/services/backend/api";
+import { addFavorite } from "@/services/favorites/api";
 
 export interface FavoriteButtonProps {
   order: OrderRequestItem;

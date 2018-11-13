@@ -67,7 +67,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
         item: result,
         errorMessage: null
       });
-    } catch {
+    } catch (e) {
       if (this._unmounted) {
         return;
       }
@@ -75,7 +75,7 @@ export default class ItemListProvider extends React.Component<Props, State> {
       this.setState({
         isLoading: false,
         item: null,
-        errorMessage: "An error occurred"
+        errorMessage: e.message
       });
     }
   }

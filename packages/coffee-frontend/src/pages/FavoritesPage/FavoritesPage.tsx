@@ -6,13 +6,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import FavoritesProvider from "@/services/backend/components/FavoritesProvider";
+import FavoritesSource from "@/services/favorites/components/FavoritesSource";
 
 import AppPageContainer from "@/components/AppPageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
 const FavoritesPage: React.SFC = () => (
-  <FavoritesProvider>
+  <FavoritesSource>
     {({ isLoading, favorites, errorMessage }) => (
       <AppPageContainer title="Favorites">
         {isLoading && <CircularProgress />}
@@ -31,6 +31,6 @@ const FavoritesPage: React.SFC = () => (
         )}
       </AppPageContainer>
     )}
-  </FavoritesProvider>
+  </FavoritesSource>
 );
 export default FavoritesPage;

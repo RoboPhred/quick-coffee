@@ -79,7 +79,7 @@ export default class OrderingEnabledProvider extends React.Component<
         isOrderingEnabled: result,
         errorMessage: null
       });
-    } catch {
+    } catch (e) {
       if (this._unmounted) {
         return;
       }
@@ -89,7 +89,7 @@ export default class OrderingEnabledProvider extends React.Component<
         isOrderingEnabled: null,
         // No idea what the error format is, and we probably
         //  dont want to show error details to the user anyway.
-        errorMessage: "An error occurred"
+        errorMessage: e.message
       });
     }
   }

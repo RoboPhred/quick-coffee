@@ -7,8 +7,9 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import { login } from "@/services/auth/api";
+
 import AppPageContainer from "@/components/AppPageContainer";
-import { login } from "@/services/backend/api";
 
 type Props = RouteComponentProps;
 interface State {

@@ -3,19 +3,19 @@ import * as React from "react";
 import { FavoriteItem } from "coffee-types";
 import { getFavorites } from "../api";
 
-export interface FavoritesProviderRenderProps {
+export interface FavoritesSourceRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
   favorites: FavoriteItem[] | null;
 }
 
-export interface FavoritesProviderProps {
-  children(props: FavoritesProviderRenderProps): React.ReactChild;
+export interface FavoritesSourceProps {
+  children(props: FavoritesSourceRenderProps): React.ReactChild;
 }
 
-type Props = FavoritesProviderProps;
-type State = FavoritesProviderRenderProps;
-export default class FavoritesProvider extends React.Component<Props, State> {
+type Props = FavoritesSourceProps;
+type State = FavoritesSourceRenderProps;
+export default class FavoritesSource extends React.Component<Props, State> {
   private _unmounted: boolean = false;
 
   constructor(props: Props) {
@@ -58,7 +58,7 @@ export default class FavoritesProvider extends React.Component<Props, State> {
         isLoading: false,
         favorites: result
       });
-    } catch {
+    } catch (e) {
       if (this._unmounted) {
         return;
       }
@@ -66,7 +66,7 @@ export default class FavoritesProvider extends React.Component<Props, State> {
       this.setState({
         isLoading: false,
         favorites: null,
-        errorMessage: "An error occurred"
+        errorMessage: e.message
       });
     }
   }
