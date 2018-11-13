@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { autobind } from "core-decorators";
+
 import { getIsOpen } from "../api";
 
 export interface OrderingEnabledProviderRenderProps {

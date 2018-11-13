@@ -5,6 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
 import AppLoadingPage from "./pages/AppLoadingPage";
+import LoginPage from "./pages/LoginPage";
 import MenuPage from "./pages/MenuPage";
 import PageNotFound from "./pages/PageNotFound";
 import OrderingDisabledPage from "./pages/OrderingDisabledPage";
@@ -25,9 +26,10 @@ const Routes: React.SFC = () => (
       return (
         <Switch>
           <Redirect path="/" exact to="/menu" />
+          <Route path="/login" exact component={LoginPage} />
           <Route path="/menu" exact component={MenuPage} />
           <Route path="/orders" exact component={OrdersPage} />
-          <Route path="/favorites" component={FavoritesPage} />
+          <Route path="/favorites" exact component={FavoritesPage} />
           <Route path="/order-item/:item" exact component={OrderFormPage} />
           {/* Keep this component last.  It is a catch-all that displays the 404 page. */}
           <Route component={PageNotFound} />

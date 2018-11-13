@@ -5,12 +5,19 @@ import {
   PostOrderResponse,
   GetOrdersResponse,
   OrderedItem,
-  FavoriteRequestItem,
   PostFavoriteRequest,
   FavoriteItem,
   PostFavoriteResponse,
   GetFavoritesResponse
 } from "coffee-types";
+
+export async function login(username: string): Promise<void> {
+  await apiFetch("POST", "/auth/login", {
+    username,
+    // Not used right now.
+    password: "-"
+  });
+}
 
 export async function getIsOpen(): Promise<boolean> {
   const result = await apiFetch("GET", "/open");
