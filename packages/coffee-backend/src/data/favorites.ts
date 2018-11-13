@@ -19,6 +19,7 @@ export async function addFavorite(
     id: uuidV4(),
     itemName: item.name
   };
+  favorites.push(newFavorite);
   return newFavorite;
 }
 

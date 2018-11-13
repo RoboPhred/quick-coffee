@@ -3,9 +3,12 @@ import HttpStatusCodes from "http-status-codes";
 
 import { PostOrderRequest } from "coffee-types";
 
+import { authenticate } from "./auth";
+
 import { getOrders, addOrder } from "../data/orders";
 
 const router = new Router({ prefix: "/orders" });
+router.use(authenticate());
 
 router.get("/", async ctx => {
   const orders = await getOrders();

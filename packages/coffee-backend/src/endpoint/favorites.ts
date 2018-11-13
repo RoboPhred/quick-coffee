@@ -3,9 +3,12 @@ import HttpStatusCodes from "http-status-codes";
 
 import { PostFavoriteRequest } from "coffee-types";
 
+import { authenticate } from "./auth";
+
 import { getFavorites, addFavorite, removeFavorite } from "../data/favorites";
 
 const router = new Router({ prefix: "/favorites" });
+router.use(authenticate());
 
 router.get("/", async ctx => {
   const favorites = await getFavorites();

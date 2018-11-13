@@ -2,17 +2,21 @@
 //  Currently implemented as username-only, with implicit user creation from logins.
 
 // Frustratingly, passport is a singleton.
-//  to keep its logic contained, we re-export it from this file.
 import _passport from "koa-passport";
 export const passport = _passport;
+
+import jwt from "jsonwebtoken";
 
 import HttpStatusCodes from "http-status-codes";
 
 import { Strategy as LocalStrategy } from "passport-local";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
 import Router from "koa-router";
 
 import { User, findUserByUsername, createUser } from "../data/users";
+
+import { JWT_KEY } from "../config";
 
 // Office365 integration can be done with passport-azure-ad
 //  https://github.com/microsoftgraph/msgraph-training-nodeexpressapp/tree/master/Demos/03-add-aad-auth
@@ -49,10 +53,27 @@ _passport.use(
   })
 );
 
+_passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: JWT_KEY
+    },
+    async (jwtPayload: User, callback) => {
+      try {
+        const user = await findUserByUsername(jwtPayload.username);
+        callback(null, user);
+      } catch (e) {
+        callback(e);
+      }
+    }
+  )
+);
+
 const authRouter = new Router({ prefix: "/auth" });
 
 authRouter.post("/login", (ctx, next) => {
-  return passport.authenticate("local", function(err, user, info, status) {
+  return passport.authenticate("local", async function(err, user, info) {
     if (err) {
       ctx.throw(HttpStatusCodes.INTERNAL_SERVER_ERROR);
     }
@@ -61,9 +82,10 @@ authRouter.post("/login", (ctx, next) => {
       ctx.body = { success: false };
       ctx.throw(info.message, HttpStatusCodes.UNAUTHORIZED);
     } else {
-      ctx.body = { success: true };
+      await ctx.login(user, { session: false });
+      const token = jwt.sign(user, JWT_KEY, { expiresIn: "2 days" });
+      ctx.body = { success: true, token };
       ctx.status = HttpStatusCodes.OK;
-      return ctx.login(user);
     }
   })(ctx, next);
 });
@@ -74,3 +96,7 @@ authRouter.post("/logout", ctx => {
 });
 
 export default authRouter;
+
+export function authenticate() {
+  return passport.authenticate("jwt", { session: false });
+}
