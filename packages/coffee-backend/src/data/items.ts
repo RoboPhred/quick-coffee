@@ -69,6 +69,6 @@ export class ItemNotFoundError extends Error {
 
   constructor() {
     super("Item Not Found.");
-    Object.setPrototypeOf(this, ItemNotFoundError);
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
