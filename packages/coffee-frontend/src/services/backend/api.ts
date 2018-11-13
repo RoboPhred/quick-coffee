@@ -1,23 +1,6 @@
-import { InventoryItem, ListInventoryItem } from "coffee-types";
-import { authFetch } from "../auth/api";
-
 export async function getIsOpen(): Promise<boolean> {
   const result = await apiFetch("GET", "/open");
   return result.open;
-}
-
-export async function getItems(): Promise<ListInventoryItem[]> {
-  const result = await apiFetch("GET", "/items");
-  return result;
-}
-
-export async function getItem(itemId: string): Promise<InventoryItem> {
-  if (typeof itemId !== "string" || itemId === "") {
-    throw new Error("Invalid item id.");
-  }
-
-  const result = await apiFetch("GET", `/items/${itemId}`);
-  return result;
 }
 
 export async function apiFetch(

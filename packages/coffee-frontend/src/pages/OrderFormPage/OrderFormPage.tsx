@@ -7,9 +7,9 @@ import { OrderRequestItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import ItemProvider, {
-  ItemProviderRenderProps
-} from "@/services/backend/components/ItemProvider";
+import ItemSource, {
+  ItemSourceRenderProps
+} from "@/services/menu/components/ItemSource";
 
 import AppPageContainer from "@/components/AppPageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
@@ -38,17 +38,17 @@ class OrderFormPage extends React.Component<Props, State> {
   render() {
     const { match } = this.props;
     return (
-      <ItemProvider itemId={match.params.item}>
+      <ItemSource itemId={match.params.item}>
         {props => (
           <AppPageContainer title="Order" subPage>
             {this._renderContent(props)}
           </AppPageContainer>
         )}
-      </ItemProvider>
+      </ItemSource>
     );
   }
 
-  private _renderContent(props: ItemProviderRenderProps) {
+  private _renderContent(props: ItemSourceRenderProps) {
     const { isLoading, errorMessage: itemErrorMessage, item } = props;
     const { isOrdering, errorMessage } = this.state;
 

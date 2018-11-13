@@ -3,19 +3,19 @@ import * as React from "react";
 import { ListInventoryItem } from "coffee-types";
 import { getItems } from "../api";
 
-export interface ItemListProviderRenderProps {
+export interface ItemListSourceRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
   items: ListInventoryItem[] | null;
 }
 
-export interface ItemListProviderProps {
-  children(props: ItemListProviderRenderProps): React.ReactChild;
+export interface ItemListSourceProps {
+  children(props: ItemListSourceRenderProps): React.ReactChild;
 }
 
-type Props = ItemListProviderProps;
-type State = ItemListProviderRenderProps;
-export default class ItemListProvider extends React.Component<Props, State> {
+type Props = ItemListSourceProps;
+type State = ItemListSourceRenderProps;
+export default class ItemListSource extends React.Component<Props, State> {
   private _unmounted: boolean = false;
 
   constructor(props: Props) {
