@@ -11,7 +11,7 @@ const router = new Router({ prefix: "/favorites" });
 router.use(authenticate());
 
 router.get("/", async ctx => {
-  const favorites = await getFavorites();
+  const favorites = await getFavorites(ctx.state.user);
   ctx.body = { favorites };
   ctx.status = HttpStatusCodes.OK;
 });
@@ -27,14 +27,14 @@ router.post("/", async ctx => {
     return;
   }
 
-  const favorite = await addFavorite(favoriteRequest.favorite);
+  const favorite = await addFavorite(favoriteRequest.favorite, ctx.state.user);
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { favorite };
 });
 
 router.del("/:favoriteId", async ctx => {
   const { favoriteId } = ctx.params;
-  const isDeleted = await removeFavorite(favoriteId);
+  const isDeleted = await removeFavorite(favoriteId, ctx.state.user);
   if (isDeleted) {
     ctx.body = { status: "ok" };
     ctx.status = HttpStatusCodes.OK;

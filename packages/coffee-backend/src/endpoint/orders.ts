@@ -11,7 +11,7 @@ const router = new Router({ prefix: "/orders" });
 router.use(authenticate());
 
 router.get("/", async ctx => {
-  const orders = await getOrders();
+  const orders = await getOrders(ctx.state.user);
   ctx.body = { orders };
   ctx.status = HttpStatusCodes.OK;
 });
@@ -27,7 +27,7 @@ router.post("/", async ctx => {
     return;
   }
 
-  const order = await addOrder(orderRequest.order);
+  const order = await addOrder(orderRequest.order, ctx.state.user);
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { order };
 });
