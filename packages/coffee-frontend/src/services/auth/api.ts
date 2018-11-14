@@ -25,6 +25,11 @@ export async function login(username: string): Promise<boolean> {
   return false;
 }
 
+export async function getIsLoggedIn() {
+  // TODO: Confirm token is valid.
+  return localStorage.getItem(LOCALSTORAGE_TOKEN) !== null;
+}
+
 export async function logout() {
   localStorage.removeItem(LOCALSTORAGE_TOKEN);
 }

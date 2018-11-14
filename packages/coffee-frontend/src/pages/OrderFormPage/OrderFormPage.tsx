@@ -7,6 +7,7 @@ import { OrderRequestItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import Authenticate from "@/services/auth/components/Authenticate";
 import ItemSource, {
   ItemSourceRenderProps
 } from "@/services/menu/components/ItemSource";
@@ -38,13 +39,15 @@ class OrderFormPage extends React.Component<Props, State> {
   render() {
     const { match } = this.props;
     return (
-      <ItemSource itemId={match.params.item}>
-        {props => (
-          <AppPageContainer title="Order" subPage>
-            {this._renderContent(props)}
-          </AppPageContainer>
-        )}
-      </ItemSource>
+      <Authenticate>
+        <ItemSource itemId={match.params.item}>
+          {props => (
+            <AppPageContainer title="Order" back>
+              {this._renderContent(props)}
+            </AppPageContainer>
+          )}
+        </ItemSource>
+      </Authenticate>
     );
   }
 

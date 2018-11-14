@@ -13,7 +13,7 @@ import ErrorDisplay from "@/components/ErrorDisplay";
 const MenuPage: React.SFC = () => (
   <ItemListSource>
     {({ isLoading, errorMessage, items }) => (
-      <AppPageContainer title="Menu">
+      <AppPageContainer title="Menu" navigation>
         {isLoading && <CircularProgress />}
         {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
         {items && (

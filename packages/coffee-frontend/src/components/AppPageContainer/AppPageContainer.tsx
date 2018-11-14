@@ -14,7 +14,8 @@ import AppBottomNavigation from "./components/BottomNavigation";
 
 export interface AppContainerProps {
   title?: string;
-  subPage?: boolean;
+  navigation?: boolean;
+  back?: boolean;
 }
 
 const styles = createStyles({
@@ -44,8 +45,9 @@ type Props = AppContainerProps &
  * Common container for top-level page components.
  */
 const AppPageContainer: React.SFC<Props> = ({
-  subPage,
   title,
+  navigation,
+  back,
   classes,
   children,
   history
@@ -53,7 +55,7 @@ const AppPageContainer: React.SFC<Props> = ({
   <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
-        {subPage && (
+        {back && (
           <IconButton
             className={classes.backButton}
             color="inherit"
@@ -70,7 +72,7 @@ const AppPageContainer: React.SFC<Props> = ({
       </Toolbar>
     </AppBar>
     <div className={classes.content}>{children}</div>
-    {!subPage && (
+    {navigation && (
       <div>
         <AppBottomNavigation />
       </div>
