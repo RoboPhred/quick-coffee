@@ -30,10 +30,10 @@ const OrderListItem: React.SFC<Props> = ({ classes, item }) => {
   return (
     <ListItem className={classes.root}>
       <div>
-        <Typography variant="h6">{item.itemName}</Typography>
         <Typography variant="caption">
           {date.format("MMM Do YYYY, h:mm a")}
         </Typography>
+        <Typography variant="h6">{item.itemName}</Typography>
       </div>
       <div className={classes.right}>{item.status}</div>
     </ListItem>
