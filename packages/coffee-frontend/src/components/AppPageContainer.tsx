@@ -10,7 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 
-import AppBottomNavigation from "./components/BottomNavigation";
+import BottomNavigation from "@/components/BottomNavigation";
+import ProfileButton from "@/components/ProfileButton";
 
 export interface AppContainerProps {
   title?: string;
@@ -24,6 +25,9 @@ const styles = createStyles({
     flexDirection: "column",
     width: "100%",
     height: "100%"
+  },
+  appTitle: {
+    flexGrow: 1
   },
   backButton: {
     marginLeft: -12,
@@ -65,16 +69,17 @@ const AppPageContainer: React.SFC<Props> = ({
             <ArrowBack />
           </IconButton>
         )}
-        <Typography variant="h6" color="inherit">
+        <Typography className={classes.appTitle} variant="h6" color="inherit">
           Coffee
           {title && ` - ${title}`}
         </Typography>
+        <ProfileButton />
       </Toolbar>
     </AppBar>
     <div className={classes.content}>{children}</div>
     {navigation && (
       <div>
-        <AppBottomNavigation />
+        <BottomNavigation />
       </div>
     )}
   </div>

@@ -5,11 +5,11 @@ import { autobind } from "core-decorators";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 
-import { getIsLoggedIn, login } from "../api";
-
 import AppPageContainer from "@/components/AppPageContainer";
 
-import LoginForm from "./LoginForm";
+import LoginForm from "./components/LoginForm";
+
+import { getIsLoggedIn, login } from "../../api";
 
 type Props = {};
 interface State {
