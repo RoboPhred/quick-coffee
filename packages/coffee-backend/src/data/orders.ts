@@ -17,12 +17,15 @@ export async function addOrder(
 ): Promise<OrderedItem> {
   const item = await getItem(order.itemId);
 
+  const isoNow = new Date().toISOString();
+
   const orderItem: OrderedItem = {
     ...order,
     id: uuidV4(),
-    dateOrdered: new Date().toISOString(),
+    orderedDate: isoNow,
     itemName: item.name,
-    status: "pending"
+    status: "pending",
+    statusChangeDate: isoNow
   };
 
   let userOrders = orders.get(user.username);
