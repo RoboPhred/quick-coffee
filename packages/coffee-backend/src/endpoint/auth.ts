@@ -13,10 +13,12 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
 import Router from "koa-router";
+import compose from "koa-compose";
 
 import { User, findUserByUsername, createUser } from "../data/users";
 
 import { JWT_KEY } from "../config";
+import { Middleware, Context } from "koa";
 
 // Office365 integration can be done with passport-azure-ad
 //  https://github.com/microsoftgraph/msgraph-training-nodeexpressapp/tree/master/Demos/03-add-aad-auth
@@ -97,6 +99,23 @@ authRouter.post("/logout", ctx => {
 
 export default authRouter;
 
-export function authenticate() {
-  return passport.authenticate("jwt", { session: false });
+export function authenticate(role?: string): Middleware {
+  return compose([
+    passport.authenticate("jwt", { session: false }),
+    (ctx: Context, next) => {
+      const user: User | null = ctx.state.user;
+
+      if (!user) {
+        ctx.response.status = HttpStatusCodes.UNAUTHORIZED;
+        return;
+      }
+
+      if (role && user.role !== role) {
+        ctx.response.status = HttpStatusCodes.UNAUTHORIZED;
+        return;
+      }
+
+      return next();
+    }
+  ]);
 }

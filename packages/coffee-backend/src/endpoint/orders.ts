@@ -5,13 +5,13 @@ import { PostOrderRequest } from "coffee-types";
 
 import { authenticate } from "./auth";
 
-import { getOrders, addOrder } from "../data/orders";
+import { getOrdersByUser, addOrder } from "../data/orders";
 
 const router = new Router({ prefix: "/orders" });
 router.use(authenticate());
 
 router.get("/", async ctx => {
-  const orders = await getOrders(ctx.state.user);
+  const orders = await getOrdersByUser(ctx.state.user);
   ctx.body = { orders };
   ctx.status = HttpStatusCodes.OK;
 });

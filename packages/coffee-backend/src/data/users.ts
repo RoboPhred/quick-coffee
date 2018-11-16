@@ -25,7 +25,10 @@ export async function createUser(username: string): Promise<User> {
   }
 
   // TODO: Remove default admin.  Replace with method of creating default account on startup.
-  const user: User = { username, role: "barista" };
+  const user: User = {
+    username,
+    role: username === "barista" ? "barista" : "user"
+  };
 
   users[username] = user;
   return user;

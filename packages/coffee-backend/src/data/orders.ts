@@ -7,8 +7,16 @@ import { User } from "./users";
 // Temp data storage, replace with db.
 const orders = new Map<string, OrderedItem[]>();
 
-export async function getOrders(user: User): Promise<OrderedItem[]> {
+export async function getOrdersByUser(user: User): Promise<OrderedItem[]> {
   return orders.get(user.username) || [];
+}
+
+export async function getAllOrders(): Promise<OrderedItem[]> {
+  const allOrders: OrderedItem[] = [];
+  for (const userOrders of orders.values()) {
+    allOrders.push(...userOrders);
+  }
+  return allOrders;
 }
 
 export async function addOrder(
@@ -22,6 +30,7 @@ export async function addOrder(
   const orderItem: OrderedItem = {
     ...order,
     id: uuidV4(),
+    orderCreatorUsername: user.username,
     orderDate: isoNow,
     itemName: item.name,
     status: "pending",

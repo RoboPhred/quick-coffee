@@ -7,6 +7,7 @@ import openRouter from "./open";
 import itemsRouter from "./items";
 import ordersRouter from "./orders";
 import favoritesRouter from "./favorites";
+import baristaRouter from "./barista";
 
 const apiRouter = new Router();
 apiRouter.use(
@@ -23,6 +24,7 @@ applyRouter(apiRouter, openRouter);
 applyRouter(apiRouter, itemsRouter);
 applyRouter(apiRouter, ordersRouter);
 applyRouter(apiRouter, favoritesRouter);
+applyRouter(apiRouter, baristaRouter);
 
 export default apiRouter;
 
