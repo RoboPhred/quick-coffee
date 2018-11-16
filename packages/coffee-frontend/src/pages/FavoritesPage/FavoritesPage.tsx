@@ -4,9 +4,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import Authenticate from "@/services/auth/components/Authenticate";
 import FavoritesSource from "@/services/favorites/components/FavoritesSource";
 
+import Authenticate from "@/components/Authenticate";
 import AppPageContainer from "@/components/AppPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";

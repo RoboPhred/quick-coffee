@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 interface Props {
+  disabled?: boolean;
   onSubmit(username: string): void;
 }
 interface State {
@@ -21,15 +22,17 @@ export default class LoginForm extends React.Component<Props, State> {
   }
 
   render() {
+    const { disabled } = this.props;
     const { username } = this.state;
     return (
       <div>
         <TextField
+          disabled={disabled}
           label="Username"
           value={username}
           onChange={this._onUsernameChange}
         />
-        <Button disabled={username === ""} onClick={this._onSubmit}>
+        <Button disabled={disabled || username === ""} onClick={this._onSubmit}>
           Login
         </Button>
       </div>
@@ -44,12 +47,9 @@ export default class LoginForm extends React.Component<Props, State> {
   }
 
   @autobind()
-  private _onSubmit() {
+  private async _onSubmit() {
     const { onSubmit } = this.props;
     const { username } = this.state;
-    if (username === "") {
-      return;
-    }
     onSubmit(username);
   }
 }

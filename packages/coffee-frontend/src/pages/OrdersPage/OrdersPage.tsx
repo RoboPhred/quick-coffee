@@ -2,9 +2,9 @@ import * as React from "react";
 
 import List from "@material-ui/core/List";
 
-import Authenticate from "@/services/auth/components/Authenticate";
 import OrdersSource from "@/services/orders/components/OrdersSource";
 
+import Authenticate from "@/components/Authenticate";
 import AppPageContainer from "@/components/AppPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 

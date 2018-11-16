@@ -7,10 +7,11 @@ import { OrderRequestItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-import Authenticate from "@/services/auth/components/Authenticate";
 import ItemSource, {
   ItemSourceRenderProps
 } from "@/services/menu/components/ItemSource";
+
+import Authenticate from "@/components/Authenticate";
 
 import AppPageContainer from "@/components/AppPageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
