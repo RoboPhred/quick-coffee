@@ -2,6 +2,7 @@ export interface OrderedItem {
   id: string;
   itemId: string;
   itemName: string;
-  dateOrdered: string;
+  orderedDate: string;
   status: "pending" | "in-progress" | "ready";
+  statusChangeDate: string;
 }
