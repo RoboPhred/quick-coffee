@@ -2,30 +2,35 @@ import * as React from "react";
 
 import { autobind } from "core-decorators";
 
-import { getIsLoggedIn, login } from "../api";
+import { login, getUserToken } from "../api";
+import { UserTokenPayload } from "coffee-types";
 
 export interface AuthenticatorRequiresLoginProps {
   isLoggingIn: boolean;
   loginErrorMessage: string | null;
   login(username: string): void;
 }
+export interface AuthenticatorRenderProps {
+  user: UserTokenPayload;
+}
 export interface AuthenticatorProps {
-  requiresLogin(props: AuthenticatorRequiresLoginProps): JSX.Element;
+  requiresLogin(props: AuthenticatorRequiresLoginProps): React.ReactNode;
+  children(props: AuthenticatorRenderProps): React.ReactNode;
 }
 
 type Props = AuthenticatorProps;
 interface State {
-  showLoginPrompt: boolean;
   isLoggingIn: boolean;
   loginErrorMessage: string | null;
+  user: UserTokenPayload | null;
 }
 export default class Authenticator extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      showLoginPrompt: true,
       isLoggingIn: true,
-      loginErrorMessage: null
+      loginErrorMessage: null,
+      user: null
     };
   }
 
@@ -35,9 +40,9 @@ export default class Authenticator extends React.Component<Props, State> {
 
   render() {
     const { requiresLogin } = this.props;
-    const { isLoggingIn, loginErrorMessage, showLoginPrompt } = this.state;
+    const { isLoggingIn, loginErrorMessage, user } = this.state;
 
-    if (showLoginPrompt) {
+    if (!user) {
       return requiresLogin({
         isLoggingIn,
         loginErrorMessage,
@@ -45,34 +50,35 @@ export default class Authenticator extends React.Component<Props, State> {
       });
     }
 
-    return React.Children.only(this.props.children);
+    return this.props.children({ user });
   }
 
   private async _checkLogin() {
-    const isLoggedIn = await getIsLoggedIn();
+    const user = await getUserToken();
     this.setState({
-      showLoginPrompt: !isLoggedIn,
+      user,
       isLoggingIn: false
     });
   }
 
   @autobind()
   private async _login(username: string) {
+    let user: UserTokenPayload | null = null;
     try {
-      await login(username);
+      user = await login(username);
     } catch (e) {
       this.setState({
         isLoggingIn: false,
-        showLoginPrompt: true,
-        loginErrorMessage: e.message
+        loginErrorMessage: e.message,
+        user: null
       });
       return;
     }
 
     this.setState({
       isLoggingIn: false,
-      showLoginPrompt: false,
-      loginErrorMessage: null
+      loginErrorMessage: null,
+      user
     });
   }
 }

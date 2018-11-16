@@ -11,7 +11,7 @@ export interface OrderingEnabledProviderRenderProps {
 }
 
 export interface OrderingEnabledProviderProps {
-  children(props: OrderingEnabledProviderRenderProps): React.ReactChild;
+  children(props: OrderingEnabledProviderRenderProps): React.ReactNode;
 }
 
 const POLLING_INTERVAL = 10000;
@@ -49,10 +49,7 @@ export default class OrderingEnabledProvider extends React.Component<
 
   render() {
     const { isOrderingEnabled, errorMessage, isLoading } = this.state;
-    const { children } = this.props;
-    return React.Children.only(
-      children({ isOrderingEnabled, errorMessage, isLoading })
-    );
+    return this.props.children({ isOrderingEnabled, errorMessage, isLoading });
   }
 
   @autobind()

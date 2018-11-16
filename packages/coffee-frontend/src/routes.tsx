@@ -8,6 +8,7 @@ import PageNotFound from "./pages/PageNotFound";
 import OrderFormPage from "./pages/OrderFormPage";
 import OrdersPage from "./pages/OrdersPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import BaristaPage from "./pages/BaristaPage";
 
 const Routes: React.SFC = () => (
   <Switch>
@@ -17,6 +18,7 @@ const Routes: React.SFC = () => (
     <Route path="/orders" exact component={OrdersPage} />
     <Route path="/favorites" exact component={FavoritesPage} />
     <Route path="/order-item/:item" exact component={OrderFormPage} />
+    <Route path="/barista" exact component={BaristaPage} />
     {/* Keep this component last.  It is a catch-all that displays the 404 page. */}
     <Route component={PageNotFound} />
   </Switch>

@@ -6,7 +6,7 @@ import { apiFetch } from "@/services/backend/api";
 
 const LOCALSTORAGE_TOKEN = "token";
 
-export async function login(username: string): Promise<boolean> {
+export async function login(username: string): Promise<UserTokenPayload> {
   let response;
   try {
     response = await apiFetch("POST", "/auth/login", {
@@ -17,24 +17,21 @@ export async function login(username: string): Promise<boolean> {
   } catch (e) {
     if (e.code === 401) {
       logout();
+      throw new Error("Invalid Credentials");
     }
     throw e;
   }
 
   if (response.token) {
     localStorage.setItem(LOCALSTORAGE_TOKEN, response.token);
-    return true;
+    return decodeJwt(response.token) as UserTokenPayload;
   }
 
-  return false;
-}
-
-export async function getIsLoggedIn(): Promise<boolean> {
-  // TODO: Make a request with the token to confirm it is valid.
-  return localStorage.getItem(LOCALSTORAGE_TOKEN) !== null;
+  throw new Error("No Token Provided");
 }
 
 export function getUserToken(): UserTokenPayload | null {
+  // TODO: Make a request with the token to confirm it is valid.
   const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
   if (!token) {
     return null;

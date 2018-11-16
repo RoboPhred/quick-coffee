@@ -4,26 +4,26 @@ import { autobind } from "core-decorators";
 
 import { withRouter, RouteComponentProps } from "react-router";
 
-import ListItem, { ListItemProps } from "@material-ui/core/ListItem";
+import MenuItem, { MenuItemProps } from "@material-ui/core/MenuItem";
 
-export interface ListItemLinkProps
-  extends Omit<ListItemProps, "href" | "component"> {
+export interface MenuItemLinkProps
+  extends Omit<MenuItemProps, "href" | "component"> {
   to: string;
 }
 
-type Props = ListItemLinkProps & RouteComponentProps;
-class ListItemLink extends React.Component<Props> {
+type Props = MenuItemLinkProps & RouteComponentProps;
+class MenuItemLink extends React.Component<Props> {
   render() {
     const { children, history, to, staticContext, ...props } = this.props;
     return (
-      <ListItem
+      <MenuItem
         {...props}
         component="a"
         href={history.createHref({ pathname: to })}
         onClick={this._onClick}
       >
         {children}
-      </ListItem>
+      </MenuItem>
     );
   }
 
@@ -48,7 +48,7 @@ class ListItemLink extends React.Component<Props> {
     }
   }
 }
-export default withRouter(ListItemLink);
+export default withRouter(MenuItemLink);
 
 function isModifiedEvent(event: React.MouseEvent<any>) {
   return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);

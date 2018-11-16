@@ -13,6 +13,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import UserSource from "@/services/auth/components/UserSource";
 import { logout } from "@/services/auth/api";
 
+import MenuItemLink from "@/components/MenuItemLink";
+
 export interface ProfileButtonProps {
   className?: string;
 }
@@ -56,6 +58,9 @@ class ProfileButton extends React.Component<Props, State> {
                 open={menuRef != null}
                 onClose={this._onCloseMenu}
               >
+                {user.role === "barista" && (
+                  <MenuItemLink to="/barista">Barista</MenuItemLink>
+                )}
                 <MenuItem onClick={this._logout}>Logout</MenuItem>
               </Menu>
             </React.Fragment>
