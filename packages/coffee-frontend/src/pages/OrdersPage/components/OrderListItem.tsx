@@ -29,7 +29,7 @@ const OrderListItem: React.SFC<Props> = ({ classes, item }) => (
   <ListItem className={classes.root}>
     <div>
       <Typography variant="caption">
-        {moment(item.orderedDate).format("MMM Do YYYY, h:mm a")}
+        {moment(item.orderDate).format("MMM Do YYYY, h:mm a")}
       </Typography>
       <Typography variant="h6">{item.itemName}</Typography>
     </div>

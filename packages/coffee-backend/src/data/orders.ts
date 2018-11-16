@@ -22,7 +22,7 @@ export async function addOrder(
   const orderItem: OrderedItem = {
     ...order,
     id: uuidV4(),
-    orderedDate: isoNow,
+    orderDate: isoNow,
     itemName: item.name,
     status: "pending",
     statusChangeDate: isoNow
