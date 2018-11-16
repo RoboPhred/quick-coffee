@@ -6,15 +6,18 @@ import { autobind } from "core-decorators";
 import { OrderRequestItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 import ItemSource, {
   ItemSourceRenderProps
 } from "@/services/menu/components/ItemSource";
+import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
 import Authenticate from "@/components/Authenticate";
 
 import AppPageContainer from "@/components/AppPageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import LoadingPageContent from "@/components/LoadingPageContent";
 
 import OrderForm from "./components/OrderForm";
 import OrderingDisplay from "./components/OrderingDisplay";
@@ -40,15 +43,29 @@ class OrderFormPage extends React.Component<Props, State> {
   render() {
     const { match } = this.props;
     return (
-      <Authenticate>
-        <ItemSource itemId={match.params.item}>
-          {props => (
-            <AppPageContainer title="Order" back>
-              {this._renderContent(props)}
-            </AppPageContainer>
-          )}
-        </ItemSource>
-      </Authenticate>
+      <OrderingEnabledProvider>
+        {({ isLoading, isOrderingEnabled }) => {
+          if (isLoading) {
+            return <LoadingPageContent />;
+          }
+
+          if (!isOrderingEnabled) {
+            return <Typography variant="h6">Coffee shop is closed.</Typography>;
+          }
+
+          return (
+            <Authenticate>
+              <ItemSource itemId={match.params.item}>
+                {props => (
+                  <AppPageContainer title="Order" back>
+                    {this._renderContent(props)}
+                  </AppPageContainer>
+                )}
+              </ItemSource>
+            </Authenticate>
+          );
+        }}
+      </OrderingEnabledProvider>
     );
   }
 
