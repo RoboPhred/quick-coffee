@@ -3,6 +3,7 @@
 
 export interface User {
   username: string;
+  role: "user" | "barista";
 }
 
 const users: Record<string, User> = {};
@@ -23,7 +24,8 @@ export async function createUser(username: string): Promise<User> {
     throw new Error("Username already in use.");
   }
 
-  const user: User = { username };
+  // TODO: Remove default admin.  Replace with method of creating default account on startup.
+  const user: User = { username, role: "barista" };
 
   users[username] = user;
   return user;
