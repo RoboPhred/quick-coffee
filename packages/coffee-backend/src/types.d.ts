@@ -1,5 +1,8 @@
 declare module "@koa/cors" {
   import { Middleware } from "koa";
-  function cors(): Middleware;
+  interface CorsOptions {
+    origin?: string;
+  }
+  function cors(options?: CorsOptions): Middleware;
   export = cors;
 }
