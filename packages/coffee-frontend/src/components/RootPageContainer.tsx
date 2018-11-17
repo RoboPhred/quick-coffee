@@ -14,7 +14,7 @@ import AppDrawer from "@/components/AppDrawer";
 import BottomNavigation from "@/components/BottomNavigation";
 import ProfileButton from "@/components/ProfileButton";
 
-export interface AppContainerProps {
+export interface RootPageContainerProps {
   title?: string;
 }
 
@@ -40,7 +40,7 @@ const styles = createStyles({
   }
 });
 
-type Props = AppContainerProps & StyleProps<typeof styles>;
+type Props = RootPageContainerProps & StyleProps<typeof styles>;
 interface State {
   isAppDrawerOpen: boolean;
 }

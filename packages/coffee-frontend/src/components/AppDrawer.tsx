@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
+import { RouteComponentProps, withRouter } from "react-router";
+
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -30,23 +32,29 @@ const styles = createStyles({
   }
 });
 
-type Props = AppDrawerProps & StyleProps<typeof styles>;
-const AppDrawer: React.SFC<Props> = ({ classes, open, onOpen, onClose }) => (
+type Props = AppDrawerProps & RouteComponentProps & StyleProps<typeof styles>;
+const AppDrawer: React.SFC<Props> = ({
+  classes,
+  open,
+  onOpen,
+  onClose,
+  location
+}) => (
   <SwipeableDrawer open={open} onOpen={onOpen} onClose={onClose}>
     <List component="nav" className={classes.root}>
-      <ListItemLink button to="/menu">
+      <ListItemLink button to="/menu" autoselect>
         <ListItemIcon>
           <ListAltIcon />
         </ListItemIcon>
         <ListItemText>Menu</ListItemText>
       </ListItemLink>
-      <ListItemLink button to="/orders">
+      <ListItemLink button to="/orders" autoselect>
         <ListItemIcon>
           <MailIcon />
         </ListItemIcon>
         <ListItemText>Order Status</ListItemText>
       </ListItemLink>
-      <ListItemLink button to="/favorites">
+      <ListItemLink button to="/favorites" autoselect>
         <ListItemIcon>
           <FavoriteIcon />
         </ListItemIcon>
@@ -58,19 +66,19 @@ const AppDrawer: React.SFC<Props> = ({ classes, open, onOpen, onClose }) => (
           user.role === "barista" && (
             <React.Fragment>
               <Divider />
-              <ListItemLink button to="/barista/edit-menu">
+              <ListItemLink button to="/barista/edit-menu" autoselect>
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
                 <ListItemText>Edit Menu</ListItemText>
               </ListItemLink>
-              <ListItemLink button to="/barista/orders">
+              <ListItemLink button to="/barista/orders" autoselect>
                 <ListItemIcon>
                   <MailIcon />
                 </ListItemIcon>
                 <ListItemText>All Orders</ListItemText>
               </ListItemLink>
-              <ListItemLink button to="/barista/deliveries">
+              <ListItemLink button to="/barista/deliveries" autoselect>
                 <ListItemIcon>
                   <SendIcon />
                 </ListItemIcon>
@@ -83,4 +91,4 @@ const AppDrawer: React.SFC<Props> = ({ classes, open, onOpen, onClose }) => (
     </List>
   </SwipeableDrawer>
 );
-export default withStyles(styles)(AppDrawer);
+export default withStyles(styles)(withRouter(AppDrawer));

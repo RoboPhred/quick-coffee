@@ -9,14 +9,24 @@ import ListItem, { ListItemProps } from "@material-ui/core/ListItem";
 export interface ListItemLinkProps
   extends Omit<ListItemProps, "href" | "component"> {
   to: string;
+  autoselect?: boolean;
 }
 
 type Props = ListItemLinkProps & RouteComponentProps;
 class ListItemLink extends React.Component<Props> {
   render() {
-    const { children, history, to, staticContext, ...props } = this.props;
+    const {
+      children,
+      history,
+      location,
+      to,
+      staticContext,
+      autoselect,
+      ...props
+    } = this.props;
     return (
       <ListItem
+        selected={autoselect && location.pathname === to}
         {...props}
         component="a"
         href={history.createHref({ pathname: to })}
