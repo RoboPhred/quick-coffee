@@ -6,6 +6,7 @@ import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabl
 
 import Authenticate from "@/components/Authenticate";
 import AppPageContainer from "@/components/AppPageContainer";
+import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
 
 const BaristaPage: React.SFC = () => (
   <Authenticate role="barista">
@@ -16,6 +17,11 @@ const BaristaPage: React.SFC = () => (
           {({ isOrderingEnabled }) => (isOrderingEnabled ? "Open" : "Closed")}
         </OrderingEnabledProvider>
       </Typography>
+      <div>
+        <BaristaOrdersSource>
+          {({ orders }) => <pre>{JSON.stringify(orders, null, 2)}</pre>}
+        </BaristaOrdersSource>
+      </div>
     </AppPageContainer>
   </Authenticate>
 );
