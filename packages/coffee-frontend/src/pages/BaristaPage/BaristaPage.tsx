@@ -1,28 +1,29 @@
 import * as React from "react";
 
+import { createStyles, withStyles } from "@material-ui/core/styles";
+
 import Typography from "@material-ui/core/Typography";
 
 import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
 import Authenticate from "@/components/Authenticate";
-import AppPageContainer from "@/components/AppPageContainer";
-import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
+import AppPageContainer from "@/components/SubPageContainer";
 
-const BaristaPage: React.SFC = () => (
+import OrdersList from "./components/OrdersList";
+
+const styles = createStyles({
+  root: {
+    width: "100%",
+    height: "100%"
+  }
+});
+
+type Props = StyleProps<typeof styles>;
+const BaristaPage: React.SFC<Props> = ({ classes }) => (
   <Authenticate role="barista">
     <AppPageContainer title="Barista">
-      <Typography variant="body1">
-        Store is{" "}
-        <OrderingEnabledProvider>
-          {({ isOrderingEnabled }) => (isOrderingEnabled ? "Open" : "Closed")}
-        </OrderingEnabledProvider>
-      </Typography>
-      <div>
-        <BaristaOrdersSource>
-          {({ orders }) => <pre>{JSON.stringify(orders, null, 2)}</pre>}
-        </BaristaOrdersSource>
-      </div>
+      <OrdersList className={classes.root} />
     </AppPageContainer>
   </Authenticate>
 );
-export default BaristaPage;
+export default withStyles(styles)(BaristaPage);

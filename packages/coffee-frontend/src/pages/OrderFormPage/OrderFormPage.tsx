@@ -15,7 +15,7 @@ import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabl
 
 import Authenticate from "@/components/Authenticate";
 
-import AppPageContainer from "@/components/AppPageContainer";
+import AppPageContainer from "@/components/SubPageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import LoadingPageContent from "@/components/LoadingPageContent";
 

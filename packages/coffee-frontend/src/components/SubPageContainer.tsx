@@ -10,12 +10,10 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 
-import BottomNavigation from "@/components/BottomNavigation";
 import ProfileButton from "@/components/ProfileButton";
 
-export interface AppContainerProps {
+export interface SubContainerProps {
   title?: string;
-  navigation?: boolean;
   back?: boolean;
 }
 
@@ -41,16 +39,15 @@ const styles = createStyles({
   }
 });
 
-type Props = AppContainerProps &
+type Props = SubContainerProps &
   StyleProps<typeof styles> &
   RouteComponentProps;
 
 /**
  * Common container for top-level page components.
  */
-const AppPageContainer: React.SFC<Props> = ({
+const SubPageContainer: React.SFC<Props> = ({
   title,
-  navigation,
   back,
   classes,
   children,
@@ -77,12 +74,7 @@ const AppPageContainer: React.SFC<Props> = ({
       </Toolbar>
     </AppBar>
     <div className={classes.content}>{children}</div>
-    {navigation && (
-      <div>
-        <BottomNavigation />
-      </div>
-    )}
   </div>
 );
 
-export default withStyles(styles)(withRouter(AppPageContainer));
+export default withStyles(styles)(withRouter(SubPageContainer));

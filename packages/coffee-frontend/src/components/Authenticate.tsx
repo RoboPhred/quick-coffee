@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Authenticator from "@/services/auth/components/Authenticator";
 
 import LoginForm from "@/components/LoginForm";
-import AppPageContainer from "@/components/AppPageContainer";
+import AppPageContainer from "@/components/SubPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
 export interface AuthenticateProps {
