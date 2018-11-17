@@ -56,9 +56,9 @@ export default class OrderingEnabledProvider extends React.Component<
   private async _fetchAndPoll() {
     this._pollTimer = null;
     await this._fetchData();
-    if (!this._unmounted) {
-      this._pollTimer = setTimeout(this._fetchAndPoll, POLLING_INTERVAL);
-    }
+    // if (!this._unmounted) {
+    //   this._pollTimer = setTimeout(this._fetchAndPoll, POLLING_INTERVAL);
+    // }
   }
 
   private async _fetchData() {
