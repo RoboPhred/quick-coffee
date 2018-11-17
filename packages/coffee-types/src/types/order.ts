@@ -6,4 +6,5 @@ export interface OrderedItem {
   orderDate: string;
   status: "pending" | "in-progress" | "ready";
   statusChangeDate: string;
+  options: Record<string, number | string | boolean>;
 }
