@@ -1,0 +1,52 @@
+import * as React from "react";
+
+import { OrderedItem } from "coffee-types";
+
+import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
+
+import List from "@material-ui/core/List";
+
+import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
+
+import BaristaPageContainer from "@/components/BaristaPageContainer";
+import LoadingPageContent from "@/components/LoadingPageContent";
+
+import OrderListItem from "@/components/OrderListItem";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    list: {
+      width: "100%",
+      height: "100%",
+      overflow: "auto"
+    },
+    listItem: {
+      margin: theme.spacing.unit
+    }
+  });
+type Props = StyleProps<ReturnType<typeof styles>>;
+const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
+  <BaristaOrdersSource>
+    {({ isLoading, orders }) => (
+      <BaristaPageContainer title="Orders">
+        {isLoading && <LoadingPageContent />}
+        {orders && (
+          <List className={classes.list}>
+            {orders.filter(isPendingOrder).map(order => (
+              <OrderListItem
+                className={classes.listItem}
+                order={order}
+                key={order.id}
+              />
+            ))}
+          </List>
+        )}
+      </BaristaPageContainer>
+    )}
+  </BaristaOrdersSource>
+);
+export default withStyles(styles)(PendingOrdersPage);
+
+function isPendingOrder(order: OrderedItem): boolean {
+  return order.status === "pending";
+}

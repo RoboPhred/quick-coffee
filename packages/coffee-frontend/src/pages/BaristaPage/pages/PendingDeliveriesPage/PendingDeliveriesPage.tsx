@@ -1,39 +1,38 @@
 import * as React from "react";
 
+import { OrderedItem } from "coffee-types";
+
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
 import List from "@material-ui/core/List";
 
 import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
 
+import BaristaPageContainer from "@/components/BaristaPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
-import OrderListItem from "./OrderListItem";
-
-export interface OrdersListProps {
-  className?: string;
-}
+import OrderListItem from "@/components/OrderListItem";
 
 const styles = (theme: Theme) =>
   createStyles({
     list: {
-      overflow: "auto",
       width: "100%",
-      height: "100%"
+      height: "100%",
+      overflow: "auto"
     },
     listItem: {
       margin: theme.spacing.unit
     }
   });
-type Props = OrdersListProps & StyleProps<ReturnType<typeof styles>>;
-const OrdersList: React.SFC<Props> = ({ className, classes }) => (
+type Props = StyleProps<ReturnType<typeof styles>>;
+const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
   <BaristaOrdersSource>
     {({ isLoading, orders }) => (
-      <div className={className}>
+      <BaristaPageContainer title="Deliveries">
         {isLoading && <LoadingPageContent />}
         {orders && (
           <List className={classes.list}>
-            {orders.map(order => (
+            {orders.filter(isPendingDelivery).map(order => (
               <OrderListItem
                 className={classes.listItem}
                 order={order}
@@ -42,8 +41,12 @@ const OrdersList: React.SFC<Props> = ({ className, classes }) => (
             ))}
           </List>
         )}
-      </div>
+      </BaristaPageContainer>
     )}
   </BaristaOrdersSource>
 );
-export default withStyles(styles)(OrdersList);
+export default withStyles(styles)(PendingOrdersPage);
+
+function isPendingDelivery(order: OrderedItem): boolean {
+  return order.status === "waiting-delivery";
+}

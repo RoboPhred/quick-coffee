@@ -58,9 +58,6 @@ class ProfileButton extends React.Component<Props, State> {
                 open={menuRef != null}
                 onClose={this._onCloseMenu}
               >
-                {user.role === "barista" && (
-                  <MenuItemLink to="/barista">Barista</MenuItemLink>
-                )}
                 <MenuItem onClick={this._logout}>Logout</MenuItem>
               </Menu>
             </React.Fragment>
