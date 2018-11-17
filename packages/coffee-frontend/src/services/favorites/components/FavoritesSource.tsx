@@ -10,7 +10,7 @@ export interface FavoritesSourceRenderProps {
 }
 
 export interface FavoritesSourceProps {
-  children(props: FavoritesSourceRenderProps): React.ReactChild;
+  children(props: FavoritesSourceRenderProps): React.ReactNode;
 }
 
 type Props = FavoritesSourceProps;
@@ -38,10 +38,7 @@ export default class FavoritesSource extends React.Component<Props, State> {
 
   render() {
     const { errorMessage, favorites, isLoading } = this.state;
-    const { children } = this.props;
-    return React.Children.only(
-      children({ errorMessage, favorites, isLoading })
-    );
+    return this.props.children({ errorMessage, favorites, isLoading });
   }
 
   async fetchData() {

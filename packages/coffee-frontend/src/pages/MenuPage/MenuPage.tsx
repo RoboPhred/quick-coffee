@@ -6,9 +6,9 @@ import ItemListSource from "@/services/menu/components/ItemListSource";
 
 import AppPageContainer from "@/components/AppPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 import MenuItem from "./components/MenuItem";
-import ErrorDisplay from "@/components/ErrorDisplay";
 
 const MenuPage: React.SFC = () => (
   <ItemListSource>

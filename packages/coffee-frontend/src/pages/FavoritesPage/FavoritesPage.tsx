@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { FavoriteItem } from "coffee-types";
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -11,28 +13,36 @@ import AppPageContainer from "@/components/AppPageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
-const FavoritesPage: React.SFC = () => (
-  <Authenticate>
-    <FavoritesSource>
-      {({ isLoading, favorites, errorMessage }) => (
-        <AppPageContainer title="Favorites" navigation>
-          {isLoading && <LoadingPageContent />}
-          {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
-          {favorites && (
-            <List>
-              {favorites.map(favorite => (
-                <ListItem key={favorite.id}>
-                  <ListItemText
-                    primary={favorite.favoriteName}
-                    secondary={favorite.itemName}
-                  />
-                </ListItem>
-              ))}
-            </List>
+export default class FavoritesPage extends React.Component {
+  render() {
+    return (
+      <Authenticate>
+        <FavoritesSource>
+          {({ isLoading, favorites, errorMessage }) => (
+            <AppPageContainer title="Favorites" navigation>
+              {isLoading && <LoadingPageContent />}
+              {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
+              {favorites && (
+                <List>
+                  {favorites.map(favorite => (
+                    <ListItem key={favorite.id}>
+                      <ListItemText
+                        primary={favorite.favoriteName}
+                        secondary={favorite.itemName}
+                        onClick={this._orderItem.bind(this, favorite)}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </AppPageContainer>
           )}
-        </AppPageContainer>
-      )}
-    </FavoritesSource>
-  </Authenticate>
-);
-export default FavoritesPage;
+        </FavoritesSource>
+      </Authenticate>
+    );
+  }
+
+  private _orderItem(item: FavoriteItem) {
+    // TODO: Navigate to order page and prepopulate with favorite data.
+  }
+}
