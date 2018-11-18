@@ -1,20 +1,17 @@
 import * as React from "react";
 
-import { RouteComponentProps, withRouter } from "react-router";
-
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBack from "@material-ui/icons/ArrowBack";
 
 import ProfileButton from "@/components/ProfileButton";
 
-export interface SubContainerProps {
+export interface ContainerProps {
   title?: string;
-  back?: boolean;
+  leftIcon?: JSX.Element;
+  navigation?: JSX.Element;
 }
 
 const styles = createStyles({
@@ -39,33 +36,22 @@ const styles = createStyles({
   }
 });
 
-type Props = SubContainerProps &
-  StyleProps<typeof styles> &
-  RouteComponentProps;
+type Props = ContainerProps & StyleProps<typeof styles>;
 
 /**
  * Common container for top-level page components.
  */
-const SubPageContainer: React.SFC<Props> = ({
+const Container: React.SFC<Props> = ({
   title,
-  back,
+  leftIcon,
+  navigation,
   classes,
-  children,
-  history
+  children
 }) => (
   <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
-        {back && (
-          <IconButton
-            className={classes.backButton}
-            color="inherit"
-            aria-label="Back"
-            onClick={() => history.goBack()}
-          >
-            <ArrowBack />
-          </IconButton>
-        )}
+        {leftIcon}
         <Typography className={classes.appTitle} variant="h6" color="inherit">
           Coffee
           {title && ` - ${title}`}
@@ -74,7 +60,8 @@ const SubPageContainer: React.SFC<Props> = ({
       </Toolbar>
     </AppBar>
     <div className={classes.content}>{children}</div>
+    {navigation}
   </div>
 );
 
-export default withStyles(styles)(withRouter(SubPageContainer));
+export default withStyles(styles)(Container);

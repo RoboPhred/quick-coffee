@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 
 import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
 
-import BaristaPageContainer from "@/components/BaristaPageContainer";
+import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
 import OrderListItem from "@/components/OrderListItem";
@@ -28,7 +28,7 @@ type Props = StyleProps<ReturnType<typeof styles>>;
 const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
   <BaristaOrdersSource>
     {({ isLoading, orders }) => (
-      <BaristaPageContainer title="Deliveries">
+      <PageContainer title="Deliveries" variant="barista">
         {isLoading && <LoadingPageContent />}
         {orders && (
           <List className={classes.list}>
@@ -41,7 +41,7 @@ const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
             ))}
           </List>
         )}
-      </BaristaPageContainer>
+      </PageContainer>
     )}
   </BaristaOrdersSource>
 );

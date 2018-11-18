@@ -7,7 +7,7 @@ import List from "@material-ui/core/List";
 import OrdersSource from "@/services/orders/components/OrdersSource";
 
 import Authenticate from "@/components/Authenticate";
-import RootPageContainer from "@/components/RootPageContainer";
+import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
 import OrderListItem from "./components/OrderListItem";
@@ -25,7 +25,7 @@ const OrdersPage: React.SFC<Props> = ({ classes }) => (
   <Authenticate>
     <OrdersSource>
       {({ isLoading, orders }) => (
-        <RootPageContainer title="Orders">
+        <PageContainer title="Orders" variant="app">
           {isLoading && <LoadingPageContent />}
           {orders && (
             <List className={classes.ordersList}>
@@ -34,7 +34,7 @@ const OrdersPage: React.SFC<Props> = ({ classes }) => (
               ))}
             </List>
           )}
-        </RootPageContainer>
+        </PageContainer>
       )}
     </OrdersSource>
   </Authenticate>

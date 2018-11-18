@@ -1,11 +1,11 @@
 import * as React from "react";
 
-import AppPageContainer from "@/components/SubPageContainer";
+import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
 const AppLoading: React.SFC = () => (
-  <AppPageContainer>
+  <PageContainer variant="subpage">
     <LoadingPageContent />
-  </AppPageContainer>
+  </PageContainer>
 );
 export default AppLoading;

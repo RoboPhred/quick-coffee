@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Authenticator from "@/services/auth/components/Authenticator";
 
 import LoginForm from "@/components/LoginForm";
-import AppPageContainer from "@/components/SubPageContainer";
+import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
 export interface AuthenticateProps {
@@ -16,10 +16,10 @@ const Authenticate: React.SFC<AuthenticateProps> = ({ role, children }) => (
   <Authenticator
     requiresLogin={({ login, isLoggingIn }) => (
       <Dialog fullScreen open>
-        <AppPageContainer title="Login">
+        <PageContainer title="Login" variant="subpage">
           <LoginForm onSubmit={login} disabled={isLoggingIn} />
           {isLoggingIn && <LoadingPageContent />}
-        </AppPageContainer>
+        </PageContainer>
       </Dialog>
     )}
   >

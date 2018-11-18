@@ -9,7 +9,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import FavoritesSource from "@/services/favorites/components/FavoritesSource";
 
 import Authenticate from "@/components/Authenticate";
-import RootPageContainer from "@/components/RootPageContainer";
+import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
@@ -19,7 +19,7 @@ export default class FavoritesPage extends React.Component {
       <Authenticate>
         <FavoritesSource>
           {({ isLoading, favorites, errorMessage }) => (
-            <RootPageContainer title="Favorites">
+            <PageContainer title="Favorites" variant="app">
               {isLoading && <LoadingPageContent />}
               {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
               {favorites && (
@@ -35,7 +35,7 @@ export default class FavoritesPage extends React.Component {
                   ))}
                 </List>
               )}
-            </RootPageContainer>
+            </PageContainer>
           )}
         </FavoritesSource>
       </Authenticate>
