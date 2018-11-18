@@ -11,7 +11,7 @@ import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSour
 import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
-import OrderListItem from "@/components/OrderListItem";
+import OrderCard from "@/components/OrderCard";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -33,7 +33,7 @@ const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
         {orders && (
           <List className={classes.list}>
             {orders.filter(isPendingDelivery).map(order => (
-              <OrderListItem
+              <OrderCard
                 className={classes.listItem}
                 order={order}
                 key={order.id}

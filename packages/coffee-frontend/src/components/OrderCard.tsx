@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { OrderedItem, InventoryItem } from "coffee-types";
 
-import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -13,10 +12,11 @@ import ItemSource from "@/services/menu/components/ItemSource";
 export interface OrderListItemProps {
   className?: string;
   order: OrderedItem;
+  actions?: React.ReactNode;
 }
 
 type Props = OrderListItemProps;
-const OrderListItem: React.SFC<Props> = ({ className, order }) => (
+const OrderCard: React.SFC<Props> = ({ className, actions, order }) => (
   <ItemSource itemId={order.itemId}>
     {({ item }) => (
       <Card className={className}>
@@ -44,14 +44,12 @@ const OrderListItem: React.SFC<Props> = ({ className, order }) => (
             </tbody>
           </table>
         </CardContent>
-        <CardActions>
-          <Button>Complete Order</Button>
-        </CardActions>
+        {actions && <CardActions>{actions}</CardActions>}
       </Card>
     )}
   </ItemSource>
 );
-export default OrderListItem;
+export default OrderCard;
 
 function isNullOrEmpty(x: any): boolean {
   return x == null || x === "";
