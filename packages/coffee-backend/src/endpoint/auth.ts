@@ -15,7 +15,7 @@ import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import Router from "koa-router";
 import compose from "koa-compose";
 
-import { User, findUserByUsername, createUser } from "../data/users";
+import User from "../models/User";
 
 import { JWT_KEY } from "../config";
 import { Middleware, Context } from "koa";
@@ -27,27 +27,22 @@ _passport.serializeUser<User, string>((user: User, callback) => {
   callback(null, user.username);
 });
 
-_passport.deserializeUser<User, string>((id, callback) => {
-  findUserByUsername(id).then(
-    user => {
-      if (!user) {
-        callback(new Error("User not found."));
-      } else {
-        callback(null, user);
-      }
-    },
-    err => callback(err)
-  );
+_passport.deserializeUser<User, string>(async (id, callback) => {
+  try {
+    const user = await User.findByUsername(id);
+    if (!user) {
+      callback(new Error("User not found"));
+      return;
+    }
+    callback(null, user);
+  } catch (e) {
+    callback(e);
+  }
 });
 
 _passport.use(
   new LocalStrategy(async (username, password, callback) => {
-    let user = await findUserByUsername(username);
-
-    // Just create the user if it does not exist.
-    if (!user) {
-      user = await createUser(username);
-    }
+    let user = await User.findByUsername(username);
 
     // Not dealing with passwords for the prototype.
 
@@ -63,7 +58,7 @@ _passport.use(
     },
     async (jwtPayload: User, callback) => {
       try {
-        const user = await findUserByUsername(jwtPayload.username);
+        const user = await User.findByUsername(jwtPayload.username);
         callback(null, user);
       } catch (e) {
         callback(e);
@@ -82,10 +77,10 @@ authRouter.post("/login", (ctx, next) => {
 
     if (user === false) {
       ctx.body = { success: false };
-      ctx.throw(info.message, HttpStatusCodes.UNAUTHORIZED);
+      ctx.throw("Invalid Username or Password.", HttpStatusCodes.UNAUTHORIZED);
     } else {
       await ctx.login(user, { session: false });
-      const token = jwt.sign(user, JWT_KEY, { expiresIn: "2 days" });
+      const token = jwt.sign(user.toJSON(), JWT_KEY, { expiresIn: "2 days" });
       ctx.body = { success: true, token };
       ctx.status = HttpStatusCodes.OK;
     }
@@ -110,7 +105,7 @@ export function authenticate(role?: string): Middleware {
         return;
       }
 
-      if (role && user.role !== role) {
+      if (role === "barista" && !user.isBarista) {
         ctx.response.status = HttpStatusCodes.UNAUTHORIZED;
         return;
       }

@@ -5,13 +5,13 @@ import { PostFavoriteRequest } from "coffee-types";
 
 import { authenticate } from "./auth";
 
-import { getFavorites, addFavorite, removeFavorite } from "../data/favorites";
+import Favorite from "../models/Favorite";
 
 const router = new Router({ prefix: "/favorites" });
 router.use(authenticate());
 
 router.get("/", async ctx => {
-  const favorites = await getFavorites(ctx.state.user);
+  const favorites = await Favorite.getByUserId(ctx.state.user.id);
   ctx.body = { favorites };
   ctx.status = HttpStatusCodes.OK;
 });
@@ -27,14 +27,19 @@ router.post("/", async ctx => {
     return;
   }
 
-  const favorite = await addFavorite(favoriteRequest.favorite, ctx.state.user);
+  const partialFavorite = favoriteRequest.favorite;
+  const favorite = await Favorite.create(
+    ctx.state.user.id,
+    partialFavorite.itemId,
+    partialFavorite.favoriteName
+  );
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { favorite };
 });
 
 router.del("/:favoriteId", async ctx => {
   const { favoriteId } = ctx.params;
-  const isDeleted = await removeFavorite(favoriteId, ctx.state.user);
+  const isDeleted = await Favorite.delete(favoriteId, ctx.state.user.id);
   if (isDeleted) {
     ctx.body = { status: "ok" };
     ctx.status = HttpStatusCodes.OK;

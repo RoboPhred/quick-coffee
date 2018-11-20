@@ -1,8 +1,9 @@
 import uuidV4 from "uuid/v4";
 
 import { OrderedItem, PostOrderRequest } from "coffee-types";
-import { getItem } from "./items";
-import { User } from "./users";
+
+import MenuItem from "../models/MenuItem";
+import User from "../models/User";
 
 // Temp data storage, replace with db.
 const orders = new Map<string, OrderedItem[]>();
@@ -23,7 +24,10 @@ export async function addOrder(
   order: PostOrderRequest["order"],
   user: User
 ): Promise<OrderedItem> {
-  const item = await getItem(order.itemId);
+  const item = await MenuItem.findById(order.itemId);
+  if (!item) {
+    throw new Error("Item not found.");
+  }
 
   const isoNow = new Date().toISOString();
 

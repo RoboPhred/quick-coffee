@@ -1,3 +1,5 @@
+require("source-map-support").install();
+
 import Koa from "koa";
 import cors from "@koa/cors";
 
