@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { InventoryItem } from "coffee-types";
+
 import { getItem } from "../api";
 
 export interface ItemSourceRenderProps {
@@ -11,7 +12,7 @@ export interface ItemSourceRenderProps {
 
 export interface ItemSourceProps {
   itemId: string;
-  children(props: ItemSourceRenderProps): React.ReactChild;
+  children(props: ItemSourceRenderProps): React.ReactNode;
 }
 
 type Props = ItemSourceProps;
@@ -48,8 +49,7 @@ export default class ItemSource extends React.Component<Props, State> {
 
   render() {
     const { errorMessage, item, isLoading } = this.state;
-    const { children } = this.props;
-    return React.Children.only(children({ errorMessage, item, isLoading }));
+    return this.props.children({ errorMessage, item, isLoading });
   }
 
   async fetchData() {

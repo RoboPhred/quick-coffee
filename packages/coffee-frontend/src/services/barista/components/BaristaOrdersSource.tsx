@@ -1,21 +1,22 @@
 import * as React from "react";
 
-import { FavoriteItem } from "coffee-types";
-import { getFavorites } from "../api";
+import { OrderedItem } from "coffee-types";
 
-export interface FavoritesSourceRenderProps {
+import { getBaristaOrders } from "../api";
+
+export interface BaristaOrdersSourceRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
-  favorites: FavoriteItem[] | null;
+  orders: OrderedItem[] | null;
 }
 
-export interface FavoritesSourceProps {
-  children(props: FavoritesSourceRenderProps): React.ReactNode;
+export interface BaristaOrdersSourceProps {
+  children(props: BaristaOrdersSourceRenderProps): React.ReactNode;
 }
 
-type Props = FavoritesSourceProps;
-type State = FavoritesSourceRenderProps;
-export default class FavoritesSource extends React.Component<Props, State> {
+type Props = BaristaOrdersSourceProps;
+type State = BaristaOrdersSourceRenderProps;
+export default class BaristaOrdersSource extends React.Component<Props, State> {
   private _unmounted: boolean = false;
 
   constructor(props: Props) {
@@ -24,7 +25,7 @@ export default class FavoritesSource extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       errorMessage: null,
-      favorites: null
+      orders: null
     };
   }
 
@@ -37,15 +38,15 @@ export default class FavoritesSource extends React.Component<Props, State> {
   }
 
   render() {
-    const { errorMessage, favorites, isLoading } = this.state;
-    return this.props.children({ errorMessage, favorites, isLoading });
+    const { errorMessage, orders, isLoading } = this.state;
+    return this.props.children({ errorMessage, orders, isLoading });
   }
 
   async fetchData() {
     this.setState({ isLoading: true });
 
     try {
-      const result = await getFavorites();
+      const result = await getBaristaOrders();
 
       if (this._unmounted) {
         return;
@@ -53,7 +54,7 @@ export default class FavoritesSource extends React.Component<Props, State> {
 
       this.setState({
         isLoading: false,
-        favorites: result
+        orders: result
       });
     } catch (e) {
       if (this._unmounted) {
@@ -62,7 +63,7 @@ export default class FavoritesSource extends React.Component<Props, State> {
 
       this.setState({
         isLoading: false,
-        favorites: null,
+        orders: null,
         errorMessage: e.message
       });
     }

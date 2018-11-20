@@ -10,7 +10,7 @@ export interface UserSourceRenderProps {
   errorMessage: string | null;
 }
 export interface UserSourceProps {
-  children(props: UserSourceRenderProps): JSX.Element | null;
+  children(props: UserSourceRenderProps): React.ReactNode;
 }
 
 type Props = UserSourceProps;
@@ -29,6 +29,6 @@ export default class UserSource extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    return React.Children.only(children(this.state));
+    return children(this.state);
   }
 }

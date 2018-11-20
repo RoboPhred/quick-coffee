@@ -4,6 +4,13 @@ export interface OrderedItem {
   itemName: string;
   orderCreatorUsername: string;
   orderDate: string;
-  status: "pending" | "in-progress" | "ready";
+  status: OrderStatus;
   statusChangeDate: string;
+  options: Record<string, number | string | boolean>;
 }
+
+export type OrderStatus =
+  | "pending"
+  | "in-progress"
+  | "waiting-delivery"
+  | "delivered";

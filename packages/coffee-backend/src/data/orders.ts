@@ -1,23 +1,29 @@
 import uuidV4 from "uuid/v4";
 
-import { OrderedItem, PostOrderRequest } from "coffee-types";
+import { OrderedItem, OrderStatus, PostOrderRequest } from "coffee-types";
 
 import MenuItem from "../models/MenuItem";
 import User from "../models/User";
 
 // Temp data storage, replace with db.
-const orders = new Map<string, OrderedItem[]>();
+const orders: OrderedItem[] = [];
+
+export async function getOrderById(orderId: string) {}
 
 export async function getOrdersByUser(user: User): Promise<OrderedItem[]> {
-  return orders.get(user.username) || [];
+  const userOrders: OrderedItem[] = [];
+
+  for (const order of orders) {
+    if (order.orderCreatorUsername === user.username) {
+      userOrders.push(order);
+    }
+  }
+
+  return userOrders;
 }
 
 export async function getAllOrders(): Promise<OrderedItem[]> {
-  const allOrders: OrderedItem[] = [];
-  for (const userOrders of orders.values()) {
-    allOrders.push(...userOrders);
-  }
-  return allOrders;
+  return orders;
 }
 
 export async function addOrder(
@@ -41,12 +47,27 @@ export async function addOrder(
     statusChangeDate: isoNow
   };
 
-  let userOrders = orders.get(user.username);
-  if (!userOrders) {
-    userOrders = [];
-    orders.set(user.username, userOrders);
-  }
-  userOrders.push(orderItem);
+  orders.push(orderItem);
 
   return orderItem;
+}
+
+export async function updateStatus(orderId: string, status: OrderStatus) {
+  const idx = orders.findIndex(order => order.id === orderId);
+  if (idx === -1) {
+    throw new OrderNotFoundError();
+  }
+
+  orders[idx] = {
+    ...orders[idx],
+    status,
+    statusChangeDate: new Date().toISOString()
+  };
+}
+
+export class OrderNotFoundError extends Error {
+  constructor() {
+    super("Order Not Found");
+    Object.setPrototypeOf(this, OrderNotFoundError.prototype);
+  }
 }

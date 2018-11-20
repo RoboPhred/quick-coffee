@@ -15,7 +15,7 @@ import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabl
 
 import Authenticate from "@/components/Authenticate";
 
-import AppPageContainer from "@/components/AppPageContainer";
+import PageContainer from "@/components/PageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
@@ -57,9 +57,9 @@ class OrderFormPage extends React.Component<Props, State> {
             <Authenticate>
               <ItemSource itemId={match.params.item}>
                 {props => (
-                  <AppPageContainer title="Order" back>
+                  <PageContainer title="Order" variant="subpage">
                     {this._renderContent(props)}
-                  </AppPageContainer>
+                  </PageContainer>
                 )}
               </ItemSource>
             </Authenticate>
