@@ -1,11 +1,11 @@
 import knex from "../knex";
 
-import { InventoryItem } from "coffee-types";
+import { InventoryItem, ItemOption } from "coffee-types";
 
 export default class MenuItem implements InventoryItem {
   static async findById(id: string): Promise<MenuItem | null> {
     const rows: any[] = await knex
-      .select(["id", "name"])
+      .select(["id", "name", "options"])
       .from("menu_items")
       .where({ id })
       .limit(1);
@@ -17,15 +17,19 @@ export default class MenuItem implements InventoryItem {
   }
 
   static async getAll(): Promise<MenuItem[]> {
-    const rows: any[] = await knex.select(["id", "name"]).from("menu_items");
+    const rows: any[] = await knex
+      .select(["id", "name", "options"])
+      .from("menu_items");
     return rows.map(row => new MenuItem(row));
   }
 
   id: string;
   name: string;
+  options: ItemOption[];
 
   constructor(row: any) {
     this.id = row["id"];
     this.name = row["name"];
+    this.options = JSON.parse(row["options"] || "null");
   }
 }

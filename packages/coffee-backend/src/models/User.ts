@@ -21,7 +21,7 @@ export default class User {
 
   constructor(row: any) {
     this.id = row["id"];
-    this.username = row["name"];
+    this.username = row["username"];
     this.isBarista = row["is_barista"];
   }
 
