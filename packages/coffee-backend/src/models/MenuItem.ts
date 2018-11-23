@@ -5,7 +5,7 @@ import { InventoryItem, ItemOption } from "coffee-types";
 export default class MenuItem implements InventoryItem {
   static async findById(id: number): Promise<MenuItem | null> {
     const rows: any[] = await knex
-      .select(["id", "name", "options"])
+      .select(["menu_items.id", "menu_items.name", "menu_items.options"])
       .from("menu_items")
       .where({ id })
       .limit(1);
@@ -18,7 +18,7 @@ export default class MenuItem implements InventoryItem {
 
   static async getAll(): Promise<MenuItem[]> {
     const rows: any[] = await knex
-      .select(["id", "name", "options"])
+      .select(["menu_items.id", "menu_items.name", "menu_items.options"])
       .from("menu_items");
     return rows.map(row => new MenuItem(row));
   }

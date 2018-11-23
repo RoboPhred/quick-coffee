@@ -5,7 +5,7 @@ import knex from "../knex";
 export default class User {
   static async findByUsername(username: string): Promise<User | null> {
     const rows: any[] = await knex
-      .select(["id", "username", "is_barista"])
+      .select(["users.id", "users.username", "users.is_barista"])
       .from("users")
       .where({ username })
       .limit(1);

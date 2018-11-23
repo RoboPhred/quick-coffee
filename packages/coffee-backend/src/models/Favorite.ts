@@ -5,7 +5,12 @@ import { FavoriteItem } from "coffee-types";
 export default class Favorite implements FavoriteItem {
   static async getByUserId(userId: number): Promise<Favorite[]> {
     const rows: any[] = await knex
-      .select(["id", "name", "menu_item_id", "menu_items.name"])
+      .select([
+        "user_favorites.id",
+        "user_favorites.name",
+        "user_favorites.menu_item_id",
+        "menu_items.name"
+      ])
       .from("user_favorites")
       .where({ user_id: userId })
       .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
@@ -14,9 +19,14 @@ export default class Favorite implements FavoriteItem {
 
   static async getById(id: number): Promise<Favorite | null> {
     const rows: any[] = await knex
-      .select(["id", "name", "menu_item_id", "menu_items.name"])
+      .select([
+        "user_favorites.id",
+        "user_favorites.name",
+        "user_favorites.menu_item_id",
+        "menu_items.name"
+      ])
       .from("user_favorites")
-      .where({ id })
+      .where({ "user_favorites.id": id })
       .limit(1)
       .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
     if (rows.length !== 1) {

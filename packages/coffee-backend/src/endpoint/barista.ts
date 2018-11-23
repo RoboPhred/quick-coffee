@@ -4,7 +4,7 @@ import { PatchBaristaOrderRequest } from "coffee-types";
 
 import HttpStatusCodes from "http-status-codes";
 
-import { getAllOrders, updateStatus, getOrderById } from "../data/orders";
+import Order from "../models/Order";
 
 import { authenticate } from "./auth";
 
@@ -12,7 +12,7 @@ const router = new Router({ prefix: "/barista" });
 router.use(authenticate("barista"));
 
 router.get("/orders", async ctx => {
-  const allOrders = await getAllOrders();
+  const allOrders = await Order.getAll();
   ctx.body = {
     orders: allOrders
   };
@@ -34,11 +34,11 @@ router.patch("/orders/:orderId", async ctx => {
 
   const { status } = body as PatchBaristaOrderRequest;
   if (status) {
-    await updateStatus(orderId, status);
+    await Order.setStatus(orderId, status);
   }
 
   ctx.status = HttpStatusCodes.OK;
-  ctx.body = getOrderById(orderId);
+  ctx.body = Order.getById(orderId);
 });
 
 export default router;

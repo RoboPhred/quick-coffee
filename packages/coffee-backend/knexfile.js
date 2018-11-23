@@ -1,5 +1,8 @@
 module.exports = {
   development: {
+    // Note: This must be sqlite3, mysql, or postgresql.
+    //  Other databases have differing return values that will
+    //  cause undefined behavior.
     client: "sqlite3",
     connection: {
       filename: "./dev.sqlite3"
