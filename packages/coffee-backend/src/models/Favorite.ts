@@ -3,7 +3,7 @@ import knex from "../knex";
 import { FavoriteItem } from "coffee-types";
 
 export default class Favorite implements FavoriteItem {
-  static async getByUserId(userId: string): Promise<Favorite[]> {
+  static async getByUserId(userId: number): Promise<Favorite[]> {
     const rows: any[] = await knex
       .select(["id", "name", "menu_item_id", "menu_items.name"])
       .from("user_favorites")
@@ -12,22 +12,35 @@ export default class Favorite implements FavoriteItem {
     return rows.map(row => new Favorite(row));
   }
 
-  static async create(
-    userId: string,
-    itemId: string,
-    favoriteName: string
-  ): Promise<Favorite> {
-    const row = await knex("user_favorites")
-      .insert(
-        {
-          user_id: userId,
-          menu_item_id: itemId,
-          name: favoriteName
-        },
-        ["id", "name", "menu_item_id", "menu_items.name"]
-      )
+  static async getById(id: number): Promise<Favorite | null> {
+    const rows: any[] = await knex
+      .select(["id", "name", "menu_item_id", "menu_items.name"])
+      .from("user_favorites")
+      .where({ id })
+      .limit(1)
       .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
-    return new Favorite(row);
+    if (rows.length !== 1) {
+      return null;
+    }
+    return new Favorite(rows[0]);
+  }
+
+  static async create(
+    userId: number,
+    itemId: number,
+    favoriteName: string
+  ): Promise<Favorite | null> {
+    const rows: any[] = await knex("user_favorites")
+      .insert({
+        user_id: userId,
+        menu_item_id: itemId,
+        name: favoriteName
+      })
+      .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
+    if (rows.length !== 1) {
+      return null;
+    }
+    return Favorite.getById(rows[0]);
   }
 
   static async delete(favoriteId: string, userId?: string): Promise<boolean> {
@@ -37,9 +50,9 @@ export default class Favorite implements FavoriteItem {
     return affectedRows != 0;
   }
 
-  id: string;
+  id: number;
   favoriteName: string;
-  itemId: string;
+  itemId: number;
   itemName: string;
 
   constructor(row: any) {

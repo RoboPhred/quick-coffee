@@ -1,7 +1,7 @@
 import { ItemOption } from "./item-option";
 
 export interface ListInventoryItem {
-  id: string;
+  id: number;
   name: string;
   description?: string;
 }

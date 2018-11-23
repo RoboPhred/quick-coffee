@@ -1,11 +1,12 @@
 exports.up = function(knex, Promise) {
   return knex.schema
     .createTable("menu_items", function(table) {
-      table.uuid("id").primary();
+      table.increments("id").primary();
       table.string("name").notNullable();
+      table.json("options");
     })
     .createTable("users", function(table) {
-      table.uuid("id").primary();
+      table.increments("id").primary();
       table.string("username").notNullable();
       table.index("username");
       table
@@ -16,17 +17,23 @@ exports.up = function(knex, Promise) {
       table.unique("username");
     })
     .createTable("user_favorites", function(table) {
-      table.uuid("id").primary();
+      table.increments("id").primary();
       table.string("name").notNullable();
       table
         .integer("user_id")
         .unsigned()
         .notNullable()
         .references("users.id");
+      table
+        .integer("menu_item_id")
+        .unsigned()
+        .notNullable()
+        .references("menu_items.id");
+      table.json("options");
       table.timestamp("created_at").defaultTo(knex.fn.now());
     })
     .createTable("user_orders", function(table) {
-      table.uuid("id").primary();
+      table.increments("id").primary();
       table
         .integer("user_id")
         .unsigned()
@@ -36,6 +43,7 @@ exports.up = function(knex, Promise) {
         .string("menu_item_id")
         .notNullable()
         .references("menu_items.id");
+      table.json("options");
       table.timestamp("created_at").defaultTo(knex.fn.now());
       table.string("status").notNullable();
       table.timestamp("status_updated_at").defaultTo(knex.fn.now());

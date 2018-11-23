@@ -1,11 +1,11 @@
-import { OrderedItem } from "../types";
+import { OrderedItem, OrderOptions } from "../types";
 
 export interface PostOrderRequest {
   order: OrderRequestItem;
 }
 export interface OrderRequestItem {
-  itemId: string;
-  options: Record<string, number | string | boolean>;
+  itemId: number;
+  options: OrderOptions;
 }
 export interface PostOrderResponse {
   order: OrderedItem;

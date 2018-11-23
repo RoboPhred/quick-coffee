@@ -1,5 +1,6 @@
-import knex from "../knex";
 import { UserTokenPayload } from "coffee-types";
+
+import knex from "../knex";
 
 export default class User {
   static async findByUsername(username: string): Promise<User | null> {

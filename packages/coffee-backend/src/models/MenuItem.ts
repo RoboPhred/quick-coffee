@@ -3,7 +3,7 @@ import knex from "../knex";
 import { InventoryItem, ItemOption } from "coffee-types";
 
 export default class MenuItem implements InventoryItem {
-  static async findById(id: string): Promise<MenuItem | null> {
+  static async findById(id: number): Promise<MenuItem | null> {
     const rows: any[] = await knex
       .select(["id", "name", "options"])
       .from("menu_items")
@@ -23,7 +23,7 @@ export default class MenuItem implements InventoryItem {
     return rows.map(row => new MenuItem(row));
   }
 
-  id: string;
+  id: number;
   name: string;
   options: ItemOption[];
 

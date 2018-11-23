@@ -1,12 +1,12 @@
 export interface OrderedItem {
-  id: string;
-  itemId: string;
+  id: number;
+  itemId: number;
   itemName: string;
   orderCreatorUsername: string;
   orderDate: string;
   status: OrderStatus;
   statusChangeDate: string;
-  options: Record<string, number | string | boolean>;
+  options: OrderOptions;
 }
 
 export type OrderStatus =
@@ -14,3 +14,5 @@ export type OrderStatus =
   | "in-progress"
   | "waiting-delivery"
   | "delivered";
+
+export type OrderOptions = Record<string, string | number | boolean>;

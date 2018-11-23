@@ -1,6 +1,6 @@
 export interface FavoriteItem {
-  id: string;
+  id: number;
   favoriteName: string;
-  itemId: string;
+  itemId: number;
   itemName: string;
 }
