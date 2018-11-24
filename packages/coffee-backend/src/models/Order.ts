@@ -56,7 +56,7 @@ export default class Order implements OrderedItem {
         "user_orders.status_updated_at"
       ])
       .from("user_orders")
-      .where({ id })
+      .where({ "user_orders.id": id })
       .limit(1)
       .join("users", "user_orders.user_id", "=", "users.id")
       .join("menu_items", "user_orders.menu_item_id", "=", "menu_items.id");
