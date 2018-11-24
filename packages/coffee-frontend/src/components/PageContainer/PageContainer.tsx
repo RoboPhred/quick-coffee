@@ -59,7 +59,8 @@ const styles = (theme: Theme) =>
     },
     content: {
       width: "100%",
-      height: "100%"
+      height: "100%",
+      minHeight: 0
     }
   });
 
@@ -119,26 +120,28 @@ class PageContainer extends React.Component<Props, State> {
       <div className={classes.root}>
         {navList}
         <div className={classes.appRoot}>
-          <AppBar position="static">
-            <Toolbar>
-              {(variant === "subpage" && <BackButton />) ||
-                (isSmall && (
-                  <AppDrawerButton onClick={this._onAppDrawerOpen} />
-                ))}
-              <Typography
-                className={classes.appTitle}
-                variant="h6"
-                color="inherit"
-              >
-                {isSmall && "Coffee"}
-                {isSmall && title && " - "}
-                {title}
-              </Typography>
-              <ProfileButton />
-            </Toolbar>
-          </AppBar>
+          <div>
+            <AppBar position="static">
+              <Toolbar>
+                {(variant === "subpage" && <BackButton />) ||
+                  (isSmall && (
+                    <AppDrawerButton onClick={this._onAppDrawerOpen} />
+                  ))}
+                <Typography
+                  className={classes.appTitle}
+                  variant="h6"
+                  color="inherit"
+                >
+                  {isSmall && "Coffee"}
+                  {isSmall && title && " - "}
+                  {title}
+                </Typography>
+                <ProfileButton />
+              </Toolbar>
+            </AppBar>
+          </div>
           <div className={classes.content}>{children}</div>
-          {(variant === "app" || variant === "barista") && (
+          {isSmall && (variant === "app" || variant === "barista") && (
             <BottomNavigation variant={variant} />
           )}
         </div>
