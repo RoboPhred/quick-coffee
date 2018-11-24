@@ -1,15 +1,16 @@
 import knex from "../knex";
 
-import { FavoriteItem } from "coffee-types";
+import { FavoriteItem, OrderOptions } from "coffee-types";
 
 export default class Favorite implements FavoriteItem {
   static async getByUserId(userId: number): Promise<Favorite[]> {
     const rows: any[] = await knex
       .select([
         "user_favorites.id",
-        "user_favorites.name",
+        "user_favorites.name AS favorite_name",
         "user_favorites.menu_item_id",
-        "menu_items.name"
+        "user_favorites.options",
+        "menu_items.name AS item_name"
       ])
       .from("user_favorites")
       .where({ user_id: userId })
@@ -21,9 +22,10 @@ export default class Favorite implements FavoriteItem {
     const rows: any[] = await knex
       .select([
         "user_favorites.id",
-        "user_favorites.name",
+        "user_favorites.name AS favorite_name",
         "user_favorites.menu_item_id",
-        "menu_items.name"
+        "user_favorites.options",
+        "menu_items.name AS item_name"
       ])
       .from("user_favorites")
       .where({ "user_favorites.id": id })
@@ -38,13 +40,15 @@ export default class Favorite implements FavoriteItem {
   static async create(
     userId: number,
     itemId: number,
-    favoriteName: string
+    favoriteName: string,
+    options: OrderOptions
   ): Promise<Favorite | null> {
     const rows: any[] = await knex("user_favorites")
       .insert({
         user_id: userId,
         menu_item_id: itemId,
-        name: favoriteName
+        name: favoriteName,
+        options: JSON.stringify(options)
       })
       .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
     if (rows.length !== 1) {
@@ -64,11 +68,13 @@ export default class Favorite implements FavoriteItem {
   favoriteName: string;
   itemId: number;
   itemName: string;
+  options: OrderOptions;
 
   constructor(row: any) {
     this.id = row["id"];
-    this.favoriteName = row["name"];
+    this.favoriteName = row["favorite_name"];
     this.itemId = row["menu_item_id"];
-    this.itemName = row["menu_items.name"];
+    this.itemName = row["item_name"];
+    this.options = JSON.parse(row["options"] || "null");
   }
 }

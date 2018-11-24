@@ -31,7 +31,8 @@ router.post("/", async ctx => {
   const favorite = await Favorite.create(
     ctx.state.user.id,
     partialFavorite.itemId,
-    partialFavorite.favoriteName
+    partialFavorite.favoriteName,
+    partialFavorite.options
   );
   ctx.status = HttpStatusCodes.CREATED;
   ctx.body = { favorite };
