@@ -44,7 +44,7 @@ class OrderFormPage extends React.Component<Props, State> {
 
   render() {
     const { match } = this.props;
-    const itemId = Number(match);
+    const itemId = Number(match.params.item);
     if (isNaN(itemId)) {
       return <PageNotFound />;
     }
