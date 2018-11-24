@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { FavoriteItem } from "coffee-types";
 
+import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
+
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 
 import FavoritesSource from "@/services/favorites/components/FavoritesSource";
 
@@ -13,8 +13,23 @@ import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
-export default class FavoritesPage extends React.Component {
+import FavoriteCard from "./components/FavoriteCard";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    list: {
+      width: "100%",
+      height: "100%",
+      overflow: "auto"
+    },
+    listItem: {
+      margin: theme.spacing.unit
+    }
+  });
+type Props = StyleProps<ReturnType<typeof styles>>;
+class FavoritesPage extends React.Component<Props> {
   render() {
+    const { classes } = this.props;
     return (
       <Authenticate>
         <FavoritesSource>
@@ -23,15 +38,13 @@ export default class FavoritesPage extends React.Component {
               {isLoading && <LoadingPageContent />}
               {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
               {favorites && (
-                <List>
+                <List className={classes.list}>
                   {favorites.map(favorite => (
-                    <ListItem key={favorite.id}>
-                      <ListItemText
-                        primary={favorite.favoriteName}
-                        secondary={favorite.itemName}
-                        onClick={this._orderItem.bind(this, favorite)}
-                      />
-                    </ListItem>
+                    <FavoriteCard
+                      key={favorite.id}
+                      className={classes.listItem}
+                      favorite={favorite}
+                    />
                   ))}
                 </List>
               )}
@@ -46,3 +59,4 @@ export default class FavoritesPage extends React.Component {
     // TODO: Navigate to order page and prepopulate with favorite data.
   }
 }
+export default withStyles(styles)(FavoritesPage);

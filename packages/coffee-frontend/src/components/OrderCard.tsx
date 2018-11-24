@@ -7,7 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 
-import ItemSource from "@/services/menu/components/ItemSource";
+import ItemOrderOptions from "@/components/ItemOrderOptions";
 
 export interface OrderListItemProps {
   className?: string;
@@ -17,37 +17,18 @@ export interface OrderListItemProps {
 
 type Props = OrderListItemProps;
 const OrderCard: React.SFC<Props> = ({ className, actions, order }) => (
-  <ItemSource itemId={order.itemId}>
-    {({ item }) => (
-      <Card className={className}>
-        <CardContent>
-          <Typography color="textSecondary">
-            {order.orderCreatorUsername}
-          </Typography>
-          <Typography variant="h6">{order.itemName}</Typography>
-          <table>
-            <tbody>
-              {orderOptionKeys(order).map(optionId => (
-                <tr key={optionId}>
-                  <td>
-                    <Typography variant="body1">
-                      {itemOptionName(item, optionId)}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography variant="body2">
-                      {itemOptionValue(order.options[optionId])}
-                    </Typography>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
-        {actions && <CardActions>{actions}</CardActions>}
-      </Card>
-    )}
-  </ItemSource>
+  <Card className={className}>
+    <CardContent>
+      <Typography color="textSecondary">
+        {order.orderCreatorUsername}
+      </Typography>
+      <Typography variant="h6">{order.itemName}</Typography>
+      {order.options && (
+        <ItemOrderOptions itemId={order.itemId} options={order.options} />
+      )}
+    </CardContent>
+    {actions && <CardActions>{actions}</CardActions>}
+  </Card>
 );
 export default OrderCard;
 
