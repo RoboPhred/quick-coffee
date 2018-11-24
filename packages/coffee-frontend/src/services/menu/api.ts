@@ -8,10 +8,6 @@ export async function getItems(): Promise<ListInventoryItem[]> {
 }
 
 export async function getItem(itemId: number): Promise<InventoryItem> {
-  if (typeof itemId !== "string" || itemId === "") {
-    throw new Error("Invalid item id.");
-  }
-
   const result = await apiFetch("GET", `/items/${itemId}`);
   return result;
 }
