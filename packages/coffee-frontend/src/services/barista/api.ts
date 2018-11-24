@@ -7,7 +7,7 @@ export async function getBaristaOrders(): Promise<OrderedItem[]> {
   return orderResponse.orders;
 }
 
-export async function setOrderStatus(orderId: string, status: OrderStatus) {
+export async function setOrderStatus(orderId: number, status: OrderStatus) {
   await authFetch("PATCH", `/barista/orders/${orderId}`, {
     status
   });

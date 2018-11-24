@@ -7,7 +7,7 @@ export async function getItems(): Promise<ListInventoryItem[]> {
   return result;
 }
 
-export async function getItem(itemId: string): Promise<InventoryItem> {
+export async function getItem(itemId: number): Promise<InventoryItem> {
   if (typeof itemId !== "string" || itemId === "") {
     throw new Error("Invalid item id.");
   }

@@ -13,6 +13,8 @@ import ItemSource, {
 } from "@/services/menu/components/ItemSource";
 import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
+import PageNotFound from "@/pages/PageNotFound";
+
 import Authenticate from "@/components/Authenticate";
 
 import PageContainer from "@/components/PageContainer";
@@ -42,6 +44,11 @@ class OrderFormPage extends React.Component<Props, State> {
 
   render() {
     const { match } = this.props;
+    const itemId = Number(match);
+    if (isNaN(itemId)) {
+      return <PageNotFound />;
+    }
+
     return (
       <OrderingEnabledProvider>
         {({ isLoading, isOrderingEnabled }) => {
@@ -55,7 +62,7 @@ class OrderFormPage extends React.Component<Props, State> {
 
           return (
             <Authenticate>
-              <ItemSource itemId={match.params.item}>
+              <ItemSource itemId={itemId}>
                 {props => (
                   <PageContainer title="Order" variant="subpage">
                     {this._renderContent(props)}

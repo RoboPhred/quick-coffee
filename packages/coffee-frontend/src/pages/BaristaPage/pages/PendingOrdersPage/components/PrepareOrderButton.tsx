@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { setOrderStatus } from "@/services/barista/api";
 
 export interface PrepareOrderButtonProps {
-  orderId: string;
+  orderId: number;
 }
 type Props = PrepareOrderButtonProps;
 export default class PrepareOrderButton extends React.Component<Props> {

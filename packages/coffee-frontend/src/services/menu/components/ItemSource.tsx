@@ -11,7 +11,7 @@ export interface ItemSourceRenderProps {
 }
 
 export interface ItemSourceProps {
-  itemId: string;
+  itemId: number;
   children(props: ItemSourceRenderProps): React.ReactNode;
 }
 

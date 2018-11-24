@@ -1,5 +1,5 @@
 export interface ItemOptionBase {
-  id: number;
+  id: string;
   name: string;
   type: string;
   description?: string;
