@@ -1,7 +1,11 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { FavoriteItem } from "coffee-types";
-import { getFavorites } from "../api";
+
+import { AppState } from "@/state";
+
+import { refreshFavorites } from "../actions/refresh-favorites";
 
 export interface FavoritesSourceRenderProps {
   isLoading: boolean;
@@ -13,58 +17,31 @@ export interface FavoritesSourceProps {
   children(props: FavoritesSourceRenderProps): React.ReactNode;
 }
 
-type Props = FavoritesSourceProps;
-type State = FavoritesSourceRenderProps;
-export default class FavoritesSource extends React.Component<Props, State> {
-  private _unmounted: boolean = false;
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.services.favorites.isLoading,
+  errorMessage: state.services.favorites.errorMessage,
+  favorites: state.services.favorites.favorites
+});
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-  constructor(props: Props) {
-    super(props);
+const mapDispatchToProps = {
+  refreshFavorites
+};
+type DispatchProps = typeof mapDispatchToProps;
 
-    this.state = {
-      isLoading: false,
-      errorMessage: null,
-      favorites: null
-    };
-  }
-
+type Props = FavoritesSourceProps & StateProps & DispatchProps;
+class FavoritesSource extends React.Component<Props> {
   componentDidMount() {
-    this.fetchData();
-  }
-
-  componentWillUnmount() {
-    this._unmounted = true;
+    const { refreshFavorites } = this.props;
+    refreshFavorites();
   }
 
   render() {
-    const { errorMessage, favorites, isLoading } = this.state;
+    const { errorMessage, favorites, isLoading } = this.props;
     return this.props.children({ errorMessage, favorites, isLoading });
   }
-
-  async fetchData() {
-    this.setState({ isLoading: true });
-
-    try {
-      const result = await getFavorites();
-
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        favorites: result
-      });
-    } catch (e) {
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        favorites: null,
-        errorMessage: e.message
-      });
-    }
-  }
 }
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FavoritesSource);

@@ -3,7 +3,8 @@ import {
   GetFavoritesResponse,
   PostFavoriteRequest,
   PostFavoriteResponse,
-  DeleteFavoriteResponse
+  DeleteFavoriteResponse,
+  FavoriteRequestItem
 } from "coffee-types";
 
 import { authFetch } from "@/services/auth/api";
@@ -14,8 +15,11 @@ export async function getFavorites(): Promise<FavoriteItem[]> {
 }
 
 export async function addFavorite(
-  request: PostFavoriteRequest
+  favorite: FavoriteRequestItem
 ): Promise<FavoriteItem> {
+  const request: PostFavoriteRequest = {
+    favorite
+  };
   const response: PostFavoriteResponse = await authFetch(
     "POST",
     "/favorites",

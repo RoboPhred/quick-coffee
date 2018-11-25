@@ -1,6 +1,11 @@
 import createSagaMiddleware from "redux-saga";
+import { fork } from "redux-saga/effects";
 
-function* saga(): any {}
+import favoritesServiceSaga from "@/services/favorites/saga";
+
+function* saga(): any {
+  yield fork(favoritesServiceSaga);
+}
 
 const sagaMiddleware = createSagaMiddleware();
 

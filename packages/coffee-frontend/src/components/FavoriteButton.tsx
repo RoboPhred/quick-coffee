@@ -1,4 +1,5 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { autobind } from "core-decorators";
 
@@ -14,11 +15,16 @@ import Button from "@material-ui/core/Button";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-import { addFavorite } from "@/services/favorites/api";
+import { addFavorite } from "@/services/favorites/actions/add-favorite";
 
 export interface FavoriteButtonProps {
   order: OrderRequestItem;
 }
+
+const mapDispatchToProps = {
+  addFavorite
+};
+type DispatchProps = typeof mapDispatchToProps;
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,7 +38,9 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = FavoriteButtonProps & StyleProps<ReturnType<typeof styles>>;
+type Props = FavoriteButtonProps &
+  StyleProps<ReturnType<typeof styles>> &
+  DispatchProps;
 interface State {
   addingOrder: boolean;
   favoriteName: string | null;
@@ -104,17 +112,15 @@ class FavoriteButton extends React.Component<Props, State> {
 
   @autobind()
   private async _onCommitFavorite() {
-    const { order } = this.props;
+    const { order, addFavorite } = this.props;
     const { favoriteName } = this.state;
     if (!favoriteName) {
       return;
     }
 
     await addFavorite({
-      favorite: {
-        ...order,
-        favoriteName
-      }
+      ...order,
+      favoriteName
     });
 
     this.setState({
@@ -122,4 +128,7 @@ class FavoriteButton extends React.Component<Props, State> {
     });
   }
 }
-export default withStyles(styles)(FavoriteButton);
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(FavoriteButton));

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { autobind } from "core-decorators";
 
@@ -15,7 +16,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import { deleteFavorite } from "@/services/favorites/api";
+import { deleteFavorite } from "@/services/favorites/actions/delete-favorite";
 
 import ItemOrderOptions from "@/components/ItemOrderOptions";
 
@@ -24,7 +25,12 @@ export interface FavoriteCardProps {
   favorite: FavoriteItem;
 }
 
-type Props = FavoriteCardProps & RouteComponentProps;
+const mapDispatchToProps = {
+  deleteFavorite
+};
+type DispatchProps = typeof mapDispatchToProps;
+
+type Props = FavoriteCardProps & RouteComponentProps & DispatchProps;
 class FavoriteCard extends React.Component<Props> {
   render() {
     const { className, favorite } = this.props;
@@ -64,9 +70,12 @@ class FavoriteCard extends React.Component<Props> {
 
   @autobind()
   private _onDelete() {
-    const { favorite } = this.props;
+    const { favorite, deleteFavorite } = this.props;
     deleteFavorite(favorite.id);
   }
 }
 
-export default withRouter(FavoriteCard);
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(FavoriteCard));
