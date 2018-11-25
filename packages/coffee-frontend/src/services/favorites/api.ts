@@ -2,7 +2,8 @@ import {
   FavoriteItem,
   GetFavoritesResponse,
   PostFavoriteRequest,
-  PostFavoriteResponse
+  PostFavoriteResponse,
+  DeleteFavoriteResponse
 } from "coffee-types";
 
 import { authFetch } from "@/services/auth/api";
@@ -21,4 +22,12 @@ export async function addFavorite(
     request
   );
   return response.favorite;
+}
+
+export async function deleteFavorite(favoriteId: number): Promise<boolean> {
+  const response: DeleteFavoriteResponse = await authFetch(
+    "DELETE",
+    `/favorites/${favoriteId}`
+  );
+  return response.status === "ok";
 }
