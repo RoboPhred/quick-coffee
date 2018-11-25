@@ -11,7 +11,7 @@ export interface OrderingEnabledProviderRenderProps {
 }
 
 export interface OrderingEnabledProviderProps {
-  children(props: OrderingEnabledProviderRenderProps): React.ReactChild;
+  children(props: OrderingEnabledProviderRenderProps): React.ReactNode;
 }
 
 const POLLING_INTERVAL = 10000;
@@ -49,19 +49,16 @@ export default class OrderingEnabledProvider extends React.Component<
 
   render() {
     const { isOrderingEnabled, errorMessage, isLoading } = this.state;
-    const { children } = this.props;
-    return React.Children.only(
-      children({ isOrderingEnabled, errorMessage, isLoading })
-    );
+    return this.props.children({ isOrderingEnabled, errorMessage, isLoading });
   }
 
   @autobind()
   private async _fetchAndPoll() {
     this._pollTimer = null;
     await this._fetchData();
-    if (!this._unmounted) {
-      this._pollTimer = setTimeout(this._fetchAndPoll, POLLING_INTERVAL);
-    }
+    // if (!this._unmounted) {
+    //   this._pollTimer = setTimeout(this._fetchAndPoll, POLLING_INTERVAL);
+    // }
   }
 
   private async _fetchData() {
@@ -79,7 +76,7 @@ export default class OrderingEnabledProvider extends React.Component<
         isOrderingEnabled: result,
         errorMessage: null
       });
-    } catch {
+    } catch (e) {
       if (this._unmounted) {
         return;
       }
@@ -89,7 +86,7 @@ export default class OrderingEnabledProvider extends React.Component<
         isOrderingEnabled: null,
         // No idea what the error format is, and we probably
         //  dont want to show error details to the user anyway.
-        errorMessage: "An error occurred"
+        errorMessage: e.message
       });
     }
   }

@@ -1,13 +1,11 @@
 import * as React from "react";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import AppPageContainer from "@/components/AppPageContainer";
+import PageContainer from "@/components/PageContainer";
+import LoadingPageContent from "@/components/LoadingPageContent";
 
 const AppLoading: React.SFC = () => (
-  <AppPageContainer>
-    <Typography variant="h6">Loading</Typography>
-    <CircularProgress />
-  </AppPageContainer>
+  <PageContainer variant="subpage">
+    <LoadingPageContent />
+  </PageContainer>
 );
 export default AppLoading;

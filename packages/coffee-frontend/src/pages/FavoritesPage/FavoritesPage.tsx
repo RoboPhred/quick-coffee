@@ -1,36 +1,58 @@
 import * as React from "react";
 
+import { FavoriteItem } from "coffee-types";
+
+import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
+
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
+import FavoritesSource from "@/services/favorites/components/FavoritesSource";
 
-import FavoritesProvider from "@/services/backend/components/FavoritesProvider";
-
-import AppPageContainer from "@/components/AppPageContainer";
+import Authenticate from "@/components/Authenticate";
+import PageContainer from "@/components/PageContainer";
+import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
-const FavoritesPage: React.SFC = () => (
-  <FavoritesProvider>
-    {({ isLoading, favorites, errorMessage }) => (
-      <AppPageContainer title="Favorites">
-        {isLoading && <CircularProgress />}
-        {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
-        {favorites && (
-          <List>
-            {favorites.map(favorite => (
-              <ListItem key={favorite.id}>
-                <ListItemText
-                  primary={favorite.favoriteName}
-                  secondary={favorite.itemName}
-                />
-              </ListItem>
-            ))}
-          </List>
-        )}
-      </AppPageContainer>
-    )}
-  </FavoritesProvider>
-);
-export default FavoritesPage;
+import FavoriteCard from "./components/FavoriteCard";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    list: {
+      width: "100%",
+      height: "100%",
+      overflow: "auto"
+    },
+    listItem: {
+      margin: theme.spacing.unit
+    }
+  });
+type Props = StyleProps<ReturnType<typeof styles>>;
+class FavoritesPage extends React.Component<Props> {
+  render() {
+    const { classes } = this.props;
+    return (
+      <Authenticate>
+        <FavoritesSource>
+          {({ isLoading, favorites, errorMessage }) => (
+            <PageContainer title="Favorites" variant="app">
+              {isLoading && <LoadingPageContent />}
+              {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
+              {favorites && (
+                <List className={classes.list}>
+                  {favorites.map(favorite => (
+                    <FavoriteCard
+                      key={favorite.id}
+                      className={classes.listItem}
+                      favorite={favorite}
+                    />
+                  ))}
+                </List>
+              )}
+            </PageContainer>
+          )}
+        </FavoritesSource>
+      </Authenticate>
+    );
+  }
+}
+export default withStyles(styles)(FavoritesPage);

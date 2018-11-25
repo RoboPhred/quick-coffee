@@ -1,7 +1,14 @@
 export interface OrderedItem {
-  id: string;
-  itemId: string;
+  id: number;
+  itemId: number;
   itemName: string;
-  dateOrdered: string;
-  status: "pending" | "in-progress" | "ready";
+  orderCreatorUsername: string;
+  orderDate: string;
+  status: OrderStatus;
+  statusChangeDate: string;
+  options: OrderOptions;
 }
+
+export type OrderStatus = "pending" | "in-progress" | "completed";
+
+export type OrderOptions = Record<string, string | number | boolean>;

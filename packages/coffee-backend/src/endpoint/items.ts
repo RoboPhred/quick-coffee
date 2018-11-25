@@ -1,12 +1,12 @@
 import Router from "koa-router";
 import HttpStatusCodes from "http-status-codes";
 
-import { getItems, getItem } from "../data/items";
+import MenuItem from "../models/MenuItem";
 
 const router = new Router({ prefix: "/items" });
 
 router.get("/", async ctx => {
-  const items = await getItems();
+  const items = await MenuItem.getAll();
   ctx.body = items;
   ctx.status = HttpStatusCodes.OK;
 });
@@ -14,7 +14,7 @@ router.get("/", async ctx => {
 router.get("/:itemId", async ctx => {
   const { itemId } = ctx.params;
   try {
-    const item = await getItem(itemId);
+    const item = await MenuItem.findById(itemId);
     ctx.body = item;
     ctx.status = HttpStatusCodes.OK;
   } catch (e) {

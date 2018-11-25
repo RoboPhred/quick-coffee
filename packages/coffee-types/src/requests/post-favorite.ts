@@ -1,12 +1,12 @@
-import { FavoriteItem } from "../types/favorite";
+import { FavoriteItem, OrderOptions } from "../types";
 
 export interface PostFavoriteRequest {
   favorite: FavoriteRequestItem;
 }
 export interface FavoriteRequestItem {
-  itemId: string;
+  itemId: number;
   favoriteName: string;
-  options: Record<string, string | number | boolean>;
+  options: OrderOptions;
 }
 export interface PostFavoriteResponse {
   favorite: FavoriteItem;

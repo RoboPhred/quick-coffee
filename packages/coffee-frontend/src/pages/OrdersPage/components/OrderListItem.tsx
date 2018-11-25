@@ -25,18 +25,20 @@ const styles = createStyles({
 });
 
 type Props = OrderItemOverviewProps & StyleProps<typeof styles>;
-const OrderListItem: React.SFC<Props> = ({ classes, item }) => {
-  const date = moment(item.dateOrdered);
-  return (
-    <ListItem className={classes.root}>
-      <div>
-        <Typography variant="h6">{item.itemName}</Typography>
-        <Typography variant="caption">
-          {date.format("MMM Do YYYY, h:mm a")}
-        </Typography>
-      </div>
-      <div className={classes.right}>{item.status}</div>
-    </ListItem>
-  );
-};
+const OrderListItem: React.SFC<Props> = ({ classes, item }) => (
+  <ListItem className={classes.root}>
+    <div>
+      <Typography variant="caption">
+        {moment(item.orderDate).format("MMM Do YYYY, h:mm a")}
+      </Typography>
+      <Typography variant="h6">{item.itemName}</Typography>
+    </div>
+    <div className={classes.right}>
+      <Typography variant="caption">
+        {moment(item.statusChangeDate).format("h:mm a")}
+      </Typography>
+      <Typography variant="body1">{item.status}</Typography>
+    </div>
+  </ListItem>
+);
 export default withStyles(styles)(OrderListItem);

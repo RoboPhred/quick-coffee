@@ -1,12 +1,8 @@
 import { ItemOption } from "./item-option";
 
-export interface ListInventoryItem {
-  id: string;
+export interface InventoryItem {
+  id: number;
   name: string;
   description?: string;
-}
-
-export interface InventoryItem extends ListInventoryItem {
-  sizes?: string[];
   options?: ItemOption[];
 }

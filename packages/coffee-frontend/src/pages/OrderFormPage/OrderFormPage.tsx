@@ -2,21 +2,31 @@ import * as React from "react";
 
 import { RouteComponentProps } from "react-router-dom";
 
+import { parse as parseQuery, OutputParams } from "query-string";
+
 import { autobind } from "core-decorators";
-import { OrderRequestItem } from "coffee-types";
+import { OrderRequestItem, OrderOptions, InventoryItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
-import ItemProvider, {
-  ItemProviderRenderProps
-} from "@/services/backend/components/ItemProvider";
+import ItemSource, {
+  ItemSourceRenderProps
+} from "@/services/menu/components/ItemSource";
+import OrderingEnabledProvider from "@/services/backend/components/OrderingEnabledProvider";
 
-import AppPageContainer from "@/components/AppPageContainer";
+import PageNotFound from "@/pages/PageNotFound";
+
+import Authenticate from "@/components/Authenticate";
+
+import PageContainer from "@/components/PageContainer";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import LoadingPageContent from "@/components/LoadingPageContent";
 
 import OrderForm from "./components/OrderForm";
 import OrderingDisplay from "./components/OrderingDisplay";
-import { addOrder } from "@/services/backend/api";
+
+import { addOrder } from "@/services/orders/api";
 
 export type OrderFormProps = RouteComponentProps<{ item: string }>;
 type Props = OrderFormProps;
@@ -36,18 +46,39 @@ class OrderFormPage extends React.Component<Props, State> {
 
   render() {
     const { match } = this.props;
+    const itemId = Number(match.params.item);
+    if (isNaN(itemId)) {
+      return <PageNotFound />;
+    }
+
     return (
-      <ItemProvider itemId={match.params.item}>
-        {props => (
-          <AppPageContainer title="Order" subPage>
-            {this._renderContent(props)}
-          </AppPageContainer>
-        )}
-      </ItemProvider>
+      <OrderingEnabledProvider>
+        {({ isLoading, isOrderingEnabled }) => {
+          if (isLoading) {
+            return <LoadingPageContent />;
+          }
+
+          if (!isOrderingEnabled) {
+            return <Typography variant="h6">Coffee shop is closed.</Typography>;
+          }
+
+          return (
+            <Authenticate>
+              <ItemSource itemId={itemId}>
+                {props => (
+                  <PageContainer title="Order" variant="subpage">
+                    {this._renderContent(props)}
+                  </PageContainer>
+                )}
+              </ItemSource>
+            </Authenticate>
+          );
+        }}
+      </OrderingEnabledProvider>
     );
   }
 
-  private _renderContent(props: ItemProviderRenderProps) {
+  private _renderContent(props: ItemSourceRenderProps) {
     const { isLoading, errorMessage: itemErrorMessage, item } = props;
     const { isOrdering, errorMessage } = this.state;
 
@@ -65,7 +96,17 @@ class OrderFormPage extends React.Component<Props, State> {
       );
     }
 
-    return <OrderForm item={item} onOrder={this._onOrder} />;
+    const { location } = this.props;
+    const query = parseQuery(location.search);
+    const defaultOptions = parseOptions(query, item);
+
+    return (
+      <OrderForm
+        item={item}
+        defaultOptions={defaultOptions}
+        onOrder={this._onOrder}
+      />
+    );
   }
 
   @autobind()
@@ -88,3 +129,32 @@ class OrderFormPage extends React.Component<Props, State> {
 }
 
 export default OrderFormPage;
+
+function parseOptions(
+  queryOpts: OutputParams,
+  item: InventoryItem
+): OrderOptions {
+  if (!item.options) {
+    return {};
+  }
+  const options: OrderOptions = {};
+  for (const option of item.options) {
+    let value: any = queryOpts[`option-${option.id}`];
+    if (value == null) {
+      continue;
+    }
+    switch (option.type) {
+      case "boolean":
+        value = value !== "false";
+        break;
+      case "integer":
+        value = parseInt(value, 10);
+        break;
+      case "select":
+      case "text":
+        break;
+    }
+    options[option.id] = value;
+  }
+  return options;
+}

@@ -1,20 +1,20 @@
 import * as React from "react";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
 
-import ItemListProvider from "@/services/backend/components/ItemListProvider";
+import ItemListSource from "@/services/menu/components/ItemListSource";
 
-import AppPageContainer from "@/components/AppPageContainer";
-
-import MenuItem from "./components/MenuItem";
+import PageContainer from "@/components/PageContainer";
+import LoadingPageContent from "@/components/LoadingPageContent";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
+import MenuItem from "./components/MenuItem";
+
 const MenuPage: React.SFC = () => (
-  <ItemListProvider>
+  <ItemListSource>
     {({ isLoading, errorMessage, items }) => (
-      <AppPageContainer title="Menu">
-        {isLoading && <CircularProgress />}
+      <PageContainer title="Menu" variant="app">
+        {isLoading && <LoadingPageContent />}
         {errorMessage && <ErrorDisplay errorMessage={errorMessage} />}
         {items && (
           <List>
@@ -23,8 +23,8 @@ const MenuPage: React.SFC = () => (
             ))}
           </List>
         )}
-      </AppPageContainer>
+      </PageContainer>
     )}
-  </ItemListProvider>
+  </ItemListSource>
 );
 export default MenuPage;
