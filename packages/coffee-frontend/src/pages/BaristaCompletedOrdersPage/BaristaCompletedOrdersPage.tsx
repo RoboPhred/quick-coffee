@@ -25,14 +25,14 @@ const styles = (theme: Theme) =>
     }
   });
 type Props = StyleProps<ReturnType<typeof styles>>;
-const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
+const BaristaCompletedOrdersPage: React.SFC<Props> = ({ classes }) => (
   <BaristaOrdersSource>
     {({ isLoading, orders }) => (
-      <PageContainer title="Deliveries" variant="barista">
+      <PageContainer title="Completed Orders" variant="barista">
         {isLoading && <LoadingPageContent />}
         {orders && (
           <List className={classes.list}>
-            {orders.filter(isPendingDelivery).map(order => (
+            {orders.filter(isCompletedOrder).map(order => (
               <OrderCard
                 className={classes.listItem}
                 order={order}
@@ -45,8 +45,8 @@ const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
     )}
   </BaristaOrdersSource>
 );
-export default withStyles(styles)(PendingOrdersPage);
+export default withStyles(styles)(BaristaCompletedOrdersPage);
 
-function isPendingDelivery(order: OrderedItem): boolean {
-  return order.status === "waiting-delivery";
+function isCompletedOrder(order: OrderedItem): boolean {
+  return order.status === "completed";
 }

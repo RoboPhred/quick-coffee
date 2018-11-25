@@ -9,10 +9,6 @@ export interface OrderedItem {
   options: OrderOptions;
 }
 
-export type OrderStatus =
-  | "pending"
-  | "in-progress"
-  | "waiting-delivery"
-  | "delivered";
+export type OrderStatus = "pending" | "in-progress" | "completed";
 
 export type OrderOptions = Record<string, string | number | boolean>;

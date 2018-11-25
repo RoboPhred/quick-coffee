@@ -25,7 +25,7 @@ export interface PageContainerProps {
   variant: "app" | "subpage" | "barista";
 }
 
-const NAV_WIDTH = 250;
+const NAV_WIDTH = 255;
 
 const styles = (theme: Theme) =>
   createStyles({

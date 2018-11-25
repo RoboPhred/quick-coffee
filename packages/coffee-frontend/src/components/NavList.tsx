@@ -50,17 +50,17 @@ const NavList: React.SFC<NavListProps> = ({ className }) => (
               </ListItemIcon>
               <ListItemText>Edit Menu</ListItemText>
             </ListItemLink>
-            <ListItemLink button to="/barista/orders" autoselect>
+            <ListItemLink button to="/barista/pending-orders" autoselect>
               <ListItemIcon>
                 <MailIcon />
               </ListItemIcon>
-              <ListItemText>All Orders</ListItemText>
+              <ListItemText>Pending Orders</ListItemText>
             </ListItemLink>
-            <ListItemLink button to="/barista/deliveries" autoselect>
+            <ListItemLink button to="/barista/completed-orders" autoselect>
               <ListItemIcon>
                 <SendIcon />
               </ListItemIcon>
-              <ListItemText>Deliveries</ListItemText>
+              <ListItemText>Completed Orders</ListItemText>
             </ListItemLink>
           </React.Fragment>
         )

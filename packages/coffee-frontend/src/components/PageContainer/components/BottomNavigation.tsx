@@ -49,12 +49,12 @@ const navTypes: Record<BottomNavigationProps["variant"], NavItem[]> = {
     },
     {
       path: "/barista/orders",
-      label: "Orders",
+      label: "Pending Orders",
       icon: <MailIcon />
     },
     {
       path: "/barista/deliveries",
-      label: "Deliveries",
+      label: "Completed Orders",
       icon: <SendIcon />
     }
   ]

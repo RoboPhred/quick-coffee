@@ -11,7 +11,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 
 import BaristaEditMenuPage from "./pages/BaristaEditMenuPage";
 import BaristaPendingOrdersPage from "./pages/BaristaPendingOrdersPage";
-import BaristaPendingDeliveriesPage from "./pages/BaristaPendingDeliveriesPage";
+import BaristaCompletedOrdersPage from "./pages/BaristaCompletedOrdersPage";
 
 const Routes: React.SFC = () => (
   <Switch>
@@ -24,11 +24,15 @@ const Routes: React.SFC = () => (
 
     <Redirect from="/barista" exact to="/barista/orders" />
     <Route path="/barista/edit-menu" exact component={BaristaEditMenuPage} />
-    <Route path="/barista/orders" exact component={BaristaPendingOrdersPage} />
     <Route
-      path="/barista/deliveries"
+      path="/barista/pending-orders"
       exact
-      component={BaristaPendingDeliveriesPage}
+      component={BaristaPendingOrdersPage}
+    />
+    <Route
+      path="/barista/completed-orders"
+      exact
+      component={BaristaCompletedOrdersPage}
     />
 
     {/* Keep this component last.  It is a catch-all that displays the 404 page. */}

@@ -13,7 +13,7 @@ import LoadingPageContent from "@/components/LoadingPageContent";
 
 import OrderCard from "@/components/OrderCard";
 
-import PrepareOrderButton from "./components/PrepareOrderButton";
+import CompleteOrderButton from "./components/CompleteOrderButton";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,10 +27,10 @@ const styles = (theme: Theme) =>
     }
   });
 type Props = StyleProps<ReturnType<typeof styles>>;
-const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
+const BaristaPendingOrdersPage: React.SFC<Props> = ({ classes }) => (
   <BaristaOrdersSource>
     {({ isLoading, orders }) => (
-      <PageContainer title="Orders" variant="barista">
+      <PageContainer title="Pending Orders" variant="barista">
         {isLoading && <LoadingPageContent />}
         {orders && (
           <List className={classes.list}>
@@ -39,7 +39,7 @@ const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
                 className={classes.listItem}
                 order={order}
                 key={order.id}
-                actions={<PrepareOrderButton orderId={order.id} />}
+                actions={<CompleteOrderButton orderId={order.id} />}
               />
             ))}
           </List>
@@ -48,7 +48,7 @@ const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
     )}
   </BaristaOrdersSource>
 );
-export default withStyles(styles)(PendingOrdersPage);
+export default withStyles(styles)(BaristaPendingOrdersPage);
 
 function isPendingOrder(order: OrderedItem): boolean {
   return order.status === "pending";

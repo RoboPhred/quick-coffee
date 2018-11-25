@@ -2,9 +2,9 @@ import * as React from "react";
 
 import PageContainer from "@/components/PageContainer";
 
-const EditMenuPage: React.SFC = () => (
+const BaristaEditMenuPage: React.SFC = () => (
   <PageContainer title="Edit Menu" variant="barista">
     <span />
   </PageContainer>
 );
-export default EditMenuPage;
+export default BaristaEditMenuPage;

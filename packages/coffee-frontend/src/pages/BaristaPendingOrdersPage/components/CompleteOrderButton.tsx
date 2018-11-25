@@ -10,14 +10,14 @@ export interface PrepareOrderButtonProps {
   orderId: number;
 }
 type Props = PrepareOrderButtonProps;
-export default class PrepareOrderButton extends React.Component<Props> {
+export default class CompleteOrderButton extends React.Component<Props> {
   render() {
-    return <Button onClick={this._onPrepareOrder}>Prepare Order</Button>;
+    return <Button onClick={this._onCompleteOrder}>Complete Order</Button>;
   }
 
   @autobind()
-  private _onPrepareOrder() {
+  private _onCompleteOrder() {
     const { orderId } = this.props;
-    setOrderStatus(orderId, "waiting-delivery");
+    setOrderStatus(orderId, "completed");
   }
 }
