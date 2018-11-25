@@ -2,11 +2,17 @@ import { UserTokenPayload } from "coffee-types";
 
 import knex from "../knex";
 
+const TABLE_NAME = "users";
+
+function createSelect() {
+  return knex
+    .select(["users.id", "users.username", "users.is_barista"])
+    .from(TABLE_NAME);
+}
+
 export default class User {
   static async findByUsername(username: string): Promise<User | null> {
-    const rows: any[] = await knex
-      .select(["users.id", "users.username", "users.is_barista"])
-      .from("users")
+    const rows: any[] = await createSelect()
       .where({ username })
       .limit(1);
     if (rows.length !== 1) {

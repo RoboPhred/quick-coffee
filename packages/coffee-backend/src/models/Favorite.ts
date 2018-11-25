@@ -2,35 +2,31 @@ import knex from "../knex";
 
 import { FavoriteItem, OrderOptions } from "coffee-types";
 
+const TABLE_NAME = "user_favorites";
+
+function createSelect() {
+  return knex
+    .select([
+      "user_favorites.id",
+      "user_favorites.name AS favorite_name",
+      "user_favorites.menu_item_id",
+      "user_favorites.options",
+      "menu_items.name AS item_name"
+    ])
+    .from(TABLE_NAME)
+    .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
+}
+
 export default class Favorite implements FavoriteItem {
   static async getByUserId(userId: number): Promise<Favorite[]> {
-    const rows: any[] = await knex
-      .select([
-        "user_favorites.id",
-        "user_favorites.name AS favorite_name",
-        "user_favorites.menu_item_id",
-        "user_favorites.options",
-        "menu_items.name AS item_name"
-      ])
-      .from("user_favorites")
-      .where({ user_id: userId })
-      .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
+    const rows: any[] = await createSelect().where({ user_id: userId });
     return rows.map(row => new Favorite(row));
   }
 
   static async getById(id: number): Promise<Favorite | null> {
-    const rows: any[] = await knex
-      .select([
-        "user_favorites.id",
-        "user_favorites.name AS favorite_name",
-        "user_favorites.menu_item_id",
-        "user_favorites.options",
-        "menu_items.name AS item_name"
-      ])
-      .from("user_favorites")
+    const rows: any[] = await createSelect()
       .where({ "user_favorites.id": id })
-      .limit(1)
-      .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
+      .limit(1);
     if (rows.length !== 1) {
       return null;
     }
@@ -43,14 +39,12 @@ export default class Favorite implements FavoriteItem {
     favoriteName: string,
     options: OrderOptions
   ): Promise<Favorite | null> {
-    const rows: any[] = await knex("user_favorites")
-      .insert({
-        user_id: userId,
-        menu_item_id: itemId,
-        name: favoriteName,
-        options: JSON.stringify(options)
-      })
-      .join("menu_items", "user_favorites.menu_item_id", "=", "menu_items.id");
+    const rows: any[] = await knex(TABLE_NAME).insert({
+      user_id: userId,
+      menu_item_id: itemId,
+      name: favoriteName,
+      options: JSON.stringify(options)
+    });
     if (rows.length !== 1) {
       return null;
     }
@@ -58,7 +52,7 @@ export default class Favorite implements FavoriteItem {
   }
 
   static async delete(favoriteId: string, userId?: string): Promise<boolean> {
-    const affectedRows = await knex("user_favorites")
+    const affectedRows = await knex(TABLE_NAME)
       .delete()
       .where({ id: favoriteId, user_id: userId });
     return affectedRows != 0;
