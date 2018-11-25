@@ -1,4 +1,5 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { RouteComponentProps } from "react-router-dom";
 
@@ -26,10 +27,16 @@ import LoadingPageContent from "@/components/LoadingPageContent";
 import OrderForm from "./components/OrderForm";
 import OrderingDisplay from "./components/OrderingDisplay";
 
-import { addOrder } from "@/services/orders/api";
+import { addOrder } from "@/services/orders/actions/add-order";
 
 export type OrderFormProps = RouteComponentProps<{ item: string }>;
-type Props = OrderFormProps;
+
+const mapDispatchToProps = {
+  addOrder
+};
+type DispatchProps = typeof mapDispatchToProps;
+
+type Props = OrderFormProps & DispatchProps;
 interface State {
   isOrdering: boolean;
   errorMessage: string | null;
@@ -111,12 +118,14 @@ class OrderFormPage extends React.Component<Props, State> {
 
   @autobind()
   private async _onOrder(order: OrderRequestItem) {
+    const { addOrder } = this.props;
+
     this.setState({
       isOrdering: true
     });
 
     try {
-      await addOrder({ order });
+      await addOrder(order);
       const { history } = this.props;
       history.push("/orders");
     } catch {
@@ -128,7 +137,10 @@ class OrderFormPage extends React.Component<Props, State> {
   }
 }
 
-export default OrderFormPage;
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrderFormPage);
 
 function parseOptions(
   queryOpts: OutputParams,

@@ -31,6 +31,7 @@ export default function reduceFavorites(
     case RECEIVE_FAVORITES_BEGIN: {
       return produce(state, draft => {
         draft.services.favorites.isLoading = true;
+        draft.services.favorites.errorMessage = null;
       });
     }
     case RECEIVE_FAVORITES_SUCCESS: {

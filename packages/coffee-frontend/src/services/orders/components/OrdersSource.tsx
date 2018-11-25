@@ -1,7 +1,11 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { OrderedItem } from "coffee-types";
-import { getOrders } from "../api";
+
+import { AppState } from "@/state";
+
+import { refreshOrders } from "../actions/refresh-orders";
 
 export interface OrdersSourceRenderProps {
   isLoading: boolean;
@@ -13,59 +17,31 @@ export interface OrdersSourceProps {
   children(props: OrdersSourceRenderProps): React.ReactChild;
 }
 
-type Props = OrdersSourceProps;
-type State = OrdersSourceRenderProps;
-export default class OrdersSource extends React.Component<Props, State> {
-  private _unmounted: boolean = false;
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.services.orders.isLoading,
+  errorMessage: state.services.orders.errorMessage,
+  orders: state.services.orders.orders
+});
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-  constructor(props: Props) {
-    super(props);
+const mapDispatchToProps = {
+  refreshOrders
+};
+type DispatchProps = typeof mapDispatchToProps;
 
-    this.state = {
-      isLoading: false,
-      errorMessage: null,
-      orders: null
-    };
-  }
-
+type Props = OrdersSourceProps & StateProps & DispatchProps;
+class OrdersSource extends React.Component<Props> {
   componentDidMount() {
-    this.fetchData();
-  }
-
-  componentWillUnmount() {
-    this._unmounted = true;
+    const { refreshOrders } = this.props;
+    refreshOrders();
   }
 
   render() {
-    const { errorMessage, orders, isLoading } = this.state;
-    const { children } = this.props;
+    const { errorMessage, orders, isLoading, children } = this.props;
     return React.Children.only(children({ errorMessage, orders, isLoading }));
   }
-
-  async fetchData() {
-    this.setState({ isLoading: true });
-
-    try {
-      const result = await getOrders();
-
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        orders: result
-      });
-    } catch (e) {
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        orders: null,
-        errorMessage: e.message
-      });
-    }
-  }
 }
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrdersSource);

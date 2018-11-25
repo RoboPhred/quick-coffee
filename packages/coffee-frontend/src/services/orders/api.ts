@@ -2,18 +2,16 @@ import {
   PostOrderRequest,
   OrderedItem,
   PostOrderResponse,
-  GetOrdersResponse
+  GetOrdersResponse,
+  OrderRequestItem
 } from "coffee-types";
 
 import { authFetch } from "@/services/auth/api";
 
-export async function addOrder(
-  request: PostOrderRequest
-): Promise<OrderedItem> {
-  if (!request || typeof request !== "object") {
-    throw new Error("Invalid order.");
-  }
-
+export async function addOrder(order: OrderRequestItem): Promise<OrderedItem> {
+  const request: PostOrderRequest = {
+    order
+  };
   const response: PostOrderResponse = await authFetch(
     "POST",
     `/orders`,

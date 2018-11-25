@@ -37,8 +37,8 @@ class FavoritesSource extends React.Component<Props> {
   }
 
   render() {
-    const { errorMessage, favorites, isLoading } = this.props;
-    return this.props.children({ errorMessage, favorites, isLoading });
+    const { errorMessage, favorites, isLoading, children } = this.props;
+    return children({ errorMessage, favorites, isLoading });
   }
 }
 export default connect(

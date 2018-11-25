@@ -1,5 +1,6 @@
-import { takeEvery } from "redux-saga";
-import { call, put } from "redux-saga/effects";
+import { takeEvery, call, put } from "redux-saga/effects";
+
+import { FavoriteItem } from "coffee-types";
 
 import {
   ADD_FAVORITE,
@@ -8,7 +9,6 @@ import {
 } from "../actions/add-favorite";
 
 import { addFavorite } from "../api";
-import { FavoriteItem } from "coffee-types";
 
 export default function* addFavoriteSaga() {
   yield takeEvery(ADD_FAVORITE, onAddFavorite);
