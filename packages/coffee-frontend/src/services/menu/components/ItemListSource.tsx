@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { ListInventoryItem } from "coffee-types";
+import { InventoryItem } from "coffee-types";
 import { getItems } from "../api";
 
 export interface ItemListSourceRenderProps {
   isLoading: boolean;
   errorMessage: string | null;
-  items: ListInventoryItem[] | null;
+  items: InventoryItem[] | null;
 }
 
 export interface ItemListSourceProps {
