@@ -2,8 +2,10 @@ import * as React from "react";
 
 import { RouteComponentProps } from "react-router-dom";
 
+import { parse as parseQuery, OutputParams } from "query-string";
+
 import { autobind } from "core-decorators";
-import { OrderRequestItem } from "coffee-types";
+import { OrderRequestItem, OrderOptions, InventoryItem } from "coffee-types";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
@@ -94,7 +96,17 @@ class OrderFormPage extends React.Component<Props, State> {
       );
     }
 
-    return <OrderForm item={item} onOrder={this._onOrder} />;
+    const { location } = this.props;
+    const query = parseQuery(location.search);
+    const defaultOptions = parseOptions(query, item);
+
+    return (
+      <OrderForm
+        item={item}
+        defaultOptions={defaultOptions}
+        onOrder={this._onOrder}
+      />
+    );
   }
 
   @autobind()
@@ -117,3 +129,32 @@ class OrderFormPage extends React.Component<Props, State> {
 }
 
 export default OrderFormPage;
+
+function parseOptions(
+  queryOpts: OutputParams,
+  item: InventoryItem
+): OrderOptions {
+  if (!item.options) {
+    return {};
+  }
+  const options: OrderOptions = {};
+  for (const option of item.options) {
+    let value: any = queryOpts[`option-${option.id}`];
+    if (value == null) {
+      continue;
+    }
+    switch (option.type) {
+      case "boolean":
+        value = value !== "false";
+        break;
+      case "integer":
+        value = parseInt(value, 10);
+        break;
+      case "select":
+      case "text":
+        break;
+    }
+    options[option.id] = value;
+  }
+  return options;
+}

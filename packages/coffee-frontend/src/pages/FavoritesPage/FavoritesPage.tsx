@@ -54,9 +54,5 @@ class FavoritesPage extends React.Component<Props> {
       </Authenticate>
     );
   }
-
-  private _orderItem(item: FavoriteItem) {
-    // TODO: Navigate to order page and prepopulate with favorite data.
-  }
 }
 export default withStyles(styles)(FavoritesPage);

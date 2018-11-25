@@ -2,7 +2,12 @@ import * as React from "react";
 
 import { autobind } from "core-decorators";
 
-import { ItemOption, InventoryItem, OrderRequestItem } from "coffee-types";
+import {
+  ItemOption,
+  InventoryItem,
+  OrderRequestItem,
+  OrderOptions
+} from "coffee-types";
 
 import { createStyles, withStyles, Theme } from "@material-ui/core/styles";
 
@@ -16,6 +21,7 @@ import OptionsForm from "./components/OptionsForm";
 
 interface OrderFormProps {
   item: InventoryItem;
+  defaultOptions?: OrderOptions;
   onOrder(order: OrderRequestItem): void;
 }
 
@@ -61,10 +67,12 @@ class OrderForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { item } = props;
+    const { item, defaultOptions } = props;
     this.state = {
       optionValues:
-        item && item.options ? generateOptionDefaults(item.options) : {}
+        item && item.options
+          ? generateOptionDefaults(item.options, defaultOptions)
+          : {}
     };
   }
 
@@ -145,9 +153,17 @@ const OPTION_TYPE_DEFAULTS: Record<ItemOption["type"], any> = {
   text: ""
 };
 
-function generateOptionDefaults(options: ItemOption[]): Record<string, any> {
+function generateOptionDefaults(
+  options: ItemOption[],
+  defaultOptions?: OrderOptions
+): Record<string, any> {
   const defaults: Record<string, any> = {};
   for (const option of options) {
+    if (defaultOptions && defaultOptions[option.id]) {
+      defaults[option.id] = defaultOptions[option.id];
+      continue;
+    }
+
     if (option.default) {
       defaults[option.id] = option.default;
       continue;
