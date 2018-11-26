@@ -5,6 +5,7 @@ import { connectRouter } from "connected-react-router";
 import history from "@/history";
 
 import favoritesServiceReducer from "@/services/favorites/reducer";
+import menuServiceReducer from "@/services/menu/reducer";
 import ordersServiceReducer from "@/services/orders/reducer";
 
 import { AppState, defaultAppState } from "./state";
@@ -17,6 +18,7 @@ const reducer = reduceReducers<AppState>(
     router: routerReducer(state.router, action as any)
   }),
   favoritesServiceReducer,
+  menuServiceReducer,
   ordersServiceReducer
 );
 export default reducer;

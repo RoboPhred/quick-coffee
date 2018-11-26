@@ -1,7 +1,11 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { InventoryItem } from "coffee-types";
-import { getItems } from "../api";
+
+import { AppState } from "@/state";
+
+import { refreshMenu } from "../actions/refresh-menu";
 
 export interface ItemListSourceRenderProps {
   isLoading: boolean;
@@ -10,62 +14,33 @@ export interface ItemListSourceRenderProps {
 }
 
 export interface ItemListSourceProps {
-  children(props: ItemListSourceRenderProps): React.ReactChild;
+  children(props: ItemListSourceRenderProps): React.ReactNode;
 }
 
-type Props = ItemListSourceProps;
-type State = ItemListSourceRenderProps;
-export default class ItemListSource extends React.Component<Props, State> {
-  private _unmounted: boolean = false;
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.services.menu.isLoading,
+  errorMessage: state.services.menu.errorMessage,
+  items: state.services.menu.items
+});
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-  constructor(props: Props) {
-    super(props);
+const mapDispatchToProps = {
+  refreshMenu
+};
+type DispatchProps = typeof mapDispatchToProps;
 
-    this.state = {
-      isLoading: false,
-      errorMessage: null,
-      items: null
-    };
-  }
-
+type Props = ItemListSourceProps & StateProps & DispatchProps;
+class ItemListSource extends React.Component<Props> {
   componentDidMount() {
-    this.fetchData();
-  }
-
-  componentWillUnmount() {
-    this._unmounted = true;
+    this.props.refreshMenu();
   }
 
   render() {
-    const { errorMessage, items, isLoading } = this.state;
-    const { children } = this.props;
-    return React.Children.only(children({ errorMessage, items, isLoading }));
-  }
-
-  async fetchData() {
-    this.setState({ isLoading: true });
-
-    try {
-      const result = await getItems();
-
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        items: result
-      });
-    } catch (e) {
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        items: null,
-        errorMessage: e.message
-      });
-    }
+    const { errorMessage, items, isLoading, children } = this.props;
+    return children({ errorMessage, items, isLoading });
   }
 }
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ItemListSource);

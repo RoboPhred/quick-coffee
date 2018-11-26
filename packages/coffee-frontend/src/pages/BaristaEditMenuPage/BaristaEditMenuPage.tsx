@@ -67,6 +67,7 @@ class BaristaEditMenuPage extends React.Component<Props> {
                           <ListItemSecondaryAction>
                             <IconButton
                               aria-label="Delete"
+                              // TODO: Remove lambda prop.  Convert to redux action
                               onClick={() => deleteItem(item.id)}
                             >
                               <DeleteIcon />

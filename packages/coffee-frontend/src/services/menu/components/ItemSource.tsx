@@ -53,6 +53,7 @@ export default class ItemSource extends React.Component<Props, State> {
   }
 
   async fetchData() {
+    // TODO: Fetch data from redux.
     this.setState({ isLoading: true });
 
     try {

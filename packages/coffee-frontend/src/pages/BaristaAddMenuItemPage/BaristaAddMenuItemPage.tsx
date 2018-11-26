@@ -101,6 +101,7 @@ class BaristaAddMenuItemPage extends React.Component<Props, State> {
     });
 
     try {
+      // TODO: Convert to redux action
       await createItem({ name, description });
       history.push("/barista/edit-menu");
     } finally {
