@@ -14,7 +14,7 @@ router.get("/", async ctx => {
 router.get("/:itemId", async ctx => {
   const { itemId } = ctx.params;
   try {
-    const item = await MenuItem.findById(itemId);
+    const item = await MenuItem.getById(itemId);
     ctx.body = item;
     ctx.status = HttpStatusCodes.OK;
   } catch (e) {

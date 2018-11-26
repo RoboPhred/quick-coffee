@@ -8,6 +8,7 @@ import List from "@material-ui/core/List";
 
 import BaristaOrdersSource from "@/services/barista/components/BaristaOrdersSource";
 
+import Authenticate from "@/components/Authenticate";
 import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
@@ -26,24 +27,26 @@ const styles = (theme: Theme) =>
   });
 type Props = StyleProps<ReturnType<typeof styles>>;
 const BaristaCompletedOrdersPage: React.SFC<Props> = ({ classes }) => (
-  <BaristaOrdersSource>
-    {({ isLoading, orders }) => (
-      <PageContainer title="Completed Orders" variant="barista">
-        {isLoading && <LoadingPageContent />}
-        {orders && (
-          <List className={classes.list}>
-            {orders.filter(isCompletedOrder).map(order => (
-              <OrderCard
-                className={classes.listItem}
-                order={order}
-                key={order.id}
-              />
-            ))}
-          </List>
-        )}
-      </PageContainer>
-    )}
-  </BaristaOrdersSource>
+  <Authenticate role="barista">
+    <BaristaOrdersSource>
+      {({ isLoading, orders }) => (
+        <PageContainer title="Completed Orders" variant="barista">
+          {isLoading && <LoadingPageContent />}
+          {orders && (
+            <List className={classes.list}>
+              {orders.filter(isCompletedOrder).map(order => (
+                <OrderCard
+                  className={classes.listItem}
+                  order={order}
+                  key={order.id}
+                />
+              ))}
+            </List>
+          )}
+        </PageContainer>
+      )}
+    </BaristaOrdersSource>
+  </Authenticate>
 );
 export default withStyles(styles)(BaristaCompletedOrdersPage);
 

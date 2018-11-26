@@ -36,18 +36,23 @@ const styles = (theme: Theme) =>
       display: "flex",
       flexDirection: "column",
       width: "100%",
-      height: "100%",
-      overflow: "auto"
+      height: "100%"
     },
     header: {
       padding: theme.spacing.unit * 2
     },
-    options: {
+    optionsContainer: {
       flexGrow: 1,
       flexShrink: 1,
       minHeight: 0,
       width: "100%",
-      height: "100%"
+      height: "100%",
+      overflow: "auto"
+    },
+    options: {
+      width: "100%",
+      height: "100%",
+      overflow: "auto"
     },
     actionBar: {
       display: "flex",
@@ -98,18 +103,20 @@ class OrderForm extends React.Component<Props, State> {
             <Typography variant="subtitle1">{item.description}</Typography>
           )}
         </div>
-        {item.options && (
-          <React.Fragment>
-            <Divider />
-            <OptionsForm
-              className={classes.options}
-              options={item.options}
-              values={optionValues}
-              onChange={this._onOptionsChanged}
-            />
-            <Divider />
-          </React.Fragment>
-        )}
+        <div className={classes.optionsContainer}>
+          {item.options && (
+            <React.Fragment>
+              <Divider />
+              <OptionsForm
+                className={classes.options}
+                options={item.options}
+                values={optionValues}
+                onChange={this._onOptionsChanged}
+              />
+            </React.Fragment>
+          )}
+        </div>
+        <Divider />
         <div className={classes.actionBar}>
           <FavoriteButton
             order={{

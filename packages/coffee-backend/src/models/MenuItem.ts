@@ -11,7 +11,7 @@ function createSelect() {
 }
 
 export default class MenuItem implements InventoryItem {
-  static async findById(id: number): Promise<MenuItem | null> {
+  static async getById(id: number): Promise<MenuItem | null> {
     const rows: any[] = await createSelect()
       .where({ id })
       .limit(1);
@@ -25,6 +25,27 @@ export default class MenuItem implements InventoryItem {
   static async getAll(): Promise<MenuItem[]> {
     const rows: any[] = await createSelect();
     return rows.map(row => new MenuItem(row));
+  }
+
+  static async create(
+    name: string,
+    description?: string
+  ): Promise<MenuItem | null> {
+    const rows: any[] = await knex(TABLE_NAME).insert({
+      name,
+      description: description || null
+    });
+    if (rows.length !== 1) {
+      return null;
+    }
+    return MenuItem.getById(rows[0]);
+  }
+
+  static async delete(id: number): Promise<boolean> {
+    const affectedRows = await knex(TABLE_NAME)
+      .delete()
+      .where({ id });
+    return affectedRows != 0;
   }
 
   id: number;

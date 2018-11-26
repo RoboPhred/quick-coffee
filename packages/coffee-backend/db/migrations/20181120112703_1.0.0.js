@@ -3,6 +3,7 @@ exports.up = function(knex, Promise) {
     .createTable("menu_items", function(table) {
       table.increments("id").primary();
       table.string("name").notNullable();
+      table.string("description", 512);
       table.json("options");
     })
     .createTable("users", function(table) {

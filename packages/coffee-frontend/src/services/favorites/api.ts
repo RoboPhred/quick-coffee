@@ -28,10 +28,6 @@ export async function addFavorite(
   return response.favorite;
 }
 
-export async function deleteFavorite(favoriteId: number): Promise<boolean> {
-  const response: DeleteFavoriteResponse = await authFetch(
-    "DELETE",
-    `/favorites/${favoriteId}`
-  );
-  return response.status === "ok";
+export async function deleteFavorite(favoriteId: number): Promise<void> {
+  await authFetch("DELETE", `/favorites/${favoriteId}`);
 }
