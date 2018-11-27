@@ -1,5 +1,7 @@
 import produce from "immer";
 
+import { fromPairs } from "lodash-es";
+
 import { Action } from "redux";
 
 import { AppState, defaultAppState } from "@/state";
@@ -10,6 +12,7 @@ import {
   ReceiveMenuSuccessAction,
   ReceiveMenuErrorAction
 } from "./actions/receive-menu";
+import { InventoryItem } from "coffee-types";
 
 export default function reduceMenu(
   state: AppState = defaultAppState,
@@ -29,10 +32,14 @@ export default function reduceMenu(
     }
     case RECEIVE_MENU_SUCCESS: {
       const recvAction = action as ReceiveMenuSuccessAction;
+      const { items } = recvAction.payload;
       return produce(state, draft => {
         draft.services.menu.isLoading = false;
         draft.services.menu.errorMessage = null;
-        draft.services.menu.items = recvAction.payload.items;
+        draft.services.menu.itemsById = fromPairs(
+          items.map(item => [item.id, item])
+        );
+        draft.services.menu.itemIds = items.map(x => x.id);
       });
     }
   }

@@ -20,7 +20,8 @@ export interface ItemListSourceProps {
 const mapStateToProps = (state: AppState) => ({
   isLoading: state.services.menu.isLoading,
   errorMessage: state.services.menu.errorMessage,
-  items: state.services.menu.items
+  itemsById: state.services.menu.itemsById,
+  itemIds: state.services.menu.itemIds
 });
 type StateProps = ReturnType<typeof mapStateToProps>;
 
@@ -36,7 +37,17 @@ class ItemListSource extends React.Component<Props> {
   }
 
   render() {
-    const { errorMessage, items, isLoading, children } = this.props;
+    const {
+      errorMessage,
+      itemsById,
+      itemIds,
+      isLoading,
+      children
+    } = this.props;
+
+    const items =
+      itemsById && itemIds ? itemIds.map(key => itemsById[key]) : null;
+
     return children({ errorMessage, items, isLoading });
   }
 }

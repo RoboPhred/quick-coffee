@@ -3,10 +3,12 @@ import { InventoryItem } from "coffee-types";
 export interface MenuState {
   isLoading: boolean;
   errorMessage: string | null;
-  items: InventoryItem[] | null;
+  itemsById: Record<number, InventoryItem> | null;
+  itemIds: number[] | null;
 }
 export const defaultMenuState: MenuState = Object.freeze({
   isLoading: false,
   errorMessage: null,
-  items: null
+  itemsById: null,
+  itemIds: null
 });

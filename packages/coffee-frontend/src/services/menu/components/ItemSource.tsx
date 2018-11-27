@@ -1,8 +1,10 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { InventoryItem } from "coffee-types";
+import { AppState } from "@/state";
 
-import { getItem } from "../api";
+import { refreshMenu } from "../actions/refresh-menu";
 
 export interface ItemSourceRenderProps {
   isLoading: boolean;
@@ -15,69 +17,31 @@ export interface ItemSourceProps {
   children(props: ItemSourceRenderProps): React.ReactNode;
 }
 
-type Props = ItemSourceProps;
-type State = ItemSourceRenderProps;
-export default class ItemSource extends React.Component<Props, State> {
-  private _unmounted: boolean = false;
+const mapStateToProps = (state: AppState) => ({
+  isLoading: state.services.menu.isLoading,
+  errorMessage: state.services.menu.errorMessage,
+  itemsById: state.services.menu.itemsById
+});
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-  constructor(props: Props) {
-    super(props);
+const mapDispatchToProps = {
+  refreshMenu
+};
+type DispatchProps = typeof mapDispatchToProps;
 
-    this.state = {
-      isLoading: false,
-      errorMessage: null,
-      item: null
-    };
-  }
-
+type Props = ItemSourceProps & StateProps & DispatchProps;
+class ItemSource extends React.Component<Props> {
   componentDidMount() {
-    this.fetchData();
-  }
-
-  componentDidUpdate(oldProps: Props) {
-    if (oldProps.itemId !== this.props.itemId) {
-      this.setState({
-        item: null
-      });
-      this.fetchData();
-    }
-  }
-
-  componentWillUnmount() {
-    this._unmounted = true;
+    this.props.refreshMenu();
   }
 
   render() {
-    const { errorMessage, item, isLoading } = this.state;
+    const { errorMessage, itemId, itemsById, isLoading } = this.props;
+    const item = itemsById ? itemsById[itemId] : null;
     return this.props.children({ errorMessage, item, isLoading });
   }
-
-  async fetchData() {
-    // TODO: Fetch data from redux.
-    this.setState({ isLoading: true });
-
-    try {
-      const result = await getItem(this.props.itemId);
-
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        item: result,
-        errorMessage: null
-      });
-    } catch (e) {
-      if (this._unmounted) {
-        return;
-      }
-
-      this.setState({
-        isLoading: false,
-        item: null,
-        errorMessage: e.message
-      });
-    }
-  }
 }
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ItemSource);
