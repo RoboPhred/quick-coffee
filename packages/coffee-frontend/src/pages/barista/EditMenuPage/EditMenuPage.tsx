@@ -52,7 +52,7 @@ const mapDispatchToProps = {
 type DispatchProps = typeof mapDispatchToProps;
 
 type Props = DispatchProps & StyleProps<ReturnType<typeof styles>>;
-class BaristaEditMenuPage extends React.Component<Props> {
+class EditMenuPage extends React.Component<Props> {
   render() {
     const { classes, deleteMenuItem } = this.props;
     return (
@@ -98,5 +98,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(BaristaEditMenuPage)
+  )(EditMenuPage)
 );
