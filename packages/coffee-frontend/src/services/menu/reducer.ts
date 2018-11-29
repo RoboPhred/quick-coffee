@@ -18,6 +18,11 @@ import {
   AddMenuItemSuccessAction
 } from "./actions/add-menu-item";
 
+import {
+  DELETE_MENU_ITEM_SUCCESS,
+  DeleteMenuItemSuccessAction
+} from "./actions/delete-menu-item";
+
 export default function reduceMenu(
   state: AppState = defaultAppState,
   action: Action
@@ -61,6 +66,31 @@ export default function reduceMenu(
           menu.itemsById = {};
         }
         menu.itemsById[item.id] = item;
+      });
+    }
+    case DELETE_MENU_ITEM_SUCCESS: {
+      const deleteAction = action as DeleteMenuItemSuccessAction;
+      const { itemId } = deleteAction.payload;
+      let { itemsById, itemIds } = state.services.menu;
+      if (itemsById == null || itemIds == null) {
+        return state;
+      }
+
+      const idx = itemIds.indexOf(itemId);
+      if (idx !== -1) {
+        itemIds = [...itemIds];
+        itemIds.splice(idx, 1);
+      }
+
+      itemsById = { ...itemsById };
+      delete itemsById[itemId];
+
+      return produce(state, draft => {
+        draft.services.menu = {
+          ...draft.services.menu,
+          itemIds,
+          itemsById
+        };
       });
     }
   }

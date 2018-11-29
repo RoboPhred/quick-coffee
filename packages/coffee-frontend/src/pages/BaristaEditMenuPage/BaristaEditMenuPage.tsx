@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import { autobind } from "core-decorators";
+import { connect } from "react-redux";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
@@ -14,13 +13,12 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import ItemListSource from "@/services/menu/components/ItemListSource";
+import { deleteMenuItem } from "@/services/menu/actions/delete-menu-item";
 
 import Authenticate from "@/components/Authenticate";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import PageContainer from "@/components/PageContainer";
 import ButtonLink from "@/components/ButtonLink";
-
-import { deleteItem } from "@/services/menu/api";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,10 +45,16 @@ const styles = (theme: Theme) =>
       height: 9 * theme.spacing.unit
     }
   });
-type Props = StyleProps<ReturnType<typeof styles>>;
+
+const mapDispatchToProps = {
+  deleteMenuItem
+};
+type DispatchProps = typeof mapDispatchToProps;
+
+type Props = DispatchProps & StyleProps<ReturnType<typeof styles>>;
 class BaristaEditMenuPage extends React.Component<Props> {
   render() {
-    const { classes } = this.props;
+    const { classes, deleteMenuItem } = this.props;
     return (
       <Authenticate role="barista">
         <PageContainer title="Edit Menu" variant="barista">
@@ -67,8 +71,8 @@ class BaristaEditMenuPage extends React.Component<Props> {
                           <ListItemSecondaryAction>
                             <IconButton
                               aria-label="Delete"
-                              // TODO: Remove lambda prop.  Convert to redux action
-                              onClick={() => deleteItem(item.id)}
+                              // TODO: Remove lambda prop.
+                              onClick={() => deleteMenuItem(item.id)}
                             >
                               <DeleteIcon />
                             </IconButton>
@@ -90,4 +94,9 @@ class BaristaEditMenuPage extends React.Component<Props> {
     );
   }
 }
-export default withStyles(styles)(BaristaEditMenuPage);
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(BaristaEditMenuPage)
+);
