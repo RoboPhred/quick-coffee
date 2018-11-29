@@ -1,18 +1,19 @@
 import * as React from "react";
+import { connect } from "react-redux";
 
 import { autobind } from "core-decorators";
 
-import { withRouter, RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+import { addMenuItem } from "@/services/menu/actions/add-menu-item";
+
 import Authenticate from "@/components/Authenticate";
 import PageContainer from "@/components/PageContainer";
-
-import { createItem } from "@/services/menu/api";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,7 +22,14 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = RouteComponentProps & StyleProps<ReturnType<typeof styles>>;
+const mapDispatchToProps = {
+  addMenuItem
+};
+type DispatchProps = typeof mapDispatchToProps;
+
+type Props = RouteComponentProps &
+  StyleProps<ReturnType<typeof styles>> &
+  DispatchProps;
 interface State {
   name: string;
   description: string;
@@ -91,7 +99,8 @@ class BaristaAddMenuItemPage extends React.Component<Props, State> {
   @autobind()
   private async _onAddItem() {
     const { name, description } = this.state;
-    const { history } = this.props;
+    const { addMenuItem } = this.props;
+
     if (name === "") {
       return;
     }
@@ -100,15 +109,22 @@ class BaristaAddMenuItemPage extends React.Component<Props, State> {
       isAddingItem: true
     });
 
-    try {
-      // TODO: Convert to redux action
-      await createItem({ name, description });
-      history.push("/barista/edit-menu");
-    } finally {
-      this.setState({
-        isAddingItem: false
-      });
-    }
+    addMenuItem(
+      { name, description },
+      {
+        success: { redirect: "/barista/edit-menu" },
+        error: () => {
+          this.setState({
+            isAddingItem: false
+          });
+        }
+      }
+    );
   }
 }
-export default withStyles(styles)(withRouter(BaristaAddMenuItemPage));
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(BaristaAddMenuItemPage)
+);

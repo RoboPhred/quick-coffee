@@ -12,7 +12,11 @@ import {
   ReceiveMenuSuccessAction,
   ReceiveMenuErrorAction
 } from "./actions/receive-menu";
-import { InventoryItem } from "coffee-types";
+
+import {
+  ADD_MENU_ITEM_SUCCESS,
+  AddMenuItemSuccessAction
+} from "./actions/add-menu-item";
 
 export default function reduceMenu(
   state: AppState = defaultAppState,
@@ -40,6 +44,23 @@ export default function reduceMenu(
           items.map(item => [item.id, item])
         );
         draft.services.menu.itemIds = items.map(x => x.id);
+      });
+    }
+    case ADD_MENU_ITEM_SUCCESS: {
+      const addAction = action as AddMenuItemSuccessAction;
+      const { item } = addAction.payload;
+      return produce(state, draft => {
+        const { menu } = draft.services;
+
+        if (menu.itemIds == null) {
+          menu.itemIds = [];
+        }
+        menu.itemIds.push(item.id);
+
+        if (menu.itemsById == null) {
+          menu.itemsById = {};
+        }
+        menu.itemsById[item.id] = item;
       });
     }
   }
