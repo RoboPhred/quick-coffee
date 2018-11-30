@@ -1,12 +1,13 @@
 require("source-map-support").install();
 
-import Koa from "koa";
-import cors from "@koa/cors";
+import { Container } from "microinject";
 
-import endpointRouter from "./endpoint";
+import Entrypoint from "./contracts/Entrypoint";
 
-const app = new Koa();
-app.use(cors());
-app.use(endpointRouter.routes());
-app.use(endpointRouter.allowedMethods());
-app.listen(4000);
+import containerModule from "./module";
+
+const container = new Container();
+container.load(containerModule);
+
+const entrypoints = container.getAll(Entrypoint);
+entrypoints.forEach(entrypoint => entrypoint.start());
