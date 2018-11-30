@@ -5,7 +5,6 @@ import { injectable, provides } from "microinject";
 import Controller from "../contracts/Controller";
 
 import authRouter, { passport } from "./auth";
-import itemsRouter from "./items";
 import ordersRouter from "./orders";
 import favoritesRouter from "./favorites";
 import baristaRouter from "./barista";
@@ -20,7 +19,6 @@ export default class LegacyController implements Controller {
     apiRouter.use(passport.session());
 
     applyRouter(apiRouter, authRouter);
-    applyRouter(apiRouter, itemsRouter);
     applyRouter(apiRouter, ordersRouter);
     applyRouter(apiRouter, favoritesRouter);
     applyRouter(apiRouter, baristaRouter);

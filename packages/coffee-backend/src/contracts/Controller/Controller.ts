@@ -2,7 +2,7 @@ import { Identifier } from "microinject";
 
 import Router from "koa-router";
 
-import createSymbol from "../createSymbol";
+import createSymbol from "../../create-symbol";
 
 const Controller: Identifier<Controller> = createSymbol("controller");
 interface Controller {
