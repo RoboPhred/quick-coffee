@@ -1,5 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { push } from "connected-react-router";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
@@ -47,14 +48,15 @@ const styles = (theme: Theme) =>
   });
 
 const mapDispatchToProps = {
-  deleteMenuItem
+  deleteMenuItem,
+  push
 };
 type DispatchProps = typeof mapDispatchToProps;
 
 type Props = DispatchProps & StyleProps<ReturnType<typeof styles>>;
 class EditMenuPage extends React.Component<Props> {
   render() {
-    const { classes, deleteMenuItem } = this.props;
+    const { classes, deleteMenuItem, push } = this.props;
     return (
       <Authenticate role="barista">
         <PageContainer title="Edit Menu" variant="barista">
@@ -66,7 +68,14 @@ class EditMenuPage extends React.Component<Props> {
                   {items && (
                     <List>
                       {items.map(item => (
-                        <ListItem key={item.id} button>
+                        // TODO remove lambda prop.
+                        <ListItem
+                          key={item.id}
+                          button
+                          onClick={() =>
+                            push(`/barista/edit-menu/item/${item.id}`)
+                          }
+                        >
                           <ListItemText>{item.name}</ListItemText>
                           <ListItemSecondaryAction>
                             <IconButton

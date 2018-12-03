@@ -11,6 +11,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 
 import BaristaEditMenuPage from "./pages/barista/EditMenuPage";
 import BaristaAddMenuItemPage from "./pages/barista/AddMenuItemPage";
+import BaristaEditMenuItemPage from "./pages/barista/EditMenuItemPage";
 import BaristaPendingOrdersPage from "./pages/barista/PendingOrdersPage";
 import BaristaCompletedOrdersPage from "./pages/barista/CompletedOrdersPage";
 
@@ -29,6 +30,11 @@ const Routes: React.SFC = () => (
       path="/barista/edit-menu/add-item"
       exact
       component={BaristaAddMenuItemPage}
+    />
+    <Route
+      path="/barista/edit-menu/item/:itemId"
+      exact
+      component={BaristaEditMenuItemPage}
     />
     <Route
       path="/barista/pending-orders"
