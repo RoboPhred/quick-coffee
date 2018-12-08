@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { InventoryItem } from "coffee-types";
+
 import { RouteComponentProps } from "react-router";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
@@ -17,7 +19,8 @@ export type EditMenuItemPageProps = RouteComponentProps<{ itemId: string }>;
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      margin: theme.spacing.unit
+      padding: theme.spacing.unit,
+      height: "100%"
     }
   });
 
@@ -38,13 +41,17 @@ class EditMenuItemPage extends React.Component<Props> {
             {({ isLoading, item }) => (
               <div className={classes.root}>
                 {isLoading && <LoadingPageContent />}
-                {item && <ItemEditor item={item} />}
+                {item && <ItemEditor item={item} onChange={this._onChange} />}
               </div>
             )}
           </ItemSource>
         </PageContainer>
       </Authenticate>
     );
+  }
+
+  private _onChange(item: InventoryItem) {
+    console.log("ITEM CHANGE", item);
   }
 }
 export default withStyles(styles)(EditMenuItemPage);

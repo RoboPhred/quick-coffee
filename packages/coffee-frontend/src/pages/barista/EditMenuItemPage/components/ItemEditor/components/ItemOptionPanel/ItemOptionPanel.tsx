@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { autobind } from "core-decorators";
+
 import { ItemOption } from "coffee-types";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
@@ -11,14 +13,14 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
-import BooleanItemOptionDetails from "./BooleanItemOptionDetails";
-import IntegerItemOptionDetails from "./IntegerItemOptionDetails";
-import SelectItemOptionDetails from "./SelectItemOptionDetails";
-import TextItemOptionDetails from "./TextItemOptionDetails";
+import BooleanItemOptionDetails from "./components/BooleanItemOptionDetails";
+import IntegerItemOptionDetails from "./components/IntegerItemOptionDetails";
+import SelectItemOptionDetails from "./components/SelectItemOptionDetails";
+import TextItemOptionDetails from "./components/TextItemOptionDetails";
 
 const itemTypeOptions: Record<
   ItemOption["type"],
-  React.ComponentClass<{ option: any }>
+  React.ComponentClass<{ option: any; onChange(option: any): void }>
 > = {
   boolean: BooleanItemOptionDetails,
   integer: IntegerItemOptionDetails,
@@ -28,6 +30,7 @@ const itemTypeOptions: Record<
 
 export interface ItemOptionPanelProps {
   option: ItemOption;
+  onChange(option: ItemOption): void;
 }
 
 const expandIcon = <ExpandMoreIcon />;
@@ -70,6 +73,7 @@ class ItemOptionPanel extends React.Component<Props> {
               label="Name"
               variant="standard"
               defaultValue={option.name}
+              onChange={this._onNameChange}
             />
             <TextField
               id="option-description"
@@ -77,12 +81,44 @@ class ItemOptionPanel extends React.Component<Props> {
               variant="standard"
               fullWidth
               defaultValue={option.description || ""}
+              onChange={this._onDescriptionChange}
             />
-            {TypeDetails && <TypeDetails option={option} />}
+            {TypeDetails && (
+              <TypeDetails option={option} onChange={this._onDetailsChange} />
+            )}
           </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     );
+  }
+
+  @autobind()
+  private _onNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const name = e.target.value;
+    const { option, onChange } = this.props;
+    onChange({
+      ...option,
+      name
+    });
+  }
+
+  @autobind()
+  private _onDescriptionChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const description = e.target.value;
+    const { option, onChange } = this.props;
+    onChange({
+      ...option,
+      description
+    });
+  }
+
+  @autobind()
+  private _onDetailsChange(details: any) {
+    const { option, onChange } = this.props;
+    onChange({
+      ...option,
+      ...details
+    });
   }
 }
 export default withStyles(styles)(ItemOptionPanel);
