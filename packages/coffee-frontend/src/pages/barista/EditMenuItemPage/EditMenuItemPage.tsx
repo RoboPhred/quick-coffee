@@ -4,15 +4,13 @@ import { RouteComponentProps } from "react-router";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
-import TextField from "@material-ui/core/TextField";
-
 import ItemSource from "@/services/menu/components/ItemSource";
 
 import Authenticate from "@/components/Authenticate";
 import PageContainer from "@/components/PageContainer";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
-import ItemOptions from "./components/ItemOptions";
+import ItemEditor from "./components/ItemEditor";
 
 export type EditMenuItemPageProps = RouteComponentProps<{ itemId: string }>;
 
@@ -20,9 +18,6 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       margin: theme.spacing.unit
-    },
-    options: {
-      marginTop: theme.spacing.unit
     }
   });
 
@@ -43,27 +38,7 @@ class EditMenuItemPage extends React.Component<Props> {
             {({ isLoading, item }) => (
               <div className={classes.root}>
                 {isLoading && <LoadingPageContent />}
-                {item && (
-                  <form>
-                    <TextField
-                      id="item-name"
-                      label="Name"
-                      variant="standard"
-                      defaultValue={item.name}
-                    />
-                    <TextField
-                      id="item-name"
-                      label="Description"
-                      variant="standard"
-                      fullWidth
-                      defaultValue={item.description || ""}
-                    />
-                    <ItemOptions
-                      className={classes.options}
-                      options={item.options || []}
-                    />
-                  </form>
-                )}
+                {item && <ItemEditor item={item} />}
               </div>
             )}
           </ItemSource>
