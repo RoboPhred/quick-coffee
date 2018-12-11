@@ -4,12 +4,17 @@ import Koa, { Context } from "koa";
 import cors from "@koa/cors";
 import Router from "koa-router";
 import bodyParser from "koa-bodyparser";
+import compose from "koa-compose";
+
+import passport = require("passport");
 
 import Entrypoint from "../contracts/Entrypoint";
+
 import Controller, {
   getMethodFunctionDefs,
   getMethodArgumentDefs,
-  MethodDefinition
+  MethodDefinition,
+  getIsAuthorized
 } from "../contracts/Controller";
 
 @injectable()
@@ -87,17 +92,19 @@ export default class Endpoint implements Endpoint {
   private _createHandler(handler: Function, target: any): Function {
     const defs = getMethodArgumentDefs(handler);
     if (defs.length === 0 && handler.length > 0) {
-      // No decorators but parameters, this is a typical express / koa handler.
+      // No decorators but parameters, this is a typical koa handler.
       return handler;
     }
 
-    return async (ctx: Context, next: () => Promise<any>) => {
+    let funcHandler = async (ctx: Context, next: () => Promise<any>) => {
       const args = defs.map(x => {
         switch (x.type) {
           case "body":
             return ctx.request.body;
           case "param":
             return ctx.params[x.paramId];
+          case "user":
+            return ctx.state.user;
         }
       });
 
@@ -110,6 +117,15 @@ export default class Endpoint implements Endpoint {
 
       ctx.body = result;
     };
+
+    if (getIsAuthorized(handler)) {
+      funcHandler = compose([
+        passport.authenticate("jwt", { session: false }),
+        funcHandler
+      ]);
+    }
+
+    return funcHandler;
   }
 }
 

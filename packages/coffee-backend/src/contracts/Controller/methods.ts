@@ -1,6 +1,7 @@
 import createSymbol from "../../create-symbol";
 
 const MethodFunctions = createSymbol("controller/method-functions");
+const MethodAuthorize = createSymbol("controller/method-authorize");
 
 export interface MethodDefinition {
   method: string;
@@ -40,6 +41,16 @@ export const del = createMethodDecorator("delete");
 export const options = createMethodDecorator("options");
 export const trace = createMethodDecorator("trace");
 
+export function authorize() {
+  return (target: any, propertyKey: string | symbol) => {
+    target[propertyKey][MethodAuthorize] = true;
+  };
+}
+
 export function getMethodFunctionDefs(target: any): MethodFunctions {
   return target[MethodFunctions] || {};
+}
+
+export function getIsAuthorized(target: any) {
+  return target[MethodAuthorize] || false;
 }

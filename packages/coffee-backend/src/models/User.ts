@@ -22,14 +22,14 @@ export default class User {
     return item;
   }
 
-  id: string;
+  id: number;
   username: string;
   isBarista: boolean;
 
   constructor(row: any) {
     this.id = row["id"];
     this.username = row["username"];
-    this.isBarista = row["is_barista"];
+    this.isBarista = Boolean(row["is_barista"]);
   }
 
   toJSON(): UserTokenPayload {

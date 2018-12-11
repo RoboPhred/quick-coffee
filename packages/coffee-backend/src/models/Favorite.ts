@@ -51,7 +51,7 @@ export default class Favorite implements FavoriteItem {
     return Favorite.getById(rows[0]);
   }
 
-  static async delete(favoriteId: string, userId?: string): Promise<boolean> {
+  static async delete(favoriteId: number, userId?: number): Promise<boolean> {
     const affectedRows = await knex(TABLE_NAME)
       .delete()
       .where({ id: favoriteId, user_id: userId });

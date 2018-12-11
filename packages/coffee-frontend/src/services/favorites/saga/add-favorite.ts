@@ -17,8 +17,13 @@ export default function* addFavoriteSaga() {
 function* onAddFavorite(action: AddFavoriteAction) {
   const { favorite } = action.payload;
 
-  const newFavorite: FavoriteItem = yield call(addFavorite, favorite);
-  // TODO: On error, tell user.
+  let newFavorite: FavoriteItem;
+  try {
+    newFavorite = yield call(addFavorite, favorite);
+  } catch (e) {
+    // TODO: On error, tell user.
+    return;
+  }
 
   yield put(addFavoriteSuccess(newFavorite));
 }

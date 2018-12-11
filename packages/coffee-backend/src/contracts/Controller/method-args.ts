@@ -4,7 +4,8 @@ const MethodArguments = createSymbol("controller/method-arguments");
 
 export type MethodArgDefinition =
   | BodyMethodArgDefinition
-  | ParamMethodArgDefinition;
+  | ParamMethodArgDefinition
+  | UserMethodArgDefinition;
 
 export interface BodyMethodArgDefinition {
   type: "body";
@@ -12,6 +13,10 @@ export interface BodyMethodArgDefinition {
 export interface ParamMethodArgDefinition {
   type: "param";
   paramId: string;
+}
+
+export interface UserMethodArgDefinition {
+  type: "user";
 }
 
 export type MethodArguments = MethodArgDefinition[];
@@ -41,6 +46,18 @@ export function param(id: string): ParameterDecorator {
       paramId: id
     };
     args[parameterIndex] = def;
+  };
+}
+
+export function user(): ParameterDecorator {
+  return (
+    target: any,
+    propertyKey: string | symbol,
+    parameterIndex: number
+  ) => {
+    const func = target[propertyKey];
+    const args = getMethodArgumentDefs(func, true);
+    args[parameterIndex] = { type: "user" };
   };
 }
 
