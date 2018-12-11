@@ -35,7 +35,7 @@ interface State {
   description: string;
   isAddingItem: boolean;
 }
-class BaristaAddMenuItemPage extends React.Component<Props, State> {
+class AddMenuItemPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -126,5 +126,5 @@ export default withStyles(styles)(
   connect(
     null,
     mapDispatchToProps
-  )(BaristaAddMenuItemPage)
+  )(AddMenuItemPage)
 );

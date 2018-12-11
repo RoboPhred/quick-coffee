@@ -1,6 +1,10 @@
 import Router from "koa-router";
 
-import { PatchBaristaOrderRequest, PostMenuItemRequest } from "coffee-types";
+import {
+  PatchBaristaOrderRequest,
+  PostMenuItemRequest,
+  PatchMenuItemRequest
+} from "coffee-types";
 
 import HttpStatusCodes from "http-status-codes";
 
@@ -57,6 +61,30 @@ router.post("/menu-items", async ctx => {
 
   ctx.status = HttpStatusCodes.OK;
   ctx.body = { item: menuItem };
+});
+
+router.patch("/menu-items/:itemId", async ctx => {
+  const { itemId } = ctx.params;
+  if (!itemId) {
+    ctx.status = HttpStatusCodes.BAD_REQUEST;
+    return;
+  }
+
+  const body = ctx.request.body;
+  if (body == null || typeof body !== "object") {
+    ctx.status = HttpStatusCodes.BAD_REQUEST;
+    return;
+  }
+
+  const { item } = body as PatchMenuItemRequest;
+  const resultItem = await MenuItem.update(itemId, item);
+
+  if (resultItem === null) {
+    ctx.status = HttpStatusCodes.NOT_FOUND;
+  } else {
+    ctx.status = HttpStatusCodes.OK;
+    ctx.body = { item: resultItem };
+  }
 });
 
 router.delete("/menu-items/:itemId", async ctx => {

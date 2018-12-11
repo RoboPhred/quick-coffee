@@ -9,3 +9,4 @@ export * from "./patch-barista-order";
 
 export * from "./post-menu-item";
 export * from "./delete-menu-item";
+export * from "./patch-menu-item";
