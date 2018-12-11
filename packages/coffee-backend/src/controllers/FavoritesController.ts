@@ -1,4 +1,4 @@
-import { injectable, provides, inject } from "microinject";
+import { injectable, provides, inject, singleton } from "microinject";
 
 import HttpStatusCodes from "http-status-codes";
 
@@ -28,16 +28,13 @@ import Favorite from "../models/Favorite";
 
 @injectable()
 @provides(Controller)
+@singleton()
 export default class FavoritesController {
   constructor(@inject(Validator) private _validator: Validator) {}
 
   @get("/favorites")
   @authorize()
-  async getFavorites(@user() user: User | null): Promise<GetFavoritesResponse> {
-    if (!user) {
-      throw new HttpError(HttpStatusCodes.UNAUTHORIZED, "Unauthorized.");
-    }
-
+  async getFavorites(@user() user: User): Promise<GetFavoritesResponse> {
     const favorites = await Favorite.getByUserId(user.id);
     return { favorites };
   }
@@ -45,13 +42,9 @@ export default class FavoritesController {
   @post("/favorites")
   @authorize()
   async createFavorite(
-    @user() user: User | null,
+    @user() user: User,
     @body() body: PostFavoriteRequest
   ): Promise<PostFavoriteResponse> {
-    if (!user) {
-      throw new HttpError(HttpStatusCodes.UNAUTHORIZED, "Unauthorized.");
-    }
-
     if (!this._validator.validate(body, postFavoriteRequestSchema)) {
       throw new HttpError(HttpStatusCodes.BAD_REQUEST, "Bad Request.");
     }
@@ -77,13 +70,9 @@ export default class FavoritesController {
   @del("/favorites/:favoriteId")
   @authorize()
   async deleteFavorite(
-    @user() user: User | null,
+    @user() user: User,
     @param("favoriteId") favoriteIdParam: string
   ): Promise<DeleteFavoriteResponse> {
-    if (!user) {
-      throw new HttpError(HttpStatusCodes.UNAUTHORIZED, "Unauthorized.");
-    }
-
     const favoriteId = Number(favoriteIdParam);
     if (isNaN(favoriteId)) {
       throw new HttpError(HttpStatusCodes.NOT_FOUND, "Favorite Not Found.");

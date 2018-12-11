@@ -1,15 +1,15 @@
 import Router from "koa-router";
 
-import { injectable, provides } from "microinject";
+import { injectable, provides, singleton } from "microinject";
 
 import Controller from "../contracts/Controller";
 
 import authRouter, { passport } from "./auth";
-import ordersRouter from "./orders";
 import baristaRouter from "./barista";
 
 @injectable()
 @provides(Controller)
+@singleton()
 export default class LegacyController implements Controller {
   getRouter(): Router {
     const apiRouter = new Router();
@@ -18,7 +18,6 @@ export default class LegacyController implements Controller {
     apiRouter.use(passport.session());
 
     applyRouter(apiRouter, authRouter);
-    applyRouter(apiRouter, ordersRouter);
     applyRouter(apiRouter, baristaRouter);
 
     return apiRouter;

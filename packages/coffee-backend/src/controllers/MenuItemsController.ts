@@ -1,6 +1,6 @@
 import HttpStatusCodes from "http-status-codes";
 
-import { injectable, provides } from "microinject";
+import { injectable, provides, singleton } from "microinject";
 
 import Controller, { param, get, HttpError } from "../contracts/Controller";
 
@@ -8,6 +8,7 @@ import MenuItem from "../models/MenuItem";
 
 @injectable()
 @provides(Controller)
+@singleton()
 export default class MenuItemsController {
   @get("/items")
   async getMenuItems() {
