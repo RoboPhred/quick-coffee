@@ -3,6 +3,7 @@ import knex from "../knex";
 import { InventoryItem, ItemOption } from "coffee-types";
 
 const TABLE_NAME = "menu_items";
+const UPDATE_KEYS: ("name" | "options")[] = ["name", "options"];
 
 function createSelect() {
   return knex
@@ -39,6 +40,27 @@ export default class MenuItem implements InventoryItem {
       return null;
     }
     return MenuItem.getById(rows[0]);
+  }
+
+  static async update(
+    id: number,
+    item: Partial<Omit<InventoryItem, "id">>
+  ): Promise<MenuItem | null> {
+    const update: any = {};
+    for (const key of UPDATE_KEYS) {
+      if (item[key] !== undefined) {
+        update["menu_items." + key] = item[key];
+      }
+    }
+
+    const rows: any[] = await knex(TABLE_NAME)
+      .update(update)
+      .where({ "menu_items.id": id });
+
+    if (rows.length !== 1) {
+      return null;
+    }
+    return MenuItem.getById(id)!;
   }
 
   static async delete(id: number): Promise<boolean> {

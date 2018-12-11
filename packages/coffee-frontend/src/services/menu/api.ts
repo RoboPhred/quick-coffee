@@ -2,8 +2,12 @@ import {
   InventoryItem,
   PostMenuItemRequest,
   InventoryItemRequest,
-  PostMenuItemResponse
+  PostMenuItemResponse,
+  PatchMenuItemRequest,
+  PatchMenuItemResponse
 } from "coffee-types";
+
+import { pick } from "lodash-es";
 
 import { apiFetch } from "@/services/backend/api";
 import { authFetch } from "@/services/auth/api";
@@ -30,6 +34,18 @@ export async function createItem(
     request
   );
   return result.item;
+}
+
+export async function updateItem(item: InventoryItem): Promise<InventoryItem> {
+  const request: PatchMenuItemRequest = {
+    item: pick(item, ["name", "description", "options"])
+  };
+  const response: PatchMenuItemResponse = await authFetch(
+    "PATCH",
+    `/barista/menu-items/${item.id}`,
+    request
+  );
+  return response.item;
 }
 
 export async function deleteItem(itemId: number): Promise<void> {
