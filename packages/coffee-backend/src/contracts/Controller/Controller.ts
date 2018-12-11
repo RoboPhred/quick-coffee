@@ -6,6 +6,6 @@ import createSymbol from "../../create-symbol";
 
 const Controller: Identifier<Controller> = createSymbol("controller");
 interface Controller {
-  getRouter(): Router;
+  getRouter?(): Router;
 }
 export default Controller;

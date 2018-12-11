@@ -6,6 +6,7 @@ import Controller from "../contracts/Controller";
 
 import authRouter, { passport } from "./auth";
 import ordersRouter from "./orders";
+import openRouter from "./open";
 import favoritesRouter from "./favorites";
 import baristaRouter from "./barista";
 
@@ -20,6 +21,7 @@ export default class LegacyController implements Controller {
 
     applyRouter(apiRouter, authRouter);
     applyRouter(apiRouter, ordersRouter);
+    applyRouter(apiRouter, openRouter);
     applyRouter(apiRouter, favoritesRouter);
     applyRouter(apiRouter, baristaRouter);
 

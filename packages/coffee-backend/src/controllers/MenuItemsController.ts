@@ -1,37 +1,32 @@
-import Router from "koa-router";
 import HttpStatusCodes from "http-status-codes";
 
 import { injectable, provides } from "microinject";
 
-import Controller from "../contracts/Controller";
+import Controller, { param, get, HttpError } from "../contracts/Controller";
 
 import MenuItem from "../models/MenuItem";
-import { get } from "../contracts/Controller";
 
 @injectable()
 @provides(Controller)
-export default class MenuItemsController implements Controller {
-  getRouter() {
-    const router = new Router({ prefix: "/items" });
+export default class MenuItemsController {
+  @get("/items")
+  async getMenuItems() {
+    const items = await MenuItem.getAll();
+    return items;
+  }
 
-    router.get("/", async ctx => {
-      const items = await MenuItem.getAll();
-      ctx.body = items;
-      ctx.status = HttpStatusCodes.OK;
-    });
+  @get("/items/:itemId")
+  async getMenuItem(@param("itemId") itemIdParam: string) {
+    const itemId = Number(itemIdParam);
+    if (isNaN(itemId)) {
+      throw new HttpError(HttpStatusCodes.NOT_FOUND, "Item Not Found.");
+    }
 
-    router.get("/:itemId", async ctx => {
-      const { itemId } = ctx.params;
-      try {
-        const item = await MenuItem.getById(itemId);
-        ctx.body = item;
-        ctx.status = HttpStatusCodes.OK;
-      } catch (e) {
-        if (e.code === "ITEM_NOT_FOUND") {
-          ctx.status = HttpStatusCodes.NOT_FOUND;
-        }
-      }
-    });
-    return router;
+    const item = MenuItem.getById(itemId);
+    if (!item) {
+      throw new HttpError(HttpStatusCodes.NOT_FOUND, "Item Not Found.");
+    }
+
+    return item;
   }
 }

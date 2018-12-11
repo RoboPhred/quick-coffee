@@ -3,3 +3,5 @@ export default Controller;
 
 export * from "./methods";
 export * from "./method-args";
+
+export * from "./errors";

@@ -13,7 +13,7 @@ function createMethodDecorator(
   method: string
 ): (path?: string) => MethodDecorator {
   return (path?: string) => {
-    return <T>(target: any, propertyKey: string | symbol) => {
+    return (target: any, propertyKey: string | symbol) => {
       let methodsPerProp = target[MethodFunctions];
       if (methodsPerProp == null) {
         methodsPerProp = target[MethodFunctions] = {};

@@ -2,15 +2,18 @@ import createSymbol from "../../create-symbol";
 
 const MethodArguments = createSymbol("controller/method-arguments");
 
-/** @internal */
-export type MethodArgType = "body";
+export type MethodArgDefinition =
+  | BodyMethodArgDefinition
+  | ParamMethodArgDefinition;
 
-/** @internal */
-export interface MethodArgDefinition {
-  type: MethodArgType;
+export interface BodyMethodArgDefinition {
+  type: "body";
+}
+export interface ParamMethodArgDefinition {
+  type: "param";
+  paramId: string;
 }
 
-/** @internal */
 export type MethodArguments = MethodArgDefinition[];
 
 export function body(): ParameterDecorator {
@@ -25,7 +28,22 @@ export function body(): ParameterDecorator {
   };
 }
 
-/** @internal */
+export function param(id: string): ParameterDecorator {
+  return (
+    target: any,
+    propertyKey: string | symbol,
+    parameterIndex: number
+  ) => {
+    const func = target[propertyKey];
+    const args = getMethodArgumentDefs(func, true);
+    const def: ParamMethodArgDefinition = {
+      type: "param",
+      paramId: id
+    };
+    args[parameterIndex] = def;
+  };
+}
+
 export function getMethodArgumentDefs(
   target: any,
   create?: boolean

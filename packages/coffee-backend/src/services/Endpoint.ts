@@ -96,6 +96,8 @@ export default class Endpoint implements Endpoint {
         switch (x.type) {
           case "body":
             return ctx.request.body;
+          case "param":
+            return ctx.params[x.paramId];
         }
       });
 
