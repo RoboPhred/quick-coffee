@@ -42,6 +42,8 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 2
     },
     optionsContainer: {
+      display: "flex",
+      flexDirection: "column",
       flexGrow: 1,
       flexShrink: 1,
       minHeight: 0,
@@ -51,8 +53,7 @@ const styles = (theme: Theme) =>
     },
     options: {
       width: "100%",
-      height: "100%",
-      overflow: "auto"
+      height: "100%"
     },
     actionBar: {
       display: "flex",
