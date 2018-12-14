@@ -15,8 +15,10 @@ export default function* deleteFavoriteSaga() {
 function* onDeleteFavorite(action: DeleteFavoriteAction) {
   const { favoriteId } = action.payload;
 
-  yield call(deleteFavorite, favoriteId);
-  // TODO: On error, tell user.
-
+  try {
+    yield call(deleteFavorite, favoriteId);
+  } catch {
+    // TODO: On error, tell user.
+  }
   yield put(deleteFavoriteSuccess(favoriteId));
 }
