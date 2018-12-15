@@ -1,25 +1,18 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { push } from "connected-react-router";
 
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
 
-import DeleteIcon from "@material-ui/icons/Delete";
-
-import ItemListSource from "@/services/menu/components/ItemListSource";
-import { deleteMenuItem } from "@/services/menu/actions/delete-menu-item";
+import MenuEditorService from "@/services/menu-editor/components/MenuEditorService";
 
 import Authenticate from "@/components/Authenticate";
 import LoadingPageContent from "@/components/LoadingPageContent";
 import PageContainer from "@/components/PageContainer";
 import ButtonLink from "@/components/ButtonLink";
+
+import MenuItemListItem from "./components/MenuItemListItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,65 +40,44 @@ const styles = (theme: Theme) =>
     }
   });
 
-const mapDispatchToProps = {
-  deleteMenuItem,
-  push
-};
-type DispatchProps = typeof mapDispatchToProps;
-
-type Props = DispatchProps & StyleProps<ReturnType<typeof styles>>;
+type Props = StyleProps<ReturnType<typeof styles>>;
 class EditMenuPage extends React.Component<Props> {
   render() {
-    const { classes, deleteMenuItem, push } = this.props;
+    const { classes } = this.props;
     return (
       <Authenticate role="barista">
-        <PageContainer title="Edit Menu" variant="barista">
-          <div className={classes.root}>
-            <ItemListSource>
-              {({ isLoading, items }) => (
+        <MenuEditorService>
+          {({ isLoading, items }) => (
+            <PageContainer title="Edit Menu" variant="barista">
+              <div className={classes.root}>
                 <div className={classes.menuList}>
                   {isLoading && <LoadingPageContent />}
-                  {items && (
+                  {items.length > 0 && (
                     <List>
                       {items.map(item => (
                         // TODO remove lambda prop.
-                        <ListItem
+                        <MenuItemListItem
                           key={item.id}
-                          button
-                          onClick={() =>
-                            push(`/barista/edit-menu/item/${item.id}`)
-                          }
-                        >
-                          <ListItemText>{item.name}</ListItemText>
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              aria-label="Delete"
-                              // TODO: Remove lambda prop.
-                              onClick={() => deleteMenuItem(item.id)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
+                          itemName={item.name}
+                          onClick={item.editItem}
+                          onDelete={item.deleteItem}
+                        />
                       ))}
                     </List>
                   )}
                 </div>
-              )}
-            </ItemListSource>
-            <Divider />
-            <div className={classes.actionBar}>
-              <ButtonLink to="/barista/edit-menu/add-item">Add Item</ButtonLink>
-            </div>
-          </div>
-        </PageContainer>
+                <Divider />
+                <div className={classes.actionBar}>
+                  <ButtonLink to="/barista/edit-menu/add-item">
+                    Add Item
+                  </ButtonLink>
+                </div>
+              </div>
+            </PageContainer>
+          )}
+        </MenuEditorService>
       </Authenticate>
     );
   }
 }
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(EditMenuPage)
-);
+export default withStyles(styles)(EditMenuPage);

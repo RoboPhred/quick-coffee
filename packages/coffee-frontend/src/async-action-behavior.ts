@@ -1,11 +1,15 @@
 import { put } from "redux-saga/effects";
 import { push } from "connected-react-router";
 
+export interface AsyncActionOptions {
+  redirect?: string;
+}
+export type AsyncSuccessAction = AsyncActionOptions | (() => void);
+export type AsyncErrorAction = AsyncActionOptions | ((message: string) => void);
+
 export interface AsyncActionBehavior {
-  success?: {
-    redirect?: string;
-  };
-  error?: (message: string) => void;
+  success?: AsyncSuccessAction;
+  error?: AsyncErrorAction;
 }
 
 export function* handleAsyncResultSaga(
@@ -24,12 +28,26 @@ export function* handleAsyncResultSaga(
 
   const behavior = asyncAction.meta.asyncBehavior;
   if (!errorMessage) {
-    if (behavior.success && behavior.success.redirect) {
-      yield put(push(behavior.success.redirect));
+    if (behavior.success) {
+      yield* invokeAsyncAction(behavior.success);
     }
   } else {
     if (behavior.error) {
-      behavior.error(errorMessage);
+      yield* invokeAsyncAction(behavior.error);
     }
+  }
+}
+
+function* invokeAsyncAction(
+  action: AsyncActionOptions | Function,
+  ...args: any[]
+) {
+  if (typeof action === "function") {
+    action(...args);
+    return;
+  }
+
+  if (action.redirect) {
+    yield put(push(action.redirect));
   }
 }

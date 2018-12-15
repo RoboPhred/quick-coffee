@@ -5,6 +5,7 @@
     "module": "es6",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "downlevelIteration": true,
     "jsx": "react",
     "experimentalDecorators": true,
     "strict": true,

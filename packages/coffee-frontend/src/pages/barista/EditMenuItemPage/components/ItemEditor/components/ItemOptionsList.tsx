@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { ItemOption } from "coffee-types";
 
-import { replace } from "lodash-es";
-
 import ItemOptionPanel from "./ItemOptionPanel";
 
 export interface ItemOptionsListProps {

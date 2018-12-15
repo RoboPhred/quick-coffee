@@ -17,8 +17,10 @@ export default function* addFavoriteSaga() {
 function* onAddFavorite(action: AddOrderAction) {
   const { order } = action.payload;
 
-  const newOrder: OrderedItem = yield call(addOrder, order);
-  // TODO: On error, tell user.
-
-  yield put(addOrderSuccess(newOrder));
+  try {
+    const newOrder: OrderedItem = yield call(addOrder, order);
+    yield put(addOrderSuccess(newOrder));
+  } catch {
+    // TODO: On error, tell user.
+  }
 }
