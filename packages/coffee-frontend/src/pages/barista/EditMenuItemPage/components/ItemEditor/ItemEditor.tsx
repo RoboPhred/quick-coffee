@@ -3,6 +3,8 @@ import * as React from "react";
 import { Theme, createStyles, withStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
 
 import MenuItemEditorService from "@/services/menu-editor/components/MenuItemEditorService";
 
@@ -44,8 +46,11 @@ class ItemEditor extends React.Component<Props> {
     const { className, classes, itemId } = this.props;
     return (
       <MenuItemEditorService itemId={itemId}>
-        {({ isLoading, item, onChange, onSave }) => (
+        {({ isLoading, isSaving, item, onChange, onSave }) => (
           <div className={`${className} ${classes.root}`}>
+            <Dialog open={isSaving}>
+              <Typography>Saving</Typography>
+            </Dialog>
             {isLoading && <LoadingPageContent />}
             {item && (
               <React.Fragment>

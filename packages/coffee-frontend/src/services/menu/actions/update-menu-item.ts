@@ -1,10 +1,10 @@
-import { InventoryItemRequest, InventoryItem } from "coffee-types";
+import { InventoryItem } from "coffee-types";
 
 import { AsyncActionBehavior } from "@/async-action-behavior";
 
 export const UPDATE_MENU_ITEM = "update-menu-item";
 export const updateMenuItem = (
-  item: InventoryItemRequest,
+  item: InventoryItem,
   asyncBehavior?: AsyncActionBehavior
 ) => ({
   type: UPDATE_MENU_ITEM as typeof UPDATE_MENU_ITEM,
