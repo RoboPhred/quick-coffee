@@ -12,7 +12,7 @@ export interface TextItemOptionDetailsProps {
 }
 
 type Props = TextItemOptionDetailsProps;
-export default class TextItemOptionDetails extends React.Component<Props> {
+class TextItemOptionDetails extends React.Component<Props> {
   render() {
     const { option } = this.props;
     return (
@@ -21,6 +21,10 @@ export default class TextItemOptionDetails extends React.Component<Props> {
           id="option-placeholder"
           label="Placeholder"
           variant="standard"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true
+          }}
           fullWidth
           defaultValue={option.placeholder || ""}
           onChange={this._onPlaceholderChange}
@@ -29,6 +33,10 @@ export default class TextItemOptionDetails extends React.Component<Props> {
           id="option-default"
           label="Default Value"
           variant="standard"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true
+          }}
           fullWidth
           defaultValue={option.default || ""}
           onChange={this._onDefaultValueChange}
@@ -57,3 +65,4 @@ export default class TextItemOptionDetails extends React.Component<Props> {
     });
   }
 }
+export default TextItemOptionDetails;

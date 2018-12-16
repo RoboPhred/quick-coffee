@@ -40,7 +40,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = StyleProps<ReturnType<typeof styles>>;
+type Props = StyleProps<typeof styles>;
 class EditMenuPage extends React.Component<Props> {
   render() {
     const { classes } = this.props;

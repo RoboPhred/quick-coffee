@@ -38,9 +38,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = FavoriteButtonProps &
-  StyleProps<ReturnType<typeof styles>> &
-  DispatchProps;
+type Props = FavoriteButtonProps & StyleProps<typeof styles> & DispatchProps;
 interface State {
   addingOrder: boolean;
   favoriteName: string | null;

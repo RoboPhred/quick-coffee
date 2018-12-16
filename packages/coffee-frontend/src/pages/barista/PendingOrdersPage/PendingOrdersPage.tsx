@@ -27,7 +27,7 @@ const styles = (theme: Theme) =>
       margin: theme.spacing.unit
     }
   });
-type Props = StyleProps<ReturnType<typeof styles>>;
+type Props = StyleProps<typeof styles>;
 const PendingOrdersPage: React.SFC<Props> = ({ classes }) => (
   <Authenticate role="barista">
     <BaristaOrdersSource>

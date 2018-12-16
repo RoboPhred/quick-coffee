@@ -31,8 +31,12 @@ export default class SelectItemOptionDetails extends React.Component<Props> {
           {option.choices.map((x, index) => (
             <ListItem key={index}>
               <TextField
-                defaultValue={x}
+                value={x}
                 onChange={this._onChoiceChanged.bind(this, index)}
+                variant="standard"
+                InputLabelProps={{
+                  shrink: true
+                }}
               />
               <ListItemSecondaryAction>
                 <IconButton onClick={this._onDeleteChoice.bind(this, index)}>

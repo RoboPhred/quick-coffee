@@ -27,7 +27,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = IntegerOptionProps & StyleProps<ReturnType<typeof styles>>;
+type Props = IntegerOptionProps & StyleProps<typeof styles>;
 
 const IntegerOption: React.SFC<Props> = ({
   className,

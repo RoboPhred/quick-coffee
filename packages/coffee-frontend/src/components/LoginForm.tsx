@@ -25,7 +25,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = LoginFormProps & StyleProps<ReturnType<typeof styles>>;
+type Props = LoginFormProps & StyleProps<typeof styles>;
 class LoginForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);

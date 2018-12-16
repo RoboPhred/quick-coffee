@@ -11,15 +11,28 @@ export interface ItemOptionsListProps {
 }
 
 type Props = ItemOptionsListProps;
-class ItemOptionsList extends React.Component<Props> {
+interface State {
+  expandedOption: string;
+}
+class ItemOptionsList extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      expandedOption: (props.options[0] || { id: "" }).id
+    };
+  }
+
   render() {
     const { className, options } = this.props;
+    const { expandedOption } = this.state;
     return (
       <div className={className}>
         {options.map((option, index) => (
           <ItemOptionPanel
-            key={index}
+            key={option.id}
             option={option}
+            expanded={expandedOption === option.id}
+            onClick={() => this.setState({ expandedOption: option.id })}
             onChange={this._onOptionChange.bind(this, index)}
           />
         ))}

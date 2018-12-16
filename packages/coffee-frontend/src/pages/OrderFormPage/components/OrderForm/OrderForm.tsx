@@ -25,7 +25,7 @@ interface OrderFormProps {
   onOrder(order: OrderRequestItem): void;
 }
 
-type Props = OrderFormProps & StyleProps<ReturnType<typeof styles>>;
+type Props = OrderFormProps & StyleProps<typeof styles>;
 interface State {
   optionValues: Record<string, any>;
 }

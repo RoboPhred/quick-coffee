@@ -27,9 +27,7 @@ const mapDispatchToProps = {
 };
 type DispatchProps = typeof mapDispatchToProps;
 
-type Props = RouteComponentProps &
-  StyleProps<ReturnType<typeof styles>> &
-  DispatchProps;
+type Props = RouteComponentProps & StyleProps<typeof styles> & DispatchProps;
 interface State {
   name: string;
   description: string;

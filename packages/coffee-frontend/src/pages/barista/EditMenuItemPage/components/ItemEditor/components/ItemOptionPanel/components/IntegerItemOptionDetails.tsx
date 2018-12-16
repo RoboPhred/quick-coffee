@@ -21,6 +21,10 @@ export default class IntegerItemOptionDetails extends React.Component<Props> {
           id="option-default"
           label="Default Value"
           variant="standard"
+          margin="normal"
+          InputLabelProps={{
+            shrink: true
+          }}
           type="number"
           defaultValue={option.default || ""}
           onChange={this._onDefaultChange}

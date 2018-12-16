@@ -15,7 +15,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = StyleProps<ReturnType<typeof styles>>;
+type Props = StyleProps<typeof styles>;
 const LoadingPageContent: React.SFC<Props> = ({ classes }) => (
   <div className={classes.root}>
     <Typography variant="h6" component="div">

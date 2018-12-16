@@ -38,7 +38,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = ItemEditorProps & StyleProps<ReturnType<typeof styles>>;
+type Props = ItemEditorProps & StyleProps<typeof styles>;
 class ItemEditor extends React.Component<Props> {
   render() {
     const { className, classes, itemId } = this.props;

@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = EditMenuItemPageProps & StyleProps<ReturnType<typeof styles>>;
+type Props = EditMenuItemPageProps & StyleProps<typeof styles>;
 class EditMenuItemPage extends React.Component<Props> {
   render() {
     const {

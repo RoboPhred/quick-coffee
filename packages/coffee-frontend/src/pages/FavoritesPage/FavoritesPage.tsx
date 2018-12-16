@@ -26,7 +26,7 @@ const styles = (theme: Theme) =>
       margin: theme.spacing.unit
     }
   });
-type Props = StyleProps<ReturnType<typeof styles>>;
+type Props = StyleProps<typeof styles>;
 class FavoritesPage extends React.Component<Props> {
   render() {
     const { classes } = this.props;

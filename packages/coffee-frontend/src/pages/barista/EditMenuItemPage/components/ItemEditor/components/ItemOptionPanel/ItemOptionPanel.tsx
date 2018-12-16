@@ -20,7 +20,10 @@ import TextItemOptionDetails from "./components/TextItemOptionDetails";
 
 const itemTypeOptions: Record<
   ItemOption["type"],
-  React.ComponentClass<{ option: any; onChange(option: any): void }>
+  React.ComponentType<{
+    option: any;
+    onChange(option: any): void;
+  }>
 > = {
   boolean: BooleanItemOptionDetails,
   integer: IntegerItemOptionDetails,
@@ -29,7 +32,9 @@ const itemTypeOptions: Record<
 };
 
 export interface ItemOptionPanelProps {
+  expanded: boolean;
   option: ItemOption;
+  onClick(): void;
   onChange(option: ItemOption): void;
 }
 
@@ -49,13 +54,13 @@ const styles = (theme: Theme) =>
     }
   });
 
-type Props = ItemOptionPanelProps & StyleProps<ReturnType<typeof styles>>;
+type Props = ItemOptionPanelProps & StyleProps<typeof styles>;
 class ItemOptionPanel extends React.Component<Props> {
   render() {
-    const { classes, option } = this.props;
+    const { classes, option, expanded, onClick } = this.props;
     const TypeDetails = itemTypeOptions[option.type];
     return (
-      <ExpansionPanel key={option.id}>
+      <ExpansionPanel key={option.id} expanded={expanded} onClick={onClick}>
         <ExpansionPanelSummary expandIcon={expandIcon}>
           <div className={classes.column}>
             <Typography className={classes.heading}>{option.name}</Typography>
@@ -72,6 +77,10 @@ class ItemOptionPanel extends React.Component<Props> {
               id="option-name"
               label="Name"
               variant="standard"
+              margin="normal"
+              InputLabelProps={{
+                shrink: true
+              }}
               defaultValue={option.name}
               onChange={this._onNameChange}
             />
@@ -79,6 +88,10 @@ class ItemOptionPanel extends React.Component<Props> {
               id="option-description"
               label="Description"
               variant="standard"
+              margin="normal"
+              InputLabelProps={{
+                shrink: true
+              }}
               fullWidth
               defaultValue={option.description || ""}
               onChange={this._onDescriptionChange}
