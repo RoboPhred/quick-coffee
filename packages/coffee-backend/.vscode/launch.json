@@ -9,6 +9,9 @@
       "request": "launch",
       "name": "Launch Program",
       "program": "${workspaceFolder}/src/index.ts",
+      "env": {
+        "DEBUG": "knex:query"
+      },
       "outFiles": ["${workspaceFolder}/lib/**/*.js"],
       "sourceMaps": true,
       "console": "integratedTerminal"

@@ -47,9 +47,17 @@ export default class MenuItem implements InventoryItem {
     item: Partial<Omit<InventoryItem, "id">>
   ): Promise<MenuItem | null> {
     const update: any = {};
-    for (const key of UPDATE_KEYS) {
-      if (item[key] !== undefined) {
-        update["menu_items." + key] = item[key];
+    for (const key of Object.keys(item)) {
+      const value = (item as any)[key];
+      switch (key) {
+        case "name":
+          update.name = value;
+          break;
+        case "options":
+          update.options = JSON.stringify(value);
+          break;
+        default:
+          throw new Error(`Unknown MenuItem property "${key}".`);
       }
     }
 
