@@ -5,6 +5,7 @@ import { SelectionItemOption } from "coffee-types";
 import { createStyles, withStyles } from "@material-ui/core/styles";
 
 import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 
 export interface SelectionOptionProps {
@@ -29,19 +30,17 @@ const SelectionOption: React.SFC<Props> = ({
   value,
   onChange
 }) => (
-  // TODO: Toggle native based on if we are on a phone or not
   <div className={className}>
     <Typography variant="body1">{option.name}</Typography>
     <Select
       className={classes.select}
-      native
       value={value}
       onChange={e => onChange(e.target.value)}
     >
       {option.choices.map(choice => (
-        <option key={choice} value={choice}>
+        <MenuItem key={choice} value={choice}>
           {choice}
-        </option>
+        </MenuItem>
       ))}
     </Select>
   </div>

@@ -2,6 +2,8 @@ import { takeEvery, call, put } from "redux-saga/effects";
 
 import { updateItem } from "../api";
 
+import { handleAsyncResultSaga } from "@/async-action-behavior";
+
 import {
   UPDATE_MENU_ITEM,
   UpdateMenuItemAction,
@@ -17,7 +19,8 @@ function* onUpdateMenuItem(action: UpdateMenuItemAction) {
   try {
     yield call(updateItem, item);
     yield put(updateMenuItemSuccess(item));
-  } catch {
-    // TODO handle error
+    yield handleAsyncResultSaga(null, action);
+  } catch (e) {
+    yield handleAsyncResultSaga(e.message, action);
   }
 }

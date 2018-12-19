@@ -6,6 +6,7 @@ const UglifyJsWebpackPlugin = require("uglifyjs-webpack-plugin");
 
 const PATHS = {
   src: resolvePath("./src"),
+  assets: resolvePath("./assets"),
   dist: resolvePath("./dist")
 };
 const PUBLIC_URL = "/";
@@ -36,7 +37,8 @@ module.exports = {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias: {
-      "@": PATHS.src
+      "@": PATHS.src,
+      "@assets": PATHS.assets
     }
   },
 
@@ -79,6 +81,17 @@ module.exports = {
           loader: "file-loader",
           options: {
             name: "fonts/[hash].[ext]"
+          }
+        }
+      },
+
+      // SVG
+      {
+        test: /\.svg$/,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: "images/[hash].[ext]"
           }
         }
       }

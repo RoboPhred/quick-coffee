@@ -83,17 +83,19 @@ class MenuItemEditorService extends React.Component<Props, State> {
       isSaving: true
     });
 
-    const onUpdateCompleted = () => {
+    const onUpdateCompleted = (errorMessage?: string) => {
       if (!this._mounted) {
         return;
       }
+
+      // TODO report error.
 
       this.setState({ isSaving: false });
     };
 
     this.props.updateMenuItem(item, {
-      error: () => onUpdateCompleted(),
-      success: () => onUpdateCompleted()
+      error: onUpdateCompleted,
+      success: onUpdateCompleted
     });
   }
 }

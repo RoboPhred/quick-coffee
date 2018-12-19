@@ -13,3 +13,8 @@ declare const __webpack_public_path__: string;
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
 }
+
+declare module "*.svg" {
+  const path: string;
+  export = path;
+}
