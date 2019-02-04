@@ -3,11 +3,15 @@ import knex from "../knex";
 import { InventoryItem, ItemOption } from "coffee-types";
 
 const TABLE_NAME = "menu_items";
-const UPDATE_KEYS: ("name" | "options")[] = ["name", "options"];
 
 function createSelect() {
   return knex
-    .select(["menu_items.id", "menu_items.name", "menu_items.options"])
+    .select([
+      "menu_items.id",
+      "menu_items.name",
+      "menu_items.description",
+      "menu_items.options"
+    ])
     .from(TABLE_NAME);
 }
 
@@ -51,7 +55,8 @@ export default class MenuItem implements InventoryItem {
       const value = (item as any)[key];
       switch (key) {
         case "name":
-          update.name = value;
+        case "description":
+          update[key] = value;
           break;
         case "options":
           update.options = JSON.stringify(value);
@@ -61,11 +66,11 @@ export default class MenuItem implements InventoryItem {
       }
     }
 
-    const rows: any[] = await knex(TABLE_NAME)
+    const affectedRows: number = await knex(TABLE_NAME)
       .update(update)
       .where({ "menu_items.id": id });
 
-    if (rows.length !== 1) {
+    if (affectedRows !== 1) {
       return null;
     }
     return MenuItem.getById(id)!;
@@ -80,11 +85,13 @@ export default class MenuItem implements InventoryItem {
 
   id: number;
   name: string;
+  description: string;
   options: ItemOption[];
 
   constructor(row: any) {
     this.id = row["id"];
     this.name = row["name"];
+    this.description = row["description"];
     this.options = JSON.parse(row["options"] || "null");
   }
 }

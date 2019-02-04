@@ -4,6 +4,7 @@ exports.seed = async function(knex, Promise) {
     {
       id: 1,
       name: "Coffee",
+      description: "This is coffee",
       options: JSON.stringify([
         {
           id: "creamer",
@@ -34,6 +35,7 @@ exports.seed = async function(knex, Promise) {
     {
       id: 2,
       name: "Hot Chocolate",
+      description: 'Significantly better than "Hot Peanutbutter"',
       options: null
     }
   ]);
